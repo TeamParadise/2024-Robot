@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.GroundPickup;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
@@ -37,7 +38,7 @@ public class RobotContainer
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve/neo"));
+                                                                         "swerve/KrakFalc"));
                                                                          
   public final static  ArmSubsystem armSubsystem = new ArmSubsystem();
   public final static  ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(); 
@@ -47,10 +48,8 @@ public class RobotContainer
  
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  CommandJoystick driverController = new CommandJoystick(1);
 
-  // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
-  XboxController driverXbox = new XboxController(0);
+  CommandXboxController driverXbox = new CommandXboxController(0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -79,17 +78,17 @@ public class RobotContainer
                                                                                                       OperatorConstants.LEFT_X_DEADBAND),
                                                                          () -> driverXbox.getRawAxis(2));
 
-    AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                                  OperatorConstants.LEFT_X_DEADBAND),
-                                                                      () -> MathUtil.applyDeadband(driverXbox.getRightX(),
-                                                                                                  OperatorConstants.RIGHT_X_DEADBAND), 
-                                                                      driverXbox::getYButtonPressed, 
-                                                                      driverXbox::getAButtonPressed, 
-                                                                      driverXbox::getXButtonPressed, 
-                                                                      driverXbox::getBButtonPressed);
+    // AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
+    //                                                                   () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
+    //                                                                                             OperatorConstants.LEFT_Y_DEADBAND),
+    //                                                                   () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
+    //                                                                                               OperatorConstants.LEFT_X_DEADBAND),
+    //                                                                   () -> MathUtil.applyDeadband(driverXbox.getRightX(),
+    //                                                                                               OperatorConstants.RIGHT_X_DEADBAND), 
+    //                                                                   driverXbox::getYButtonPressed, 
+    //                                                                   driverXbox::getAButtonPressed, 
+    //                                                                   driverXbox::getXButtonPressed, 
+    //                                                                   driverXbox::getBButtonPressed);
 
     TeleopDrive simClosedFieldRel = new TeleopDrive(drivebase,
                                                     () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -99,9 +98,9 @@ public class RobotContainer
                                                     () -> driverXbox.getRawAxis(2), () -> true);
     TeleopDrive closedFieldRel = new TeleopDrive(
         drivebase,
-        () -> MathUtil.applyDeadband(driverController.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverController.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverController.getRawAxis(2), () -> true);
+        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
+        () -> -driverXbox.getRawAxis(2), () -> true);
 
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
   }
@@ -117,9 +116,11 @@ public class RobotContainer
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
-    new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
-    new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    // new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
+    // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
+    driverXbox.a().whileTrue(new GroundPickup());
+
   }
 
   /**

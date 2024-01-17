@@ -5,6 +5,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 
 public class intakeNote extends Command {
@@ -20,11 +21,15 @@ public class intakeNote extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    RobotContainer.intakeSubsystem.runMotors(0.4);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    RobotContainer.intakeSubsystem.stopMotors();
+  }
 
   // Returns true when the command should end.
   @Override

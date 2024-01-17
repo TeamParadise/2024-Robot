@@ -7,14 +7,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-import swervelib.encoders.CanAndCoderSwerve;      
 import frc.robot.Constants.MotorConstants;         
 
 
 public class PrimerSubsystem extends SubsystemBase {
   /** Creates a new PrimerSubsystem. */
 
-  CANSparkMax PrimerNeo = new CANSparkMax(MotorConstants.leftPrimerMotorID, MotorType.kBrushless);
+  CANSparkMax primerNeo = new CANSparkMax(MotorConstants.leftPrimerMotorID, MotorType.kBrushless);
 
   public PrimerSubsystem() {
     configMotors();
@@ -26,12 +25,16 @@ public class PrimerSubsystem extends SubsystemBase {
   }
 
   void configMotors(){
-    PrimerNeo.setSmartCurrentLimit(25, 20);
-    PrimerNeo.setOpenLoopRampRate(0.15);
-    PrimerNeo.setInverted(false);
+    primerNeo.setSmartCurrentLimit(25, 20);
+    primerNeo.setOpenLoopRampRate(0.15);
+    primerNeo.setInverted(false);
   }
 
   public void runMotors(double speed){
-    PrimerNeo.set(speed);
+    primerNeo.set(speed);
+  }
+
+  public void stopMotors() {
+    primerNeo.stopMotor();
   }
 }

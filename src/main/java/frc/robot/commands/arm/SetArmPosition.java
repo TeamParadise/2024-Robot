@@ -16,13 +16,13 @@ public class SetArmPosition extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.armSubsystem);
     this.angle = angle;
+    armPID = new PIDController(0, 0, 0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     armPID.reset();
-    armPID = new PIDController(0, 0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

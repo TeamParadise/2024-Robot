@@ -4,16 +4,23 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.arm.SetArmPosition;
+import frc.robot.commands.intake.intakeNote;
+import frc.robot.commands.primer.PrimeNote;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GroundPickup extends SequentialCommandGroup {
+public class GroundPickup extends ParallelCommandGroup {
   /** Creates a new GroundPickup. */
   public GroundPickup() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
+    addCommands(
+      new intakeNote(), 
+      new PrimeNote(),
+      new SetArmPosition(0)
+    );
   }
 }

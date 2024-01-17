@@ -42,23 +42,23 @@ public final class Constants
 
   public static final class MotorConstants
   {
-    public static final int leftIntakeMotorID = 999;
-    public static final int rightIntakeMotorID = 998;
+    public static final int leftIntakeMotorID = 37;
+    public static final int rightIntakeMotorID = 22;
 
-    public static final int leftElevatorMotorID = 999;
-    public static final int rightElevatorMotorID = 998;
+    public static final int leftElevatorMotorID = 32;
+    public static final int rightElevatorMotorID = 42;
 
-    public static final int leftClimberMotorID = 999;
-    public static final int rightClimberMotorID = 999;
+    public static final int leftClimberMotorID = 25;
+    public static final int rightClimberMotorID = 26;
 
-    public static final int leftPrimerMotorID = 999;
-    public static final int rightPrimerMotorID = 999;
+    public static final int leftPrimerMotorID = 27;
+    public static final int rightPrimerMotorID = 28;
 
-    public static final int leftFlywheelMotorID = 999;
-    public static final int rightFlywheelMotorID = 999;
+    public static final int leftFlywheelMotorID = 29;
+    public static final int rightFlywheelMotorID = 20;
 
-    public static final int leftArmMotorID = 999;
-    public static final int rightArmMotorID = 999;
+    public static final int leftArmMotorID = 21;
+    public static final int rightArmMotorID = 23;
   }
 
   public static class SpeedConstants{

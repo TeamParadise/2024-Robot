@@ -12,8 +12,8 @@ import frc.robot.Constants.MotorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-  CANSparkMax leftMotor = new CANSparkMax(MotorConstants.leftFlywheelMotorID, MotorType.kBrushless);
-  CANSparkMax rightMotor = new CANSparkMax(MotorConstants.rightFlywheelMotorID, MotorType.kBrushless);
+  CANSparkMax leftMotor = new CANSparkMax(MotorConstants.leftElevatorMotorID, MotorType.kBrushless);
+  CANSparkMax rightMotor = new CANSparkMax(MotorConstants.rightElevatorMotorID, MotorType.kBrushless);
 
   public ElevatorSubsystem() {
     configMotors();

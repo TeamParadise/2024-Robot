@@ -1,0 +1,21 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Pigeon 2 (v6) [0]": "Gyro"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Pigeon 2 (v6) [0]": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  }
+}
