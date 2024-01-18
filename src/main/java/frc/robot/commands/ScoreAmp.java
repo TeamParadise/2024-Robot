@@ -13,6 +13,7 @@ import frc.robot.commands.elevator.ExtendElevator;
 import frc.robot.commands.elevator.RetractElevator;
 import frc.robot.commands.flywheel.PIDFlywheel;
 import frc.robot.commands.flywheel.StopFlywheel;
+import frc.robot.commands.leds.solidPurple;
 import frc.robot.commands.primer.FeedNote;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -24,6 +25,7 @@ public class ScoreAmp extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new solidPurple(),
       new PIDFlywheel(Constants.SpeedConstants.ampSpeed).withTimeout(1).alongWith(new ExtendElevator()),
       new FeedNote().withTimeout(1),
       new RetractElevator(),
