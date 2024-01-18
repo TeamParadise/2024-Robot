@@ -24,6 +24,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -38,14 +39,15 @@ public class RobotContainer
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve/KrakFalc"));
+                                                                  "swerve/KrakFalc"));
                                                                          
   public final static  ArmSubsystem armSubsystem = new ArmSubsystem();
   public final static  ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(); 
   public final static  PrimerSubsystem primerSubsystem = new PrimerSubsystem(); 
   public final static  FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem(); 
   public final static  IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); 
- 
+  public final static  LEDSubsystem ledSubsystem = new LEDSubsystem(); 
+
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
 

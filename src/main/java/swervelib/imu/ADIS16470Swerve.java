@@ -69,7 +69,7 @@ public class ADIS16470Swerve extends SwerveIMU
    */
   public Rotation3d getRawRotation3d()
   {
-    return new Rotation3d(0, 0, Math.toRadians(-imu.getAngle()));
+    return new Rotation3d(0, 0, Math.toRadians(-imu.getAngle(IMUAxis.kYaw)));
   }
 
   /**
@@ -86,7 +86,7 @@ public class ADIS16470Swerve extends SwerveIMU
   /**
    * Fetch the acceleration [x, y, z] from the IMU in meters per second squared. If acceleration isn't supported returns
    * empty.
-   *
+
    * @return {@link Translation3d} of the acceleration as an {@link Optional}.
    */
   @Override

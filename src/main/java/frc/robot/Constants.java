@@ -72,6 +72,11 @@ public final class Constants
     public static final double ampSpeed = 1000; //RPM
   }
 
+  public static class LEDConstants {
+    public static final int ledLength = 150;
+    public static final int ledPort = 0;
+  }
+
   public static class OperatorConstants {
   
 
