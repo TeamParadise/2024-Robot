@@ -2,31 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.leds;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
-import frc.robot.commands.arm.SetArmPosition;
-import frc.robot.commands.intake.intakeNote;
-import frc.robot.commands.leds.blinkOrange;
-import frc.robot.commands.primer.PrimeNote;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GroundPickup extends ParallelCommandGroup {
-  /** Creates a new GroundPickup. */
-  public GroundPickup() {
+public class blinkOrange extends SequentialCommandGroup {
+  /** Creates a new blinkOrange. */
+  public blinkOrange() {
+    addRequirements(RobotContainer.ledSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new intakeNote(), 
-      new PrimeNote(),
-      new SetArmPosition(0),
-      new RepeatCommand(new blinkOrange())
+      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kOrangeRed);}).withTimeout(0.25),
+      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kBlack);}).withTimeout(0.25)
     );
   }
 }
