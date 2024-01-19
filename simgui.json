@@ -1,9 +1,16 @@
 {
   "HALProvider": {
     "Addressable LEDs": {
-      "0": {
-        "columns": 22
-      },
+      "window": {
+        "visible": true
+      }
+    },
+    "DIO": {
+      "window": {
+        "visible": true
+      }
+    },
+    "PWM Outputs": {
       "window": {
         "visible": true
       }
@@ -11,21 +18,7 @@
   },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/Pigeon 2 (v6) [0]": "Gyro"
-    },
-    "windows": {
-      "/SmartDashboard/Field": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Pigeon 2 (v6) [0]": {
-        "window": {
-          "visible": true
-        }
-      }
+      "/FMSInfo": "FMSInfo"
     }
   },
   "NetworkTables Info": {

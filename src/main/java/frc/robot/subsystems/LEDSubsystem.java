@@ -7,12 +7,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LEDConstants;
 
 public class LEDSubsystem extends SubsystemBase {
-  private final AddressableLED ledStrip = new AddressableLED(LEDConstants.ledPort);
-  private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(LEDConstants.ledLength);
+  private final AddressableLED ledStrip = new AddressableLED(0);
+  private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(60);
 
   /** Creates a new LEDSubsystem. */
   public LEDSubsystem() {
@@ -22,10 +24,10 @@ public class LEDSubsystem extends SubsystemBase {
   }
 
   public void setAll(Color color) {
-    for (var i = 0; i < ledBuffer.getLength(); i++) {
-      ledBuffer.setLED(i, color);
-    }
-    ledStrip.setData(ledBuffer);
+      for (var i = 0; i < ledBuffer.getLength(); i++) {
+        ledBuffer.setLED(i, color);
+      }
+      ledStrip.setData(ledBuffer);
   }
 
   public void halfAndHalf(Color color1, Color color2) {
@@ -42,5 +44,6 @@ public class LEDSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
   }
 }

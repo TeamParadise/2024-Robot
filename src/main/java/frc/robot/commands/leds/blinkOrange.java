@@ -5,6 +5,7 @@
 package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -20,8 +21,10 @@ public class blinkOrange extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kOrangeRed);}).withTimeout(0.25),
-      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kBlack);}).withTimeout(0.25)
+      new InstantCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kOrangeRed);}),
+      new WaitCommand(0.25),
+      new InstantCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kBlack);}),
+      new WaitCommand(0.25)
     );
   }
 }
