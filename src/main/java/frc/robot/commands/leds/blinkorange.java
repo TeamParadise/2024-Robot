@@ -13,15 +13,15 @@ import frc.robot.RobotContainer;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class blinkorange extends SequentialCommandGroup {
-  /** Creates a new blinkorange. */
-  public blinkorange() {
+public class blinkOrange extends SequentialCommandGroup {
+  /** Creates a new blinkOrange. */
+  public blinkOrange() {
+    addRequirements(RobotContainer.ledSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kOrangeRed);}),
-      new WaitCommand(0.5),
-      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kBlack);})
+      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kOrangeRed);}).withTimeout(0.25),
+      new RunCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kBlack);}).withTimeout(0.25)
     );
   }
 }
