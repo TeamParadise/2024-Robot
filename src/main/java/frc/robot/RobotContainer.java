@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -23,6 +24,7 @@ import frc.robot.commands.leds.defaultColor;
 import frc.robot.commands.leds.solidOrange;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
+import frc.robot.commands.swervedrive.drivebase.BeaconDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
 import frc.robot.subsystems.ArmSubsystem;
@@ -57,7 +59,7 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   CommandXboxController driverXbox = new CommandXboxController(0);
-
+  BeaconDrive headingDrive;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -83,7 +85,7 @@ public class RobotContainer
                                                                                                     OperatorConstants.LEFT_Y_DEADBAND),
                                                                          () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                                       OperatorConstants.LEFT_X_DEADBAND),
-                                                                         () -> driverXbox.getRawAxis(2));
+                                                                         () -> driverXbox.getRightX());
 
     // AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
     //                                                                   () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -102,15 +104,19 @@ public class RobotContainer
                                                                                  OperatorConstants.LEFT_Y_DEADBAND),
                                                     () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
                                                                                  OperatorConstants.LEFT_X_DEADBAND),
-                                                    () -> driverXbox.getRawAxis(2), () -> true);
+                                                    () -> driverXbox.getRightX(), () -> true);
     TeleopDrive closedFieldRel = new TeleopDrive(
         drivebase,
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRawAxis(2), () -> true);
+        () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND),
+        () -> -driverXbox.getRightX(), () -> true);
 
-    drivebase.setDefaultCommand(!RobotBase.isSimulation() ? closedAbsoluteDrive : closedFieldAbsoluteDrive);
-    // ledSubsystem.setDefaultCommand(new defaultColor());
+    headingDrive = new BeaconDrive(
+      drivebase,
+      () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND));
+
+    drivebase.setDefaultCommand(closedFieldRel);
   }
 
   /**
@@ -128,9 +134,8 @@ public class RobotContainer
     // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
     driverXbox.a().whileTrue(new GroundPickup());
-    driverXbox.b().onTrue(new ScoreAmp());
-
-    
+    driverXbox.b().onTrue(new InstantCommand(() -> {headingDrive.schedule();}));
+    driverXbox.b().onFalse(new InstantCommand(() -> {headingDrive.cancel();}));
 
   }
 
