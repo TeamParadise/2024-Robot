@@ -4,16 +4,6 @@
       "window": {
         "visible": true
       }
-    },
-    "DIO": {
-      "window": {
-        "visible": true
-      }
-    },
-    "PWM Outputs": {
-      "window": {
-        "visible": true
-      }
     }
   },
   "NTProvider": {

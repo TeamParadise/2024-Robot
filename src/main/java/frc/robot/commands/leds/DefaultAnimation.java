@@ -6,7 +6,6 @@ package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
@@ -14,17 +13,19 @@ import frc.robot.RobotContainer;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class blinkOrange extends SequentialCommandGroup {
-  /** Creates a new blinkOrange. */
-  public blinkOrange() {
+public class DefaultAnimation extends SequentialCommandGroup {
+  /** Creates a new SetIndividual. */
+  public DefaultAnimation() {
     addRequirements(RobotContainer.ledSubsystem);
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new InstantCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kOrangeRed);}),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> {RobotContainer.ledSubsystem.setAll(Color.kBlack);}),
-      new WaitCommand(0.25)
-    );
+
+    for (var i = 0; i < 60; i++) {
+      final int currentLED = i;
+      if (i % 2 == 0) {
+        addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(currentLED, Color.kRed)));
+      } else {
+        addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(currentLED, Color.kWhite)));
+      }
+      addCommands(new WaitCommand(0.05));
+    }
   }
 }

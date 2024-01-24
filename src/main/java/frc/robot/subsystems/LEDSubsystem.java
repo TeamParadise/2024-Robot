@@ -7,9 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
@@ -22,28 +19,28 @@ public class LEDSubsystem extends SubsystemBase {
     ledStrip.setData(ledBuffer);
     ledStrip.start();
   }
-
+  
   public void setAll(Color color) {
-      for (var i = 0; i < ledBuffer.getLength(); i++) {
+    for (var i = 0; i < ledBuffer.getLength(); i++) {
         ledBuffer.setLED(i, color);
       }
       ledStrip.setData(ledBuffer);
   }
 
-  public void halfAndHalf(Color color1, Color color2) {
+  public void setAll(int hue, int saturation, int value) {
     for (var i = 0; i < ledBuffer.getLength(); i++) {
-      if (i % 2 == 0) {
-        ledBuffer.setLED(i, color1);
-      } else {
-        ledBuffer.setLED(i, color2);
-      }
+      ledBuffer.setHSV(i, hue, saturation, value);
     }
+    ledStrip.setData(ledBuffer);
+  }
+
+  public void setIndividual(int number, Color color) {
+    ledBuffer.setLED(number, color);
     ledStrip.setData(ledBuffer);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
   }
 }

@@ -4,31 +4,24 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.primeNote;
-import frc.robot.commands.leds.blinkOrange;
-import frc.robot.commands.leds.solidOrange;
+import frc.robot.commands.leds.Blink;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.primer;
-
 
 public class RobotContainer {
+  public final static LEDSubsystem ledSubsystem = new LEDSubsystem();
 
-  
+  // public static allianceColor;
+
   public RobotContainer() {
     configureBindings();
+
+    ledSubsystem.setDefaultCommand(new Blink(Color.kOrangeRed));
   }
 
-  CommandXboxController driverXbox = new CommandXboxController(0);
-  public final static  LEDSubsystem ledSubsystem = new LEDSubsystem(); 
-  public final static  primer primerSubsystem = new primer(); 
-
-  private void configureBindings() {
-    driverXbox.a().whileTrue(new primeNote());
-  }
+  private void configureBindings() {}
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
