@@ -26,4 +26,8 @@ public class Breathe extends SequentialCommandGroup {
       addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(hue, saturation, currentBrightness < 0 ? 0 : currentBrightness)));
     }
   }
+
+  public boolean runsWhenDisabled() {
+    return true;
+  }
 }

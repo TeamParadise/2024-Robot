@@ -28,4 +28,8 @@ public class DefaultAnimation extends SequentialCommandGroup {
       addCommands(new WaitCommand(0.05));
     }
   }
+
+  public boolean runsWhenDisabled() {
+    return true;
+  }
 }

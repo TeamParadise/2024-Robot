@@ -26,4 +26,8 @@ public class Blink extends SequentialCommandGroup {
       new WaitCommand(0.25)
     );
   }
+
+  public boolean runsWhenDisabled() {
+    return true;
+  }
 }
