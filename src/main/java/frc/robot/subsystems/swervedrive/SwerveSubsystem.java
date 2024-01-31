@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems.swervedrive;
 
+import com.ctre.phoenix.CTREJNIWrapper;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.jni.CtreJniWrapper;
+import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -52,16 +56,17 @@ public class SwerveSubsystem extends SubsystemBase
     // Angle conversion factor is 360 / (GEAR RATIO * ENCODER RESOLUTION)
     //  In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
-    double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(12.8, 1);
+    double DriveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75, 1);
+    // double SteeringConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.4285714285714, 1);
+    double SteeringConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(150.0/7.0, 2048);
     // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO * ENCODER RESOLUTION).
     //  In this case the wheel diameter is 4 inches, which must be converted to meters to get meters/second.
     //  The gear ratio is 6.75 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
-    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75, 1);
-    System.out.println("\"conversionFactor\": {");
-    System.out.println("\t\"angle\": " + angleConversionFactor + ",");
-    System.out.println("\t\"drive\": " + driveConversionFactor);
-    System.out.println("}");
+    // System.out.println("\"conversionFactor\": {");
+    // System.out.println("\t\"angle\": " + DriveConversionFactor + ",");
+    // System.out.println("\t\"drive\": " + SteeringConversionFactor);
+    // System.out.println("}");
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;

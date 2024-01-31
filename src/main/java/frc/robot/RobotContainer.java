@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.util.ErrorMessages;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,11 +18,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.GroundPickup;
-import frc.robot.commands.ScoreAmp;
-import frc.robot.commands.leds.blinkOrange;
-import frc.robot.commands.leds.defaultColor;
-import frc.robot.commands.leds.solidOrange;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.BeaconDrive;
@@ -46,14 +42,14 @@ public class RobotContainer
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                  "swerve/KrakFalc"));
+                                                                  "swerve/Falceon"));
                                                                          
-  public final static  ArmSubsystem armSubsystem = new ArmSubsystem();
-  public final static  ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(); 
-  public final static  PrimerSubsystem primerSubsystem = new PrimerSubsystem(); 
-  public final static  FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem(); 
-  public final static  IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); 
-  public final static  LEDSubsystem ledSubsystem = new LEDSubsystem(); 
+  // public final static  ArmSubsystem armSubsystem = new ArmSubsystem();
+  // public final static  ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(); 
+  // public final static  PrimerSubsystem primerSubsystem = new PrimerSubsystem(); 
+  // public final static  FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem(); 
+  // public final static  IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); 
+  // public final static  LEDSubsystem ledSubsystem = new LEDSubsystem(); 
 
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -65,6 +61,8 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    
+
     // Configure the trigger bindings
     configureBindings();
 
@@ -111,15 +109,20 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverXbox.getRightX(), () -> true);
 
+    TeleopDrive closedRoobotRel = new TeleopDrive(
+        drivebase,
+        () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND),
+        () -> -driverXbox.getRightX(), () -> false);
     headingDrive = new BeaconDrive(
       drivebase,
       () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
       () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND));
 
-    drivebase.setDefaultCommand(closedFieldRel);
-  }
+    drivebase.setDefaultCommand(closedRoobotRel);
+  } 
 
-  /**
+  /** 
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
    * named factories in {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
@@ -133,7 +136,6 @@ public class RobotContainer
     // new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
-    driverXbox.a().whileTrue(new GroundPickup());
     driverXbox.b().onTrue(new InstantCommand(() -> {headingDrive.schedule();}));
     driverXbox.b().onFalse(new InstantCommand(() -> {headingDrive.cancel();}));
 
