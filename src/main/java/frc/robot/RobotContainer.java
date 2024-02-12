@@ -4,161 +4,81 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.util.ErrorMessages;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
-import frc.robot.commands.swervedrive.drivebase.BeaconDrive;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
-import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.FlywheelSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.PrimerSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import java.io.File;
+import frc.robot.generated.TunerConstants;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
- * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
- * Instead, the structure of the robot (including subsystems, commands, and trigger mappings) should be declared here.
- */
-public class RobotContainer
-{
+public class RobotContainer {
+  private double MaxSpeed = 6; // 6 meters per second desired top speed
+  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
-  // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                  "swerve/Falceon"));
-                                                                         
-  // public final static  ArmSubsystem armSubsystem = new ArmSubsystem();
-  // public final static  ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(); 
-  // public final static  PrimerSubsystem primerSubsystem = new PrimerSubsystem(); 
-  // public final static  FlywheelSubsystem flywheelSubsystem = new FlywheelSubsystem(); 
-  // public final static  IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); 
-  // public final static  LEDSubsystem ledSubsystem = new LEDSubsystem(); 
+  /* Setting up bindings for necessary control of the swerve drive platform */
+  private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
-  // CommandJoystick rotationController = new CommandJoystick(1);
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
+                                                               // driving in open loop
+  private final SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric()
+      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
+                                                               // driving in open loop
+  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  CommandXboxController driverXbox = new CommandXboxController(0);
-  BeaconDrive headingDrive;
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer()
-  {
-    
+  private void configureBindings() {
+    // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    //     drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+    //                                                                                        // negative Y (forward)
+    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+    //     ));
 
-    // Configure the trigger bindings
+    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    joystick.b().whileTrue(drivetrain
+        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+
+    // reset the field-centric heading on left bumper press
+    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+
+   
+
+    joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                                                                                           // negative Y (forward)
+            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+         )));})));
+
+    joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                                                                                           // negative Y (forward)
+            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+        )));})));
+
+
+
+    if (Utils.isSimulation()) {
+      drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+    }
+    drivetrain.registerTelemetry(logger::telemeterize);
+  }
+
+  public RobotContainer() {
     configureBindings();
-
-    AbsoluteDrive closedAbsoluteDrive = new AbsoluteDrive(drivebase,
-                                                          // Applies deadbands and inverts controls because joysticks
-                                                          // are back-right positive while robot
-                                                          // controls are front-left positive
-                                                          () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                       OperatorConstants.LEFT_Y_DEADBAND),
-                                                          () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                       OperatorConstants.LEFT_X_DEADBAND),
-                                                          () -> -driverXbox.getRightX(),
-                                                          () -> -driverXbox.getRightY());
-
-    AbsoluteFieldDrive closedFieldAbsoluteDrive = new AbsoluteFieldDrive(drivebase,
-                                                                         () ->
-                                                                             MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                                    OperatorConstants.LEFT_Y_DEADBAND),
-                                                                         () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                                      OperatorConstants.LEFT_X_DEADBAND),
-                                                                         () -> driverXbox.getRightX());
-
-    // AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
-    //                                                                   () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
-    //                                                                                             OperatorConstants.LEFT_Y_DEADBAND),
-    //                                                                   () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-    //                                                                                               OperatorConstants.LEFT_X_DEADBAND),
-    //                                                                   () -> MathUtil.applyDeadband(driverXbox.getRightX(),
-    //                                                                                               OperatorConstants.RIGHT_X_DEADBAND), 
-    //                                                                   driverXbox::getYButtonPressed, 
-    //                                                                   driverXbox::getAButtonPressed, 
-    //                                                                   driverXbox::getXButtonPressed, 
-    //                                                                   driverXbox::getBButtonPressed);
-
-    TeleopDrive simClosedFieldRel = new TeleopDrive(drivebase,
-                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
-                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
-                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftX(),
-                                                                                 OperatorConstants.LEFT_X_DEADBAND),
-                                                    () -> driverXbox.getRightX(), () -> true);
-    TeleopDrive closedFieldRel = new TeleopDrive(
-        drivebase,
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRightX(), () -> true);
-
-    TeleopDrive closedRoobotRel = new TeleopDrive(
-        drivebase,
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRightX(), () -> false);
-    headingDrive = new BeaconDrive(
-      drivebase,
-      () -> MathUtil.applyDeadband(driverXbox.getLeftY()*-1, OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(driverXbox.getLeftX()*-1, OperatorConstants.LEFT_X_DEADBAND));
-
-    drivebase.setDefaultCommand(closedRoobotRel);
-  } 
-
-  /** 
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
-   * named factories in {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
-   * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
-   */
-  private void configureBindings()
-  {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    // new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
-    // new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-//    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
-    driverXbox.b().onTrue(new InstantCommand(() -> {headingDrive.schedule();}));
-    driverXbox.b().onFalse(new InstantCommand(() -> {headingDrive.cancel();}));
-
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand()
-  {
-    // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Path", true);
-  }
-
-  public void setDriveMode()
-  {
-    //drivebase.setDefaultCommand();
-  }
-
-  public void setMotorBrake(boolean brake)
-  {
-    drivebase.setMotorBrake(brake);
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
   }
 }
