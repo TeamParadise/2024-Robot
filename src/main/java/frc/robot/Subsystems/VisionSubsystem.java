@@ -15,49 +15,50 @@ import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.VisionConstants;
 
 public class VisionSubsystem extends SubsystemBase {
-  // Create our two cameras for each side of the robot
   private final PhotonCamera leftCamera, rightCamera;
-  private final Transform3d robotToLeftCam = new Transform3d(new Translation3d(-0.5, 0.5, 0), new Rotation3d(0,0,0)), robotToRightCam = new Transform3d(new Translation3d(0.5, 0.5, 0), new Rotation3d(0,0,0));
-  private final AprilTagFieldLayout fieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private final PhotonPoseEstimator leftEstimator, rightEstimator;
   private VisionSystemSim visionSimulator;
   private PhotonCameraSim leftCameraSimulator, rightCameraSimulator;
+  private SimCameraProperties cameraSimulatorProperties;
+  private Field2d leftCameraField, rightCameraField;
 
   /** Creates a new VisionSubsystem. */
   public VisionSubsystem() {
     leftCamera = new PhotonCamera("Left Camera");
     rightCamera = new PhotonCamera("Right Camera");
 
-    leftEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, leftCamera, robotToLeftCam);
-    rightEstimator = new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, rightCamera, robotToRightCam);
+    leftEstimator = new PhotonPoseEstimator(VisionConstants.kFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, leftCamera, VisionConstants.kRobotToLeftCam);
+    rightEstimator = new PhotonPoseEstimator(VisionConstants.kFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, rightCamera, VisionConstants.kRobotToRightCam);
     leftEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     rightEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
-    if (Robot.isSimulation()) {
+    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation) {
       visionSimulator = new VisionSystemSim("main");
-      visionSimulator.addAprilTags(fieldLayout);
-      var cameraProp = new SimCameraProperties();
-      cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(90));
-      cameraProp.setCalibError(0.35, 0.10);
-      cameraProp.setFPS(15);
-      cameraProp.setAvgLatencyMs(50);
-      cameraProp.setLatencyStdDevMs(15);
-      leftCameraSimulator = new PhotonCameraSim(leftCamera, cameraProp);
-      rightCameraSimulator = new PhotonCameraSim(rightCamera, cameraProp);
-      visionSimulator.addCamera(leftCameraSimulator, robotToLeftCam);
-      visionSimulator.addCamera(rightCameraSimulator, robotToRightCam);
+      visionSimulator.addAprilTags(VisionConstants.kFieldLayout);
+
+      cameraSimulatorProperties = new SimCameraProperties();
+      cameraSimulatorProperties.setCalibration(960, 720, Rotation2d.fromDegrees(90));
+      cameraSimulatorProperties.setCalibError(0.35, 0.10);
+      cameraSimulatorProperties.setFPS(40);
+      cameraSimulatorProperties.setAvgLatencyMs(50);
+      cameraSimulatorProperties.setLatencyStdDevMs(15);
+
+      leftCameraSimulator = new PhotonCameraSim(leftCamera, cameraSimulatorProperties);
+      rightCameraSimulator = new PhotonCameraSim(rightCamera, cameraSimulatorProperties);
+      visionSimulator.addCamera(leftCameraSimulator, VisionConstants.kRobotToLeftCam);
+      visionSimulator.addCamera(rightCameraSimulator, VisionConstants.kRobotToRightCam);
+
+      leftCameraField = new Field2d();
+      rightCameraField = new Field2d();
     }
   }
 
@@ -79,9 +80,12 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (Robot.isSimulation()) {
+    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation) {
       visionSimulator.update(RobotContainer.drivetrain.getState().Pose);
-      SmartDashboard.putData("Field", visionSimulator.getDebugField());
+      getEstimatedLeftPose().ifPresent(leftPose -> leftCameraField.setRobotPose(leftPose.estimatedPose.toPose2d()));
+      getEstimatedRightPose().ifPresent(rightPose -> rightCameraField.setRobotPose(rightPose.estimatedPose.toPose2d()));
+      SmartDashboard.putData("VisionSubsystem/Left Camera Sim Field", leftCameraField);
+      SmartDashboard.putData("VisionSubsystem/Right Camera Sim Field", rightCameraField);
     }
   }
 }
