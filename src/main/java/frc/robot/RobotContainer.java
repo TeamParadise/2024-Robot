@@ -16,16 +16,39 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.VisionSubsystem;
+import frc.robot.Constants.SpeedConstants;
+import frc.robot.commands.IntakeNote;
+import frc.robot.commands.ShootNote;
+import frc.robot.commands.Arm.armController;
+import frc.robot.commands.Arm.armPID;
+import frc.robot.commands.Elevator.elevatorController;
+import frc.robot.commands.Intake.Outtake;
+import frc.robot.commands.Intake.intakeController;
+import frc.robot.commands.Primer.PrimeNote;
+import frc.robot.commands.Primer.RetractNote;
+import frc.robot.commands.Shooter.SpeedTune;
+import frc.robot.commands.Shooter.shooterController;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.PrimerSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = 6; // 6 meters per second desired top speed
-  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public static final VisionSubsystem vision = new VisionSubsystem();
+  private final CommandXboxController coJoystick = new CommandXboxController(1);
+  public final static ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
+  public final static ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+  public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
+  public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+  public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -47,11 +70,12 @@ public class RobotContainer {
     //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
     //     ));
 
+    m_ArmSubsystem.setDefaultCommand(new armPID(0));
+
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
    
@@ -68,15 +92,37 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate
         )));})));
 
+      
 
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    coJoystick.povUp().onTrue(new armPID(60));
+    coJoystick.povDown().onTrue(new armPID(0));
+
+    coJoystick.povLeft().onTrue(new elevatorController(0));
+    coJoystick.povRight().onTrue(new elevatorController(52.5));
+
+    coJoystick.a().onTrue(new ShootNote());
+    coJoystick.b().whileTrue(new intakeController(SpeedConstants.kIntake));
+    coJoystick.x().whileTrue(new intakeController(SpeedConstants.kOutake));
+    coJoystick.y().whileTrue(new IntakeNote());
+
+    coJoystick.rightBumper().onTrue(new SpeedTune(0.05));
+    coJoystick.leftBumper().onTrue(new SpeedTune(-0.05));
+
+    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
+    // coJoystick.leftTrigger(0.1).whileTrue(new intakeController(coJoystick.getLeftTriggerAxis() * coJoystick.getLeftTriggerAxis()));
+
+    coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
   }
 
   public RobotContainer() {
+    
     configureBindings();
   }
 
