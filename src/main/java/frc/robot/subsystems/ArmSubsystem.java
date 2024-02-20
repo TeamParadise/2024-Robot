@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ControlModeValue;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -26,7 +27,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   private void configMotors() {
     leftArmMotor = new TalonFX(Constants.MotorConstants.leftArmMotorID, "rhino");
-    rightArmMotor = new TalonFX(Constants.MotorConstants.rightArmMotorID, "rhino"); 
+    rightArmMotor = new TalonFX(Constants.MotorConstants.rightArmMotorID, "rhino");
   }
 
   public void setSpeed(double speed){

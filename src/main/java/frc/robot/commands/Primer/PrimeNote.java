@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
 public class PrimeNote extends Command {
+  double speed;
   /** Creates a new PrimeNote. */
-  public PrimeNote() {
+  public PrimeNote(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_primerSubsystem);
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -21,7 +23,7 @@ public class PrimeNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_primerSubsystem.setSpeed(0.5);
+    RobotContainer.m_primerSubsystem.setSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.

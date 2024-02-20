@@ -18,7 +18,7 @@ public class armPID extends Command {
   /** Creates a new armController. */
   double setpoint, output, positionDegrees, velocity;
   private final double 
-                      kp = 0.0035, 
+                      kp = 0.0045, 
                       ki = 0, 
                       kd = 0;
 
@@ -33,14 +33,17 @@ public class armPID extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    armController.enableContinuousInput(0, 360);
   }
+  
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     positionDegrees = RobotContainer.m_shooterSubsystem.getArmPos();
     output = armController.calculate(positionDegrees, setpoint);
-    RobotContainer.m_ArmSubsystem.setSpeed(MathUtil.clamp(output, -0.15, 0.15));
+    RobotContainer.m_ArmSubsystem.setSpeed(MathUtil.clamp(output, -0.2, 0.2));
   }
 
   // Called once the command ends or is interrupted.

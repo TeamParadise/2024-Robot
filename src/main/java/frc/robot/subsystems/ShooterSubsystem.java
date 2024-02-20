@@ -9,6 +9,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -28,6 +29,9 @@ public class ShooterSubsystem extends SubsystemBase {
     absEncoder = leftShooter.getAbsoluteEncoder(Type.kDutyCycle);
     // absEncoder.setPositionConversionFactor(2);
     // absEncoder.setVelocityConversionFactor(2);
+
+    leftShooter.setSmartCurrentLimit(50);
+    rightShooter.setSmartCurrentLimit(50);
   }
 
   public void setSpeed(double speed){

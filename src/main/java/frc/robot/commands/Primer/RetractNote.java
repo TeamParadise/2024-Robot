@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
 public class RetractNote extends Command {
+  double speed;
   /** Creates a new RetractNote. */
-  public RetractNote() {
+  public RetractNote(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_primerSubsystem);
+    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -21,7 +23,7 @@ public class RetractNote extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_primerSubsystem.setSpeed(-0.1);
+    RobotContainer.m_primerSubsystem.setSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.

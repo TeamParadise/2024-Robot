@@ -18,17 +18,24 @@ public final class Constants {
   }
 
   public static final class MotorConstants {
-    public static final int leftArmMotorID = 13;
-    public static final int rightArmMotorID = 14;
-    public static final int leftElevatorMotorID = 15;
-    public static final int rightElevatorMotorID = 16;
+    public static final int leftArmMotorID = 13; //1
+    public static final int rightArmMotorID = 14; //2
+    public static final int leftElevatorMotorID = 15; //3
+    public static final int rightElevatorMotorID = 16; //4
 
-    public static final int leftPrimerMotorID = 17;
-    public static final int rightPrimerMotorID = 18;
-    public static final int leftShooterMotorID = 19;
-    public static final int rightShooterMotorID = 20;
+    public static final int leftPrimerMotorID = 17; //5
+    public static final int rightPrimerMotorID = 18; //6
+    public static final int leftShooterMotorID = 19; //7
+    public static final int rightShooterMotorID = 20; //8
 
-    public static final int intakeMotorID = 7;
-    
+    public static final int intakeMotorID = 7; //9
+  }
+
+  public static class SpeedConstants {
+    public static final double kIntake = 0.6;
+    public static final double kPrime = 0.5;
+    public static final double kRetract = -0.1;
+    public static final double kShooter = 0.885;
+    public static final double kOutake = -kIntake;
   }
 }
