@@ -41,7 +41,7 @@ public class VisionSubsystem extends SubsystemBase {
     leftEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     rightEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
-    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation) {
+    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation && VisionConstants.kVisionPoseEstimationSimulation) {
       visionSimulator = new VisionSystemSim("main");
       visionSimulator.addAprilTags(VisionConstants.kFieldLayout);
 
@@ -80,33 +80,30 @@ public class VisionSubsystem extends SubsystemBase {
     return rightEstimator.update();
   }
 
-  public void calculatePoseReliability() {
-
-  }
-
   @Override
   public void periodic() {
-    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation) {
+    Optional<EstimatedRobotPose> estimatedLeftPose = getEstimatedLeftPose();
+    Optional<EstimatedRobotPose> estimatedRightPose = getEstimatedRightPose();
+
+    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation && VisionConstants.kVisionPoseEstimationSimulation) {
       visionSimulator.update(RobotContainer.drivetrain.getState().Pose);
     }
 
     if (VisionConstants.kExtraVisionDebug) {
-      getEstimatedLeftPose().ifPresent(leftPose -> {
+      estimatedLeftPose.ifPresent(leftPose -> {
         leftCameraField.setRobotPose(leftPose.estimatedPose.toPose2d());
         SmartDashboard.putData("VisionSubsystem/Left Camera Field", leftCameraField);
       });
-      getEstimatedRightPose().ifPresent(rightPose -> {
+      estimatedRightPose.ifPresent(rightPose -> {
         rightCameraField.setRobotPose(rightPose.estimatedPose.toPose2d());
         SmartDashboard.putData("VisionSubsystem/Right Camera Field", rightCameraField);
       });
     }
-    
+
     if (getLatestLeftResult().getMultiTagResult().estimatedPose.isPresent) {
-      EstimatedRobotPose pose = getEstimatedLeftPose().get();
-      RobotContainer.drivetrain.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
+      estimatedLeftPose.ifPresent(leftPose -> RobotContainer.drivetrain.addVisionMeasurement(leftPose.estimatedPose.toPose2d(), leftPose.timestampSeconds));
     } else if (getLatestRightResult().getMultiTagResult().estimatedPose.isPresent) {
-      EstimatedRobotPose pose = getEstimatedRightPose().get();
-      RobotContainer.drivetrain.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
+      estimatedRightPose.ifPresent(rightPose -> RobotContainer.drivetrain.addVisionMeasurement(rightPose.estimatedPose.toPose2d(), rightPose.timestampSeconds));
     }
   }
 }
