@@ -27,6 +27,8 @@ import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.SpeedTune;
 import frc.robot.commands.Shooter.shooterController;
+import frc.robot.commands.Vision.PoseLogger;
+import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -71,6 +73,7 @@ public class RobotContainer {
     //     ));
 
     m_ArmSubsystem.setDefaultCommand(new armPID(0));
+    vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain

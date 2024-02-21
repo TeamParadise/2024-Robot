@@ -16,11 +16,8 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.VisionConstants;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -29,7 +26,6 @@ public class VisionSubsystem extends SubsystemBase {
   private VisionSystemSim visionSimulator;
   private PhotonCameraSim leftCameraSimulator, rightCameraSimulator;
   private SimCameraProperties cameraSimulatorProperties;
-  private Field2d leftCameraField, rightCameraField;
 
   /** Creates a new VisionSubsystem. */
   public VisionSubsystem() {
@@ -57,11 +53,6 @@ public class VisionSubsystem extends SubsystemBase {
       visionSimulator.addCamera(leftCameraSimulator, VisionConstants.kRobotToLeftCam);
       visionSimulator.addCamera(rightCameraSimulator, VisionConstants.kRobotToRightCam);
     }
-    
-    if (VisionConstants.kExtraVisionDebug) {
-      leftCameraField = new Field2d();
-      rightCameraField = new Field2d();
-    }
   }
 
   public PhotonPipelineResult getLatestLeftResult() {
@@ -79,31 +70,10 @@ public class VisionSubsystem extends SubsystemBase {
   public Optional<EstimatedRobotPose> getEstimatedRightPose() {
     return rightEstimator.update();
   }
+  public Optional<VisionSystemSim> getVisionSimulator() {
+    return visionSimulator != null ? Optional.of(visionSimulator) : Optional.empty();
+  }
 
   @Override
-  public void periodic() {
-    Optional<EstimatedRobotPose> estimatedLeftPose = getEstimatedLeftPose();
-    Optional<EstimatedRobotPose> estimatedRightPose = getEstimatedRightPose();
-
-    if (Robot.isSimulation() && !VisionConstants.kPhysicalSimulation && VisionConstants.kVisionPoseEstimationSimulation) {
-      visionSimulator.update(RobotContainer.drivetrain.getState().Pose);
-    }
-
-    if (VisionConstants.kExtraVisionDebug) {
-      estimatedLeftPose.ifPresent(leftPose -> {
-        leftCameraField.setRobotPose(leftPose.estimatedPose.toPose2d());
-        SmartDashboard.putData("VisionSubsystem/Left Camera Field", leftCameraField);
-      });
-      estimatedRightPose.ifPresent(rightPose -> {
-        rightCameraField.setRobotPose(rightPose.estimatedPose.toPose2d());
-        SmartDashboard.putData("VisionSubsystem/Right Camera Field", rightCameraField);
-      });
-    }
-
-    if (getLatestLeftResult().getMultiTagResult().estimatedPose.isPresent) {
-      estimatedLeftPose.ifPresent(leftPose -> RobotContainer.drivetrain.addVisionMeasurement(leftPose.estimatedPose.toPose2d(), leftPose.timestampSeconds));
-    } else if (getLatestRightResult().getMultiTagResult().estimatedPose.isPresent) {
-      estimatedRightPose.ifPresent(rightPose -> RobotContainer.drivetrain.addVisionMeasurement(rightPose.estimatedPose.toPose2d(), rightPose.timestampSeconds));
-    }
-  }
+  public void periodic() {}
 }
