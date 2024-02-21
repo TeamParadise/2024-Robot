@@ -26,9 +26,9 @@ public final class Constants {
   /** Constants for the VisionSubsystem of the robot. */
   public static class VisionConstants {
     /** Boolean that represents whether or not Hardware In The Loop (using physical hardware in a simulation) should be used. */
-    public static final Boolean kPhysicalSimulation = false;
+    public static final Boolean kPhysicalSimulation = true;
     /** Boolean that represents whether or not extra vision debug information (specifically creating a Field2d for each camera) should be enabled. This can be intensive, so when not in use, it should be disabled. */
-    public static final Boolean kExtraVisionDebug = false;
+    public static final Boolean kExtraVisionDebug = true;
     public static final AprilTagFieldLayout kFieldLayout =
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final Transform3d kRobotToLeftCam =
