@@ -68,7 +68,7 @@ public class RobotContainer {
     //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
     //     ));
 
-    m_ArmSubsystem.setDefaultCommand(new armPID(0));
+    m_ArmSubsystem.setDefaultCommand(new armPID(43));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
