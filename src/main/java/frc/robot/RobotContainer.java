@@ -27,12 +27,15 @@ import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.SpeedTune;
 import frc.robot.commands.Shooter.shooterController;
+import frc.robot.commands.Vision.PoseLogger;
+import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -40,8 +43,9 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
+  public static VisionSubsystem vision;
   private final CommandXboxController coJoystick = new CommandXboxController(1);
-  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public final static ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   public final static ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
@@ -68,6 +72,11 @@ public class RobotContainer {
     //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
     //     ));
 
+
+    if (Constants.VisionConstants.kVisionEnabled) {
+      vision = new VisionSubsystem();
+      vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
+    }
     m_ArmSubsystem.setDefaultCommand(new armPID(43));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
