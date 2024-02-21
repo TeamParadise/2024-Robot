@@ -5,6 +5,7 @@
 package frc.robot.commands.Primer;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class RetractNote extends Command {

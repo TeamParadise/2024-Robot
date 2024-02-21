@@ -72,11 +72,12 @@ public class RobotContainer {
     //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
     //     ));
 
+
     if (Constants.VisionConstants.kVisionEnabled) {
       vision = new VisionSubsystem();
       vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
     }
-    m_ArmSubsystem.setDefaultCommand(new armPID(0));
+    m_ArmSubsystem.setDefaultCommand(new armPID(43));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain
