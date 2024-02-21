@@ -73,6 +73,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {
-    RobotContainer.vision.getVisionSimulator().ifPresent(visionSimulator -> visionSimulator.update(RobotContainer.drivetrain.getState().Pose));
+    if (Constants.VisionConstants.kVisionEnabled) {
+      RobotContainer.vision.getVisionSimulator().ifPresent(visionSimulator -> visionSimulator.update(RobotContainer.drivetrain.getState().Pose));
+    }
   }
 }

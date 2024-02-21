@@ -44,7 +44,7 @@ public class RobotContainer {
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
-  public static final VisionSubsystem vision = new VisionSubsystem();
+  public static VisionSubsystem vision;
   private final CommandXboxController coJoystick = new CommandXboxController(1);
   public final static ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   public final static ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
@@ -72,8 +72,11 @@ public class RobotContainer {
     //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
     //     ));
 
+    if (Constants.VisionConstants.kVisionEnabled) {
+      vision = new VisionSubsystem();
+      vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
+    }
     m_ArmSubsystem.setDefaultCommand(new armPID(0));
-    vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.b().whileTrue(drivetrain

@@ -70,6 +70,7 @@ public class VisionSubsystem extends SubsystemBase {
   public Optional<EstimatedRobotPose> getEstimatedRightPose() {
     return rightEstimator.update();
   }
+  
   public Optional<VisionSystemSim> getVisionSimulator() {
     return visionSimulator != null ? Optional.of(visionSimulator) : Optional.empty();
   }

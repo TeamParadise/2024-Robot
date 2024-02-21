@@ -25,6 +25,8 @@ public final class Constants {
 
   /** Constants for the VisionSubsystem of the robot. */
   public static class VisionConstants {
+    /** Boolean that represents whether or not vision pose estimation should be enabled or disabled entirely. If this is disabled, none of the following settings will have any impact.*/
+    public static final Boolean kVisionEnabled = true;
     /** Boolean that represents whether or not Hardware In The Loop (using physical hardware in a simulation) should be used. */
     public static final Boolean kPhysicalSimulation = false;
     /** Boolean that represents whether or not extra vision debug information (specifically creating a Field2d for each camera) should be enabled. This can be intensive, so when not in use, it should be disabled. */
