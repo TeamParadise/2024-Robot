@@ -6,22 +6,30 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.leds.AllianceAnimation;
 import frc.robot.commands.leds.Blink;
+import frc.robot.commands.leds.Breathe;
 import frc.robot.subsystems.LEDSubsystem;
 
 public class RobotContainer {
   public final static LEDSubsystem ledSubsystem = new LEDSubsystem();
+  public final static CommandXboxController controller = new CommandXboxController(0);
 
   // public static allianceColor;
 
   public RobotContainer() {
     configureBindings();
 
-    ledSubsystem.setDefaultCommand(new Blink(Color.kOrangeRed));
+    
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    controller.a().onTrue(new AllianceAnimation());
+    controller.b().whileTrue(new Breathe(10, 255, 255));
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
