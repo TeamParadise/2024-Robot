@@ -8,10 +8,11 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LEDConstants;
 
 public class LEDSubsystem extends SubsystemBase {
-  private final AddressableLED ledStrip = new AddressableLED(0);
-  private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(60);
+  private final AddressableLED ledStrip = new AddressableLED(LEDConstants.kLEDPort);
+  private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(LEDConstants.kLEDLength);
 
   /** Creates a new LEDSubsystem. */
   public LEDSubsystem() {

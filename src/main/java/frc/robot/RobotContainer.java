@@ -28,7 +28,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     controller.a().onTrue(new AllianceAnimation());
-    controller.b().whileTrue(new Breathe(10, 255, 255));
+    controller.b().onTrue(new Breathe(10, 255, 255));
   }
 
   public Command getAutonomousCommand() {
