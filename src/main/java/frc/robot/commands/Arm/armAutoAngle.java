@@ -8,12 +8,13 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
-public class armPID extends Command {
-  /** Creates a new ArmController. */
+public class armAutoAngle extends Command {
+  /** Creates a new armAutoAngle. */
   double setpoint, output, positionDegrees, positionRadians, velocity;
 
   private final double 
@@ -27,10 +28,9 @@ public class armPID extends Command {
   public double feedforwardMax = 0.45;
   PIDController armController = new PIDController(kp, ki, kd);
   
-  public armPID(double setpoint) {
+  public armAutoAngle() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_ArmSubsystem);
-    this.setpoint = setpoint;
   }
 
   // Called when the command is initially scheduled.
@@ -42,10 +42,11 @@ public class armPID extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    setpoint = RobotContainer.m_ArmSubsystem.findOptimalAngle();
     positionDegrees = RobotContainer.m_shooterSubsystem.getArmPos();
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
-    // System.out.println(output);
+    System.out.println(RobotContainer.m_ArmSubsystem.findOptimalAngle());
     
     SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
     RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -3, 3));
