@@ -21,10 +21,12 @@ public class LEDSubsystem extends SubsystemBase {
     ledStrip.start();
   }
   
-  public void setAll(Color color) {
+  public void setAll(Color color1, Color color2) {
     for (var i = 0; i < ledBuffer.getLength(); i++) {
-        ledBuffer.setLED(i, color);
+        if (i % 2 == 0) ledBuffer.setLED(i, color1);
+        else ledBuffer.setLED(i, color2);
       }
+      
       ledStrip.setData(ledBuffer);
   }
 

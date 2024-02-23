@@ -15,15 +15,15 @@ import frc.robot.RobotContainer;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Blink extends SequentialCommandGroup {
   /** Creates a new Blink. */
-  public Blink(Color color) {
+  public Blink() {
     addRequirements(RobotContainer.ledSubsystem);
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(color)),
-      new WaitCommand(0.25),
-      new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(Color.kBlack)),
-      new WaitCommand(0.25)
+      new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(Color.kRed, Color.kWhite)),
+      new WaitCommand(0.02),
+      new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(Color.kWhite, Color.kRed)),
+      new WaitCommand(0.02)
     );
   }
 

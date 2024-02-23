@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.leds.AllianceAnimation;
 import frc.robot.commands.leds.Blink;
@@ -27,8 +28,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    controller.a().onTrue(new AllianceAnimation());
-    controller.b().onTrue(new Breathe(10, 255, 255));
+    controller.a().whileTrue(new RepeatCommand(new Blink()));
   }
 
   public Command getAutonomousCommand() {

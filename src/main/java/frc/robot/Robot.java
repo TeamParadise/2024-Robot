@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    RobotContainer.ledSubsystem.setAll(Color.kBlack);
+    RobotContainer.ledSubsystem.setAll(Color.kBlack, Color.kBlack);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

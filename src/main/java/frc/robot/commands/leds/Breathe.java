@@ -19,11 +19,11 @@ public class Breathe extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     for (var i = 0; i <= value; i += 2) {
       final int currentBrightness = i;
-      addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(hue, saturation, currentBrightness > value ? value : currentBrightness)));
+      RobotContainer.ledSubsystem.setAll(hue, saturation, currentBrightness > value ? value : currentBrightness);
     }
     for (var i = value; i >= 0; i -= 2) {
       final int currentBrightness = i;
-      addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setAll(hue, saturation, currentBrightness < 0 ? 0 : currentBrightness)));
+      RobotContainer.ledSubsystem.setAll(hue, saturation, currentBrightness < 0 ? 0 : currentBrightness);
     }
   }
 

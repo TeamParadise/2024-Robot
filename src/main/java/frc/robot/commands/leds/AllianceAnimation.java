@@ -37,7 +37,7 @@ public class AllianceAnimation extends SequentialCommandGroup {
     addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(17, Color.kRed)));
     addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(18, Color.kWhite)));
     addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(19, Color.kRed)));
-    addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(20, Color.kRed)));
+    // addCommands(new InstantCommand(() -> RobotContainer.ledSubsystem.setIndividual(20, Color.kRed)));
   }
 
   public boolean runsWhenDisabled() {
