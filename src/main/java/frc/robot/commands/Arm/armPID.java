@@ -5,23 +5,26 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
 public class armPID extends Command {
-  /** Creates a new armController. */
+  /** Creates a new ArmController. */
   double setpoint, output, positionDegrees, velocity;
-  private final double 
-                      kp = 0.0045, 
-                      ki = 0, 
-                      kd = 0;
 
+  private final double 
+    kp = .1, 
+    ki = 0, 
+    kd = 0,
+    maxAccel = .5,
+    maxVelo = 1;
+
+    /*feedforwardMax is the max volts that need to be supplied to match gravity (arm at 0 degrees)*/
+  public double feedforwardMax = 0.45;
   PIDController armController = new PIDController(kp, ki, kd);
   
   public armPID(double setpoint) {
@@ -35,21 +38,22 @@ public class armPID extends Command {
   public void initialize() {
     armController.enableContinuousInput(0, 360);
   }
-  
-
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     positionDegrees = RobotContainer.m_shooterSubsystem.getArmPos();
-    output = armController.calculate(positionDegrees, setpoint);
-    RobotContainer.m_ArmSubsystem.setSpeed(MathUtil.clamp(output, -0.2, 0.2));
+    double positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
+    output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
+    System.out.println(output);
+    SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
+    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -3, 3));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_ArmSubsystem.setSpeed(0);
+    RobotContainer.m_ArmSubsystem.setVoltage(0);
   }
 
   // Returns true when the command should end.
