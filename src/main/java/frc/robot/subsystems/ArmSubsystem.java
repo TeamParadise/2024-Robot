@@ -13,6 +13,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.CommandSwerveDrivetrain;
@@ -42,16 +43,25 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setVoltage(double voltage) {
     leftArmMotor.setVoltage(voltage);
-    rightArmMotor.setVoltage(voltage);
+    rightArmMotor.setVoltage(-voltage);
   }
 
   //return optimal angle for the arm (for blue side)
   public double findOptimalAngle(){
-    double speakerHeight = 2; //meters
+    double speakerHeight = Units.inchesToMeters(82.5) - Units.inchesToMeters(20); //meters
     // double armHeightOffset = 0;
     // double armPositionOffset = 0;  
-    double distance =  Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
-    double angle = Math.atan(speakerHeight / distance);
+    double distance =  Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2)) - Units.inchesToMeters(12);
+    //double angle = Math.atan(speakerHeight / distance);
+    double v0 = 21.2;
+    double gravity = -9.81;
+    double angle = Math.atan(
+      Math.pow(v0, 2) + Math.sqrt(Math.pow(v0, 4)
+      - gravity * (gravity * Math.pow(distance, 2) + 2 * speakerHeight * Math.pow(v0, 2)))
+      / (gravity * distance));
+    SmartDashboard.putNumber("horizontalDistance", distance);
+        SmartDashboard.putNumber("outputangle", Units.radiansToDegrees(angle));
+
     return Units.radiansToDegrees(angle);
   }
  

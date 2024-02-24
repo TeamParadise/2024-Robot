@@ -40,6 +40,11 @@ public class ShooterSubsystem extends SubsystemBase {
     rightShooter.set(speed);
   }
 
+  public void setVoltage(double leftMotorVolts, double rightMotorVolts){
+    leftShooter.setVoltage(leftMotorVolts);
+    rightShooter.setVoltage(rightMotorVolts);
+  }
+
   public double getSpeed(){
     return speed;
   }
@@ -48,13 +53,14 @@ public class ShooterSubsystem extends SubsystemBase {
     this.speed = speed;
   }
 
-  public double getArmPos(){
-    return absEncoder.getPosition();
+  public double calculateOptimalVelocity(double vF, double height, double xRobotVelocity, double armAngle) {
+    double rpm = ((30 *
+    (Math.sqrt(2 * - 9.81 * height + Math.pow(vF,2))
+    - xRobotVelocity * Math.tan(armAngle)))
+    / (Math.PI * Constants.PhysicalConstants.shooterWheelRadiusMeters));
+    return rpm;
   }
 
-  public double getArmVelo(){
-    return absEncoder.getVelocity();
-  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

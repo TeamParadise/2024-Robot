@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNote;
+import frc.robot.commands.ShootTrig;
 import frc.robot.commands.Arm.armAutoAngle;
-import frc.robot.commands.Arm.armController;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
@@ -58,6 +58,7 @@ public class RobotContainer {
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  
   
   private final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
     .withCenterOfRotation(new Translation2d(0, 0))
@@ -113,19 +114,22 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate
         )));})));
 
-    headingDrive.HeadingController.setPID(5, 0, 0);
+    headingDrive.HeadingController.setPID(10, 0, 0);
 
     joystick.leftTrigger().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
             .withTargetDirection(new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  16.5 - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
         )));
 
-    // joystick.b().whileTrue(new armAutoAngle());
+     
+    
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
+
     drivetrain.registerTelemetry(logger::telemeterize);
+    joystick.rightBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
 
     coJoystick.povUp().onTrue(new armPID(60));
     coJoystick.povDown().onTrue(new armPID(0));
@@ -133,7 +137,7 @@ public class RobotContainer {
     coJoystick.povLeft().onTrue(new elevatorController(0));
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
-    coJoystick.a().onTrue(new ShootNote());
+    coJoystick.a().onTrue(new ShootTrig());
     coJoystick.b().whileTrue(new intakeController(SpeedConstants.kIntake));
     coJoystick.x().whileTrue(new intakeController(SpeedConstants.kOutake));
     coJoystick.y().whileTrue(new IntakeNote());
@@ -145,6 +149,8 @@ public class RobotContainer {
     // coJoystick.leftTrigger(0.1).whileTrue(new intakeController(coJoystick.getLeftTriggerAxis() * coJoystick.getLeftTriggerAxis()));
 
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
+    joystick.povUp().whileTrue(new armAutoAngle());
 
   }
 

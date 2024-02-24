@@ -9,6 +9,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -27,7 +28,6 @@ public final class Constants {
   public static class VisionConstants {
     /** Boolean that represents whether or not vision pose estimation should be enabled or disabled entirely. If this is disabled, none of the following settings will have any impact.*/
     public static final Boolean kVisionEnabled = false;
-    
     /** Boolean that represents whether or not Hardware In The Loop (using physical hardware in a simulation) should be used. */
     public static final Boolean kPhysicalSimulation = false;
     /** Boolean that represents whether or not extra vision debug information (specifically creating a Field2d for each camera) should be enabled. This can be intensive, so when not in use, it should be disabled. */
@@ -62,5 +62,23 @@ public final class Constants {
     public static final double kRetract = -0.1;
     public static final double kShooter = 0.885;
     public static final double kOutake = -kIntake;
+    public static final double kvF = 0;
+
   }
+
+  public static class PhysicalConstants {
+    public static final double armGearRatio = 0;
+    public static final double primerGearRatio = 1;
+    public static final double intakeGearRatio = 1;
+    public static final double shooterGearRatio = 1;
+    public static final double elevatorGearRatio = 25;
+
+    public static final double shooterWheelRadiusMeters = Units.inchesToMeters(2);
+  }
+
+  public static class FieldConstants {
+    public static final double kspeakerHeightMeters = Units.inchesToMeters(82.5-12);
+
+  }
+  
 }

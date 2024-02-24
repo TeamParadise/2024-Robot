@@ -9,11 +9,11 @@ import frc.robot.RobotContainer;
 
 public class shooterController extends Command {
   /** Creates a new ShootNote. */
-  double speed;
-  public shooterController(double speed) {
+  double rpm;
+  public shooterController(double rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_shooterSubsystem);
-    this.speed = speed;
+    this.rpm = rpm;
   }
 
   // Called when the command is initially scheduled.
@@ -23,13 +23,14 @@ public class shooterController extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_shooterSubsystem.setSpeed(speed);
+    // RobotContainer.m_shooterSubsystem.setVoltage(voltsLeft, voltsRight);
+    RobotContainer.m_shooterSubsystem.setSpeed(rpm);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // RobotContainer.m_shooterSubsystem.setSpeed(0);
+    RobotContainer.m_shooterSubsystem.setSpeed(0);
   }
 
   // Returns true when the command should end.

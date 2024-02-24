@@ -17,14 +17,14 @@ public class armPID extends Command {
   double setpoint, output, positionDegrees, positionRadians, velocity;
 
   private final double 
-    kp = .1, 
+    kp = .15, 
     ki = 0, 
     kd = 0,
     maxAccel = .5,
     maxVelo = 1;
 
     /*feedforwardMax is the max volts that need to be supplied to match gravity (arm at 0 degrees)*/
-  public double feedforwardMax = 0.45;
+  public double feedforwardMax = 0;
   PIDController armController = new PIDController(kp, ki, kd);
   
   public armPID(double setpoint) {
@@ -42,13 +42,13 @@ public class armPID extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    positionDegrees = RobotContainer.m_shooterSubsystem.getArmPos();
+    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPos();
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
     // System.out.println(output);
     
     SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
-    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -3, 3));
+    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -4, 4));
   }
 
   // Called once the command ends or is interrupted.

@@ -18,14 +18,14 @@ public class armAutoAngle extends Command {
   double setpoint, output, positionDegrees, positionRadians, velocity;
 
   private final double 
-    kp = .1, 
+    kp = .25, 
     ki = 0, 
     kd = 0,
     maxAccel = .5,
     maxVelo = 1;
 
     /*feedforwardMax is the max volts that need to be supplied to match gravity (arm at 0 degrees)*/
-  public double feedforwardMax = 0.45;
+  public double feedforwardMax = 0;
   PIDController armController = new PIDController(kp, ki, kd);
   
   public armAutoAngle() {
@@ -43,13 +43,16 @@ public class armAutoAngle extends Command {
   @Override
   public void execute() {
     setpoint = RobotContainer.m_ArmSubsystem.findOptimalAngle();
-    positionDegrees = RobotContainer.m_shooterSubsystem.getArmPos();
+    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPos();
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
     System.out.println(RobotContainer.m_ArmSubsystem.findOptimalAngle());
-    
+    SmartDashboard.putNumber("autoArmError", armController.getPositionError());
     SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
-    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -3, 3));
+    SmartDashboard.putNumber("preClampVoltage", output);
+
+    
+    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
   }
 
   // Called once the command ends or is interrupted.

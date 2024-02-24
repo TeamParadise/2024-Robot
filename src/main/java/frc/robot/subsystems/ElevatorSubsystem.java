@@ -25,7 +25,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
-    if (RobotContainer.m_shooterSubsystem.getArmPos() < 130 && RobotContainer.m_shooterSubsystem.getArmPos() > 20){
+    if (RobotContainer.m_intakeSubsystem.getArmPos() < 130 && RobotContainer.m_intakeSubsystem.getArmPos() > 20){
       leftElevatorMotor.set(speed);
       rightElevatorMotor.set(speed);
       // System.out.println(speed + ", " + getEncoder());
