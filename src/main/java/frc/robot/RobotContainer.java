@@ -33,6 +33,7 @@ import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.SpeedTune;
 import frc.robot.commands.Shooter.shooterController;
+import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
@@ -91,6 +92,8 @@ public class RobotContainer {
       vision = new VisionSubsystem();
       vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
     }
+
+    m_shooterSubsystem.setDefaultCommand(new shooterPIDF());
 
     m_ArmSubsystem.setDefaultCommand(new armPID(43));
 

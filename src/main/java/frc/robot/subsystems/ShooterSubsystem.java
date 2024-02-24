@@ -15,7 +15,8 @@ import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
-  CANSparkMax leftShooter, rightShooter;
+  public CANSparkMax leftShooter;
+  public CANSparkMax rightShooter;
   public double speed = 0;
   AbsoluteEncoder absEncoder;
 
