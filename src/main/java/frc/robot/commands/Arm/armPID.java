@@ -17,7 +17,7 @@ public class armPID extends Command {
   double setpoint, output, positionDegrees, positionRadians, velocity;
 
   private final double 
-    kp = .15, 
+    kp = .25, 
     ki = 0, 
     kd = 0,
     maxAccel = .5,
@@ -48,7 +48,7 @@ public class armPID extends Command {
     // System.out.println(output);
     
     SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
-    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -4, 4));
+    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
   }
 
   // Called once the command ends or is interrupted.

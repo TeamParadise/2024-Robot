@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,6 +25,8 @@ import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNote;
 import frc.robot.commands.ShootTrig;
+import frc.robot.commands.Arm.ArmHumanPlayer;
+import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Elevator.elevatorController;
@@ -42,7 +45,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import pabeles.concurrency.IntOperatorTask.Max;
 
 public class RobotContainer {
   public static double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -92,65 +94,93 @@ public class RobotContainer {
       vision = new VisionSubsystem();
       vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
     }
+    m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
+    m_ArmSubsystem.setDefaultCommand(new armPID(0));
 
-    m_ArmSubsystem.setDefaultCommand(new armPID(43));
+    //Driver controlls
 
+    //A --- Brake drivetrain
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
+    //B --- Drive with left joystick?
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
+    //Left Bumper --- Set new robot coordinates in x-direction
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
+    //X --- Drive field relative
     joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate
          )));})));
 
+    //Y --- Drive non-field relative?
     joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate
         )));})));
 
-    headingDrive.HeadingController.setPID(10, 0, 0);
-
+    //Left Trigger --- Set robot angle to track the speaker
     joystick.leftTrigger().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
-            .withTargetDirection(new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  16.5 - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
+            .withTargetDirection(new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
         )));
 
-     
+    //Right Bumper --- Reset rotation angle to 0
+    joystick.rightBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
     
+    //POV Up --- Set arm to optimal angle for shooting note into speaker
+    joystick.povUp().whileTrue(new armAutoAngle());
+
+    joystick.povDown().onTrue(new armPID(60));
+
+    //Co-Driver
+
+    //POV Up --- Move arm to feed note from intake into barrel
+    coJoystick.povUp().onTrue(new armPID(43));
+
+    //POV Down --- Angle arm to 0
+    coJoystick.povDown().onTrue(new armPID(0));
+
+    //POV Left - sets position of elavator to bottom
+    coJoystick.povLeft().onTrue(new elevatorController(0));
+    //POV Right --- Sets position of elevator to top
+    coJoystick.povRight().onTrue(new elevatorController(52.5));
+
+    //A --- Automatically angle arm and shoot note
+    coJoystick.a().onTrue(new ShootNote());
+
+    coJoystick.b().whileTrue(new ArmHumanPlayer());
+    coJoystick.b().toggleOnFalse(new ArmHumanPlayerBack());
+
+    //X --- Spin intake out
+    coJoystick.x().whileTrue(new intakeController(SpeedConstants.kOutake));
+    //Y --- Automatically seek and move to notes in front of robot
+    coJoystick.y().whileTrue(new IntakeNote());
+
+    //Right Bumper --- Increment flywheel speeds
+    coJoystick.rightBumper().onTrue(new SpeedTune(0.05));
+    //Left Bumper --- Decrement flywheel speeds
+    coJoystick.leftBumper().onTrue(new SpeedTune(-0.05));
+
+    //Left Trigger --- Retract note with primers
+    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
+    //Right Trigger --- Push note into flywheel
+    coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
+    //coJoystick.getLeftTriggerAxis().whileTrue
+    // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
+
+    headingDrive.HeadingController.setPID(10, 0, 0);
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
     }
 
     drivetrain.registerTelemetry(logger::telemeterize);
-    joystick.rightBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
-
-    coJoystick.povUp().onTrue(new armPID(60));
-    coJoystick.povDown().onTrue(new armPID(0));
-
-    coJoystick.povLeft().onTrue(new elevatorController(0));
-    coJoystick.povRight().onTrue(new elevatorController(52.5));
-
-    coJoystick.a().onTrue(new ShootTrig());
-    coJoystick.b().whileTrue(new intakeController(SpeedConstants.kIntake));
-    coJoystick.x().whileTrue(new intakeController(SpeedConstants.kOutake));
-    coJoystick.y().whileTrue(new IntakeNote());
-
-    coJoystick.rightBumper().onTrue(new SpeedTune(0.05));
-    coJoystick.leftBumper().onTrue(new SpeedTune(-0.05));
-
-    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
-    // coJoystick.leftTrigger(0.1).whileTrue(new intakeController(coJoystick.getLeftTriggerAxis() * coJoystick.getLeftTriggerAxis()));
-
-    coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
-
-    joystick.povUp().whileTrue(new armAutoAngle());
 
   }
 

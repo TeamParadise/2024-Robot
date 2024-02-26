@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,21 +49,24 @@ public class ArmSubsystem extends SubsystemBase {
 
   //return optimal angle for the arm (for blue side)
   public double findOptimalAngle(){
-    double speakerHeight = Units.inchesToMeters(82.5) - Units.inchesToMeters(20); //meters
+    double distance =  Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2)) - Units.inchesToMeters(12/*Center of robot to edge of shooter*/);
+    // double speakerHeight = Units.inchesToMeters(82.5 + Math.pow(distance, 2) / 100) - Units.inchesToMeters(20/*Approximate height of shooter */); //meters
+    double speakerHeight = Units.inchesToMeters(0.0);
     // double armHeightOffset = 0;
     // double armPositionOffset = 0;  
-    double distance =  Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2)) - Units.inchesToMeters(12);
-    //double angle = Math.atan(speakerHeight / distance);
-    double v0 = 21.2;
-    double gravity = -9.81;
-    double angle = Math.atan(
+    double angle = Math.atan(speakerHeight / distance);
+    // double v0 = 21.2;
+    // double gravity = -9.81;
+    //double angle = Math.sqrt(Math.tan(speakerHeight/distance));
+    /*double angle = Math.atan(
       Math.pow(v0, 2) + Math.sqrt(Math.pow(v0, 4)
       - gravity * (gravity * Math.pow(distance, 2) + 2 * speakerHeight * Math.pow(v0, 2)))
-      / (gravity * distance));
+      / (gravity * distance));*/
+    // double angle = 1.736 * Math.pow(distance, 2) - 16.645 * distance + 65.301;
     SmartDashboard.putNumber("horizontalDistance", distance);
-        SmartDashboard.putNumber("outputangle", Units.radiansToDegrees(angle));
+    SmartDashboard.putNumber("outputangle", angle /*Units.radiansToDegrees(angle)*/);
 
-    return Units.radiansToDegrees(angle);
+    return angle /*Units.radiansToDegrees(angle)*/;
   }
  
   @Override

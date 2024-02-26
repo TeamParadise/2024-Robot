@@ -33,7 +33,7 @@ public class elevatorController extends Command {
   @Override
   public void execute() {
     double output = elevatorController.calculate(RobotContainer.m_ElevatorSubsystem.getEncoder());
-    RobotContainer.m_ElevatorSubsystem.setSpeed(MathUtil.clamp(output, -0.25, 0.25));  
+    RobotContainer.m_ElevatorSubsystem.setSpeed(MathUtil.clamp(output, -0.3, 0.3));  
   }
 
   // Called once the command ends or is interrupted.

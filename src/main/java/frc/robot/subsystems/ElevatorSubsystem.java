@@ -32,11 +32,9 @@ public class ElevatorSubsystem extends SubsystemBase {
       // System.out.println(RobotContainer.m_ArmSubsystem.getArmPos());
     }
     else {
-      System.out.println("stopping");
       leftElevatorMotor.set(0);
       rightElevatorMotor.set(0);
     }
-    System.out.println(speed + ", " + getEncoder());
   }
 
   public double getEncoder(){
