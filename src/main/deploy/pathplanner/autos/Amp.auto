@@ -18,9 +18,39 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "jwarokpaepokgogpe"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Pickup Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "allignnote "
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd note amp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "jwarokpaepokgogpe"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hide"
           }
         }
       ]
