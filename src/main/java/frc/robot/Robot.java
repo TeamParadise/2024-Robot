@@ -7,15 +7,22 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.generated.ArmLUT;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
+  public static ArmLUT m_ArmLUTAngle;
+  public static ArmLUT m_ArmLUTRPM;
+  
+
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    
+    initLUT();
   }
 
   @Override
@@ -76,5 +83,13 @@ public class Robot extends TimedRobot {
     if (Constants.VisionConstants.kVisionEnabled) {
       RobotContainer.vision.getVisionSimulator().ifPresent(visionSimulator -> visionSimulator.update(RobotContainer.drivetrain.getState().Pose));
     }
+  }
+
+  private void initLUT() {
+    m_ArmLUTAngle = new ArmLUT<>();
+    m_ArmLUTRPM = new ArmLUT<>();
+
+    m_ArmLUTAngle.put(0, 0);
+    m_ArmLUTRPM.put(0, 0);
   }
 }

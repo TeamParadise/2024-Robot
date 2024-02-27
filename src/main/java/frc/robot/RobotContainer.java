@@ -151,7 +151,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new ShootNote());
+    coJoystick.a().onTrue(new ShootNote(coJoystick.leftBumper().getAsBoolean()));
 
     coJoystick.b().whileTrue(new ArmHumanPlayer());
     coJoystick.b().toggleOnFalse(new ArmHumanPlayerBack());
@@ -161,10 +161,8 @@ public class RobotContainer {
     //Y --- Automatically seek and move to notes in front of robot
     coJoystick.y().whileTrue(new IntakeNote());
 
-    //Right Bumper --- Increment flywheel speeds
-    coJoystick.rightBumper().onTrue(new SpeedTune(0.05));
-    //Left Bumper --- Decrement flywheel speeds
-    coJoystick.leftBumper().onTrue(new SpeedTune(-0.05));
+    //Right Bumper --- Auto angle arm to speaker
+    coJoystick.rightBumper().onTrue(new armAutoAngle());
 
     //Left Trigger --- Retract note with primers
     coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
