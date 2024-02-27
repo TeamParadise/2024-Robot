@@ -39,18 +39,19 @@ import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PrimerSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.Arm.ArmSubsystem;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Primer.PrimerSubsystem;
+import frc.robot.subsystems.Shooter.ShooterIOSim;
+import frc.robot.subsystems.Shooter.ShooterSubsystem;
+import frc.robot.subsystems.Swerve.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision.VisionSubsystem;
 
 public class RobotContainer {
   public static double MaxSpeed = 6; // 6 meters per second desired top speed
   public static double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
-  /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public static VisionSubsystem vision;
@@ -61,6 +62,8 @@ public class RobotContainer {
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   
+  /* Setting up bindings for necessary control of the swerve drive platform */
+ 
   
   private final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
     .withCenterOfRotation(new Translation2d(0, 0))
@@ -185,8 +188,21 @@ public class RobotContainer {
   }
 
   public RobotContainer() {
-    
     configureBindings();
+    // if (isReal()) {
+    // // Instantiate IO implementations to talk to real hardware
+    // // driveTrain = new DriveTrain(DriveTrainIOReal());
+    // // elevator = new Elevator(ElevatorIOReal());
+    // // intake = new Intake(IntakeIOReal());
+    // m_shooterSubsystem = new ShooterSubsystem();
+    // } 
+    // else {
+    // // Use anonymous classes to create "dummy" IO implementations
+    // // driveTrain = new DriveTrain(DriveTrainIO() {});
+    // // elevator = new Elevator(ElevatorIO() {});
+    // // intake = new Intake(IntakeIO() {});
+    // m_shooterSubsystem = new ShooterIOSim)(;)
+    // }
   }
 
   public Command getAutonomousCommand() {

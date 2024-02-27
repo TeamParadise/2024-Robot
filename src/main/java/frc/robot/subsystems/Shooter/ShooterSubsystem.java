@@ -2,9 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.Shooter;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -12,11 +13,13 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.Shooter.ShooterIO.ShooterIOInputs;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   CANSparkMax leftShooter, rightShooter;
   public double speed = 0;
+  RelativeEncoder leftEncoder, rightEncoder;
   AbsoluteEncoder absEncoder;
 
   public ShooterSubsystem() {
@@ -26,6 +29,9 @@ public class ShooterSubsystem extends SubsystemBase {
   public void configMotors(){
     leftShooter = new CANSparkMax(Constants.MotorConstants.leftShooterMotorID, MotorType.kBrushless);
     rightShooter = new CANSparkMax(Constants.MotorConstants.rightShooterMotorID, MotorType.kBrushless);
+    leftEncoder = leftShooter.getEncoder();
+    rightEncoder = rightShooter.getEncoder();
+
     absEncoder = leftShooter.getAbsoluteEncoder(Type.kDutyCycle);
     // absEncoder.setPositionConversionFactor(2);
     // absEncoder.setVelocityConversionFactor(2);
@@ -45,6 +51,14 @@ public class ShooterSubsystem extends SubsystemBase {
     rightShooter.setVoltage(rightMotorVolts);
   }
 
+  public void updateInputs(ShooterIOInputs inputs) {
+    inputs.positionRad = Units.rotationsToRadians(rightEncoder.getPosition() / 1);
+    inputs.velocityRadPerSec =
+        Units.rotationsPerMinuteToRadiansPerSecond(rightEncoder.getVelocity() / 1);
+    inputs.appliedVolts = leftShooter.getAppliedOutput() * leftShooter.getBusVoltage();
+    inputs.currentAmps = new double[] {leftShooter.getOutputCurrent(), rightShooter.getOutputCurrent()};
+  }
+  
   public double getSpeed(){
     return speed;
   }
