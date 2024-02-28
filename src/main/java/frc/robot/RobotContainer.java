@@ -92,9 +92,6 @@ public class RobotContainer {
       vision = new VisionSubsystem();
       vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
     }
-    
-
-    m_shooterSubsystem.setDefaultCommand(new shooterPIDF());
 
     m_ArmSubsystem.setDefaultCommand(new armPID(43));
 

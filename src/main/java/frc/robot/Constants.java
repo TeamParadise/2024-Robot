@@ -63,5 +63,23 @@ public final class Constants {
     public static final double kShooter = 0.885;
     public static final double kOutake = -kIntake;
   }
+
+  public static class ShooterConstants  {
+    public static final double kLeftP = 0.0005;
+    public static final double kLeftI = 0;
+    public static final double kLeftD = 0.0008;
+    public static final double kLeftIz = 0;
+    public static final double kLeftFF = 0.0002;
+    public static final double kLeftMax = 1;
+    public static final double kLeftMin = -1;
+
+    public static final double kRightP = 0.00045;
+    public static final double kRightI = 0;
+    public static final double kRightD = 0.0008;
+    public static final double kRightIz = 0;
+    public static final double kRightFF = 0.00018;
+    public static final double kRightMax = 1;
+    public static final double kRightMin = -1;
+  }
 }
 
