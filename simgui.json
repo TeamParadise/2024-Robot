@@ -5,6 +5,11 @@
         "visible": false
       }
     },
+    "RoboRIO": {
+      "RoboRIO Input": {
+        "open": true
+      }
+    },
     "Timing": {
       "window": {
         "visible": false
@@ -71,12 +76,6 @@
     }
   },
   "NetworkTables Info": {
-    "Server": {
-      "Publishers": {
-        "open": true
-      },
-      "open": true
-    },
     "visible": true
   },
   "NetworkTables View": {

@@ -109,8 +109,8 @@ public class TunerConstants {
     private static final int kFrontLeftEncoderId = 3;
     private static final double kFrontLeftEncoderOffset = 0.441650390625;
 
-    private static final double kFrontLeftXPosInches = 7;
-    private static final double kFrontLeftYPosInches = 7;
+    private static final double kFrontLeftXPosInches = 15;
+    private static final double kFrontLeftYPosInches = 15;
 
     // Front Right
     private static final int kFrontRightDriveMotorId = 4;
@@ -118,8 +118,8 @@ public class TunerConstants {
     private static final int kFrontRightEncoderId = 6;
     private static final double kFrontRightEncoderOffset = -0.02783203125;
 
-    private static final double kFrontRightXPosInches = 7;
-    private static final double kFrontRightYPosInches = -7;
+    private static final double kFrontRightXPosInches = 15;
+    private static final double kFrontRightYPosInches = -15;
 
     // Back Left
     private static final int kBackLeftDriveMotorId = 7;
@@ -127,8 +127,8 @@ public class TunerConstants {
     private static final int kBackLeftEncoderId = 9;
     private static final double kBackLeftEncoderOffset = 0.16552734375;
 
-    private static final double kBackLeftXPosInches = -7;
-    private static final double kBackLeftYPosInches = 7;
+    private static final double kBackLeftXPosInches = -15;
+    private static final double kBackLeftYPosInches = 15;
 
     // Back Right
     private static final int kBackRightDriveMotorId = 10;
@@ -136,8 +136,8 @@ public class TunerConstants {
     private static final int kBackRightEncoderId = 12;
     private static final double kBackRightEncoderOffset = -0.12646484375;
 
-    private static final double kBackRightXPosInches = -7;
-    private static final double kBackRightYPosInches = -7;
+    private static final double kBackRightXPosInches = -15;
+    private static final double kBackRightYPosInches = -15;
 
 
     private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
