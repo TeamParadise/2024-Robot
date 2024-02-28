@@ -95,7 +95,7 @@ public class RobotContainer {
 
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF());
 
-    m_ArmSubsystem.setDefaultCommand(new armPID(43));
+   //  m_ArmSubsystem.setDefaultCommand(new armPID(43));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 

@@ -121,13 +121,13 @@ public class shooterPIDF extends Command {
     }
 
     double setpoint = SmartDashboard.getNumber("SetPoint", 100);
-    if (SmartDashboard.getBoolean("Left Enabled", false)) {
+    if (false) {
       leftPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
     } else {
       RobotContainer.m_shooterSubsystem.leftShooter.set(0);
     }
 
-    if (SmartDashboard.getBoolean("Right Enabled", false)) {
+    if (true) {
       rightPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
     } else {
       RobotContainer.m_shooterSubsystem.leftShooter.set(0);
