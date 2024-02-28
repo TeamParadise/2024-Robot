@@ -43,7 +43,7 @@ public class armAutoAngle extends Command {
   @Override
   public void execute() {
     setpoint = RobotContainer.m_ArmSubsystem.findOptimalAngle();
-    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPos();
+    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
     System.out.println(RobotContainer.m_ArmSubsystem.findOptimalAngle());

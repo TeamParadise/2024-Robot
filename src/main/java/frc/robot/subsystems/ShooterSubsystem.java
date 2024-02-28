@@ -16,7 +16,7 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public CANSparkMax leftShooter;
-public CANSparkMax rightShooter;
+  public CANSparkMax rightShooter;
   public double speed = 0;
   AbsoluteEncoder absEncoder;
 
@@ -27,7 +27,6 @@ public CANSparkMax rightShooter;
   public void configMotors(){
     leftShooter = new CANSparkMax(Constants.MotorConstants.leftShooterMotorID, MotorType.kBrushless);
     rightShooter = new CANSparkMax(Constants.MotorConstants.rightShooterMotorID, MotorType.kBrushless);
-    absEncoder = leftShooter.getAbsoluteEncoder(Type.kDutyCycle);
     // absEncoder.setPositionConversionFactor(2);
     // absEncoder.setVelocityConversionFactor(2);
 

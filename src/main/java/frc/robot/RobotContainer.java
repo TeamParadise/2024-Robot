@@ -97,7 +97,6 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(0));
-    m_shooterSubsystem.setDefaultCommand(new shooterPIDF());
 
 
     //Driver controlls
@@ -111,6 +110,8 @@ public class RobotContainer {
 
     //Left Bumper --- Set new robot coordinates in x-direction
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
+
 
     //X --- Drive field relative
     joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with

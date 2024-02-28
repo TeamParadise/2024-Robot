@@ -43,7 +43,7 @@ public class armPID extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPos();
+    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
     // System.out.println(output);
