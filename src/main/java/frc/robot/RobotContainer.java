@@ -92,10 +92,11 @@ public class RobotContainer {
       vision = new VisionSubsystem();
       vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
     }
+    
 
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF());
 
-   //  m_ArmSubsystem.setDefaultCommand(new armPID(43));
+    m_ArmSubsystem.setDefaultCommand(new armPID(43));
 
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
@@ -103,6 +104,8 @@ public class RobotContainer {
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
+
 
     joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)

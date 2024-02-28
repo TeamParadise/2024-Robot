@@ -51,25 +51,20 @@ public class shooterPIDF extends Command {
     rightPIDController.setIZone(0);
     rightPIDController.setFF(0);
     rightPIDController.setOutputRange(-1, 1);
-  }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("Left P Gain", 0);
+    SmartDashboard.putNumber("Left P Gain", .0005);
     SmartDashboard.putNumber("Left I Gain", 0);
-    SmartDashboard.putNumber("Left D Gain", 0);
+    SmartDashboard.putNumber("Left D Gain", 0.0008);
     SmartDashboard.putNumber("Left I Zone", 0);
-    SmartDashboard.putNumber("Left Feed Forward", 0);
+    SmartDashboard.putNumber("Left Feed Forward", 0.00018);
     SmartDashboard.putNumber("Left Max Output", 1);
     SmartDashboard.putNumber("Left Min Output", -1);
 
-    SmartDashboard.putNumber("Right P Gain", 0);
+    SmartDashboard.putNumber("Right P Gain", .0005);
     SmartDashboard.putNumber("Right I Gain", 0);
-    SmartDashboard.putNumber("Right D Gain", 0);
+    SmartDashboard.putNumber("Right D Gain", 0.0008);
     SmartDashboard.putNumber("Right I Zone", 0);
-    SmartDashboard.putNumber("Right Feed Forward", 0);
+    SmartDashboard.putNumber("Right Feed Forward", 0.00018);
     SmartDashboard.putNumber("Right Max Output", 1);
     SmartDashboard.putNumber("Right Min Output", -1);
 
@@ -80,23 +75,32 @@ public class shooterPIDF extends Command {
     SmartDashboard.putBoolean("Right Enabled", false);
   }
 
+  
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    // display PID coefficients on SmartDashboard
+    
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
      // read PID coefficients from SmartDashboard
-     double leftp = SmartDashboard.getNumber("Left P Gain", 0);
-     double lefti = SmartDashboard.getNumber("Left I Gain", 0);
-     double leftd = SmartDashboard.getNumber("Left D Gain", 0);
-     double leftiz = SmartDashboard.getNumber("Left I Zone", 0);
+     double leftp = SmartDashboard.getNumber("Left P Gain", leftkp);
+     double lefti = SmartDashboard.getNumber("Left I Gain", leftki);
+     double leftd = SmartDashboard.getNumber("Left D Gain", leftkd);
+     double leftiz = SmartDashboard.getNumber("Left I Zone", leftkiz);
      double leftff = SmartDashboard.getNumber("Left Feed Forward", 0);
      double leftmax = SmartDashboard.getNumber("Left Max Output", 0);
      double leftmin = SmartDashboard.getNumber("Left Min Output", 0);
 
-     double rightp = SmartDashboard.getNumber("Right P Gain", 0);
-     double righti = SmartDashboard.getNumber("Right I Gain", 0);
-     double rightd = SmartDashboard.getNumber("Right D Gain", 0);
+     double rightp = SmartDashboard.getNumber("Right P Gain", rightkp);
+     double righti = SmartDashboard.getNumber("Right I Gain", rightki);
+     double rightd = SmartDashboard.getNumber("Right D Gain", rightkd);
      double rightiz = SmartDashboard.getNumber("Right I Zone", 0);
-     double rightff = SmartDashboard.getNumber("Right Feed Forward", 0);
+     double rightff = SmartDashboard.getNumber("Right Feed Forward",rightkff);
      double rightmax = SmartDashboard.getNumber("Right Max Output", 0);
      double rightmin = SmartDashboard.getNumber("Right Min Output", 0);
 
@@ -121,14 +125,14 @@ public class shooterPIDF extends Command {
     }
 
     double setpoint = SmartDashboard.getNumber("SetPoint", 100);
-    if (false) {
+    if (true) {
       leftPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
     } else {
       RobotContainer.m_shooterSubsystem.leftShooter.set(0);
     }
 
     if (true) {
-      rightPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
+      rightPIDController.setReference(-setpoint, CANSparkBase.ControlType.kVelocity);
     } else {
       RobotContainer.m_shooterSubsystem.leftShooter.set(0);
     }

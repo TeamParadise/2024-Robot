@@ -27,7 +27,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void configMotors(){
     leftShooter = new CANSparkMax(Constants.MotorConstants.leftShooterMotorID, MotorType.kBrushless);
     rightShooter = new CANSparkMax(Constants.MotorConstants.rightShooterMotorID, MotorType.kBrushless);
-    absEncoder = leftShooter.getAbsoluteEncoder(Type.kDutyCycle);
     // absEncoder.setPositionConversionFactor(2);
     // absEncoder.setVelocityConversionFactor(2);
 

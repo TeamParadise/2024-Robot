@@ -13,6 +13,7 @@ import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.CommandSwerveDrivetrain;
@@ -42,15 +43,19 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setVoltage(double voltage) {
     leftArmMotor.setVoltage(voltage);
-    rightArmMotor.setVoltage(voltage);
+    rightArmMotor.setVoltage(-voltage);
   }
 
+  public double getDistance(){
+    return Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+  }
+  
   //return optimal angle for the arm (for blue side)
   public double findOptimalAngle(){
     double speakerHeight = 2; //meters
     // double armHeightOffset = 0;
     // double armPositionOffset = 0;  
-    double distance =  Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+    double distance = Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
     double angle = Math.atan(speakerHeight / distance);
     return Units.radiansToDegrees(angle);
   }
