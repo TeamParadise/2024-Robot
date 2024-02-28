@@ -72,7 +72,7 @@ public class RobotContainer {
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop                         
                                                                
-  private final SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric()
+  public static final SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric()
       .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
