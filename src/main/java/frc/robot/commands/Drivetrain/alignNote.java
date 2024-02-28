@@ -23,7 +23,7 @@ public class alignNote extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnController = new PIDController(0.1, 0, 0);
+    turnController = new PIDController(0.15, 0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,11 +32,7 @@ public class alignNote extends Command {
     visionResult = RobotContainer.vision.getLatestIntakeResult();
     if (visionResult.hasTargets()) {
       tx = visionResult.getBestTarget().getYaw();
-      if (Math.abs(tx) > 1) {
-        RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withRotationalRate(turnController.calculate(tx, 0)));
-      } else {
-        RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityY(-0.1)).withTimeout(1);
-      }
+      RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withRotationalRate(turnController.calculate(tx, 0)));
     }
   }
 
