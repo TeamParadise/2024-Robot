@@ -93,7 +93,6 @@ public class RobotContainer {
 
     if (Constants.VisionConstants.kVisionEnabled) {
       vision = new VisionSubsystem();
-      vision.setDefaultCommand(Constants.VisionConstants.kExtraVisionDebug ? new VisionPoseEstimator().alongWith(new PoseLogger()) : new VisionPoseEstimator());
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(0));
