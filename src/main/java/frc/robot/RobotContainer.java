@@ -36,6 +36,7 @@ import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.SpeedTune;
 import frc.robot.commands.Shooter.shooterController;
+import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
@@ -96,6 +97,8 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(0));
+    m_shooterSubsystem.setDefaultCommand(new shooterPIDF());
+
 
     //Driver controlls
 

@@ -31,6 +31,7 @@ public class armPID extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_ArmSubsystem);
     this.setpoint = setpoint;
+    SmartDashboard.putNumber("Position", 0);
   }
 
   // Called when the command is initially scheduled.
@@ -46,8 +47,12 @@ public class armPID extends Command {
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
     // System.out.println(output);
-    
+    SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
     SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
+    setpoint = SmartDashboard.getNumber("Position", 0);
+    setpoint = MathUtil.clamp(setpoint, 0, 50);
+    SmartDashboard.putNumber("Error", armController.getPositionError());
+
     RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
   }
 
