@@ -106,7 +106,19 @@ public class Robot extends TimedRobot {
     m_ArmLUTAngle = new ArmLUT<>();
     m_ArmLUTRPM = new ArmLUT<>();
 
-    m_ArmLUTAngle.put(0, 0);
-    m_ArmLUTRPM.put(0, 0);
+    m_ArmLUTAngle.put(2.06, 47.2);
+    m_ArmLUTRPM.put(2.06, 2500);
+    
+    m_ArmLUTAngle.put(3.086, 42.19);
+    m_ArmLUTRPM.put(3.086, 2750);
+    
+    m_ArmLUTAngle.put(4.12, 40.2);
+    m_ArmLUTRPM.put(4.12, 3000);
+    
+    m_ArmLUTAngle.put(5.04, 37.36);
+    m_ArmLUTRPM.put(5.04, 3850);
+    
+    m_ArmLUTAngle.put(6.121, 36.72);
+    m_ArmLUTRPM.put(6.121, 4250);
   }
 }
