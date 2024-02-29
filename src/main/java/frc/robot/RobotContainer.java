@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -84,6 +85,7 @@ public class RobotContainer {
   PhoenixPIDController headingController = new PhoenixPIDController(0, 0, 0);
 
   private void configureBindings() {
+      SmartDashboard.putNumber("Speed", 0);
     // drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
     //     drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
     //                                                                                        // negative Y (forward)
@@ -96,6 +98,7 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(0));
+    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(0));
 
 
     //Driver controlls

@@ -38,6 +38,7 @@ public class shooterPIDF extends Command {
     rightPIDController.setIZone(ShooterConstants.kRightIz);
     rightPIDController.setFF(ShooterConstants.kRightFF);
     rightPIDController.setOutputRange(ShooterConstants.kRightMin, ShooterConstants.kRightMax);
+    
   }
 
   
@@ -50,6 +51,7 @@ public class shooterPIDF extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    setpoint = SmartDashboard.getNumber("Speed", 0);
     leftPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-setpoint, CANSparkBase.ControlType.kVelocity);
   }
