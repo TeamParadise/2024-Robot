@@ -6,6 +6,7 @@ package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.commands.IntakeNote;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -15,8 +16,8 @@ public class pickUpNote extends SequentialCommandGroup {
   public pickUpNote() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new alignNote().repeatedly()
-      .andThen(RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(-1)).repeatedly().withTimeout(1))
+    addCommands(new alignNote().repeatedly().withTimeout(3)
+      .andThen((RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(-1))).alongWith(new IntakeNote()).withTimeout(1.2))
       .andThen(RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(0))));
   }
 }

@@ -191,9 +191,7 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    NamedCommands.registerCommand("Align Note", new alignNote().repeatedly());
-    NamedCommands.registerCommand("Drive Backwards", RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(-1)).repeatedly().withTimeout(1));
-    NamedCommands.registerCommand("Intake", new IntakeNote());
+    NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote().withTimeout(5));
   }
 
   public RobotContainer() {
