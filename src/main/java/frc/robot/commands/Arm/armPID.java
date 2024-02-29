@@ -31,7 +31,7 @@ public class armPID extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_ArmSubsystem);
     this.setpoint = setpoint;
-    SmartDashboard.putNumber("Position", 0);
+    SmartDashboard.putNumber("Position", 50);
   }
 
   // Called when the command is initially scheduled.

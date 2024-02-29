@@ -26,7 +26,26 @@
         {
           "type": "named",
           "data": {
-            "name": "Align and Pick Up Note"
+            "name": "Align Note"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "DriveBackwards"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {

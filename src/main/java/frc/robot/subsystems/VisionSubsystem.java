@@ -21,7 +21,7 @@ import frc.robot.Robot;
 import frc.robot.Constants.VisionConstants;
 
 public class VisionSubsystem extends SubsystemBase {
-  private final PhotonCamera leftCamera, rightCamera, intakeCamera;
+  public final PhotonCamera leftCamera, rightCamera, intakeCamera;
   private final PhotonPoseEstimator leftEstimator, rightEstimator;
   private VisionSystemSim visionSimulator;
   private PhotonCameraSim leftCameraSimulator, rightCameraSimulator;
@@ -64,8 +64,8 @@ public class VisionSubsystem extends SubsystemBase {
     return rightCamera.getLatestResult();
   }
 
-  public PhotonPipelineResult getLatestIntakeResult() {
-    return intakeCamera.getLatestResult();
+  public Optional<PhotonPipelineResult> getLatestIntakeResult() {
+    return Optional.of(intakeCamera.getLatestResult());
   }
 
   public Optional<EstimatedRobotPose> getEstimatedLeftPose() {

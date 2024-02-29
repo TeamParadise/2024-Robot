@@ -31,6 +31,7 @@ import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armPID;
+import frc.robot.commands.Drivetrain.alignNote;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
@@ -167,7 +168,7 @@ public class RobotContainer {
     //X --- Spin intake out
     coJoystick.x().whileTrue(new intakeController(SpeedConstants.kOutake));
     //Y --- Automatically seek and move to notes in front of robot
-    coJoystick.y().whileTrue(new IntakeNote());
+    coJoystick.y().whileTrue(new pickUpNote());
 
     //Right Bumper --- Auto angle arm to speaker
     coJoystick.rightBumper().onTrue(new armAutoAngle());
@@ -188,7 +189,9 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote());
+    NamedCommands.registerCommand("Align Note", new alignNote().repeatedly());
+    NamedCommands.registerCommand("Drive Backwards", RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(-1)).repeatedly().withTimeout(1));
+    NamedCommands.registerCommand("Intake", new IntakeNote());
   }
 
   public RobotContainer() {
