@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -14,7 +12,6 @@ import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterController;
-import frc.robot.commands.Shooter.shooterSetpoint;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

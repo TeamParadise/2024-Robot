@@ -5,11 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.Arm.armAutoAngle;
-import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterController;

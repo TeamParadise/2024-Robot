@@ -4,13 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Primer.PrimeNote;
-import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterSetpoint;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
