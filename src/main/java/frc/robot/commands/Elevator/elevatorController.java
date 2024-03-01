@@ -6,6 +6,7 @@ package frc.robot.commands.Elevator;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
@@ -26,11 +27,15 @@ public class elevatorController extends Command {
   public void initialize() {
     elevatorController.reset();
     elevatorController.setSetpoint(setpoint);
+    SmartDashboard.putNumber("elevator setpoint", setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // setpoint = SmartDashboard.getNumber("elevator setpoint", 0);
+    setpoint = MathUtil.clamp(setpoint, 0, 52.5);
+    elevatorController.setSetpoint(setpoint);
     double output = elevatorController.calculate(RobotContainer.m_ElevatorSubsystem.getEncoder());
     RobotContainer.m_ElevatorSubsystem.setSpeed(MathUtil.clamp(output, -0.3, 0.3));  
   }

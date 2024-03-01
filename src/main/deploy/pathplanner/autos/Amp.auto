@@ -18,9 +18,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Pickup Note"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Pickup Note"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Intake Position"
+                }
+              }
+            ]
           }
         },
         {

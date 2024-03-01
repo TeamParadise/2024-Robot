@@ -17,7 +17,7 @@ public class pickUpNote extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new alignNote().repeatedly().withTimeout(3)
-      .andThen((RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(-1))).alongWith(new IntakeNote()).withTimeout(1.2))
+      .andThen((RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(-2))).alongWith(new IntakeNote()).withTimeout(1.2))
       .andThen(RobotContainer.drivetrain.applyRequest(() -> RobotContainer.robotDrive.withVelocityX(0))));
   }
 }

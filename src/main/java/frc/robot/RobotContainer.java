@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -16,6 +17,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -25,8 +27,10 @@ import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNote;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
+import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armPID;
+import frc.robot.commands.Drivetrain.alignNote;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakeController;
@@ -55,6 +59,7 @@ public class RobotContainer {
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  public static SendableChooser<String> autoChooser = new SendableChooser<>();
   
   
   private final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
@@ -90,7 +95,7 @@ public class RobotContainer {
       vision = new VisionSubsystem();
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
-    m_ArmSubsystem.setDefaultCommand(new armPID(0));
+    m_ArmSubsystem.setDefaultCommand(new armPID(20));
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF(0));
 
 
@@ -163,7 +168,7 @@ public class RobotContainer {
 
     //Right Bumper --- Auto angle arm to speaker
     coJoystick.rightBumper().whileTrue(new armAutoAngle());
-    // coJoystick.leftBumper().onTrue(new ShootNote(true));
+    coJoystick.leftBumper().whileTrue(new armAmp());
 
     //Left Trigger --- Retract note with primers
     coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
@@ -182,14 +187,27 @@ public class RobotContainer {
     drivetrain.registerTelemetry(logger::telemeterize);
 
     NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote().withTimeout(5));
+    NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
+    NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
+
+    autoChooser.setDefaultOption("Amp", "Amp");
+    autoChooser.addOption("Leave", "Leave");
+    autoChooser.addOption("None", "None");
+
+    SmartDashboard.putData(autoChooser);
   }
 
   public RobotContainer() {
-    
     configureBindings();
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Amp");
+    if (autoChooser.getSelected() == "Amp") {
+      return new PathPlannerAuto("Amp");
+    } else if (autoChooser.getSelected() == "Leave") {
+      return new PathPlannerAuto("Leave");
+    } else {
+      return new PathPlannerAuto("None");
+    }
   }
 }

@@ -21,7 +21,7 @@ public class alignNote extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnController = new PIDController(0.15, 0, 0);
+    turnController = new PIDController(0.15, 0.02, 0);
     turnController.reset();
   }
 
