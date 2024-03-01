@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Right"
+            "pathName": "Drive Back Right Far"
           }
         },
         {
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Speaker Right"
+                  "pathName": "Drive Speaker Right Far"
                 }
               },
               {

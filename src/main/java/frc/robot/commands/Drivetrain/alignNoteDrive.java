@@ -36,7 +36,7 @@ public class alignNoteDrive extends Command {
     turnController.setD(SmartDashboard.getNumber("kd Auto Align", 0));
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
-      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(-turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(-4));
+      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(-4));
     } else {
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(0).withVelocityX(0));
     }

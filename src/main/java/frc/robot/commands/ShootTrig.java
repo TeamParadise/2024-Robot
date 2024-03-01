@@ -23,7 +23,7 @@ public class ShootTrig extends SequentialCommandGroup {
     addCommands(
       new armAutoAngle().withTimeout(0.25), 
       new armAutoAngle().alongWith(
-        new RetractNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
+        new PrimeNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
         new shooterController(SpeedConstants.kShooter).withTimeout(1)).andThen(
         new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(1.7),
       new shooterController(0).withTimeout(0.1)

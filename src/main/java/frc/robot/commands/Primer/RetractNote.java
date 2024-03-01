@@ -4,37 +4,18 @@
 
 package frc.robot.commands.Primer;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.Shooter.shooterController;
+import frc.robot.commands.Shooter.shooterPIDF;
 
-public class RetractNote extends Command {
-  double speed;
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class RetractNote extends ParallelCommandGroup {
   /** Creates a new RetractNote. */
-  public RetractNote(double speed) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_primerSubsystem);
-    this.speed = speed;
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    RobotContainer.m_primerSubsystem.setSpeed(speed);
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    RobotContainer.m_primerSubsystem.setSpeed(0);
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public RetractNote(double primerSpeed, double shooterSpeed) {
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    addCommands(new PrimeNote(primerSpeed), new shooterController(shooterSpeed));
   }
 }

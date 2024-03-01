@@ -37,6 +37,7 @@ import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
+import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -96,8 +97,8 @@ public class RobotContainer {
       vision = new VisionSubsystem();
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
-    m_ArmSubsystem.setDefaultCommand(new armPID(20));
-    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(0));
+    m_ArmSubsystem.setDefaultCommand(new armPID(10));
+    m_shooterSubsystem.setDefaultCommand(new shooterController(0));
 
 
     //Driver controlls
@@ -145,7 +146,7 @@ public class RobotContainer {
     //Co-Driver
 
     //POV Up --- Move arm to feed note from intake into barrel
-    coJoystick.povUp().onTrue(new armPID(43));
+    coJoystick.povUp().onTrue(new armPID(55));
 
     //POV Down --- Angle arm to 0
     coJoystick.povDown().onTrue(new armPID(0));
@@ -172,7 +173,7 @@ public class RobotContainer {
     coJoystick.leftBumper().whileTrue(new alignNoteDrive());
 
     //Left Trigger --- Retract note with primers
-    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
+    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.20));
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
@@ -194,9 +195,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
     NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(3));
 
-    mainAutoChooser.setDefaultOption("Blue Left/Red Right", "Left");
+    mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");
-    mainAutoChooser.addOption("Blue Right/Red Left", "Right");
+    mainAutoChooser.addOption("Right", "Right");
 
     leftAutoChooser.setDefaultOption("Amp", "Amp");
     leftAutoChooser.addOption("None", "None");
@@ -235,7 +236,7 @@ public class RobotContainer {
       }
     } else if (mainAutoChooser.getSelected() == "Right") {
       if (rightAutoChooser.getSelected() == "1 Note Speaker") {
-        return new PathPlannerAuto("Speaker Right");
+        return new PathPlannerAuto("Speaker Right 1 Note");
       } else {
         return new PathPlannerAuto("None");
       }
