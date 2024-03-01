@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.72,
+      "y": 4.39
+    },
+    "rotation": 120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive Back Right"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align and pick up note better version"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive Speaker Right"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

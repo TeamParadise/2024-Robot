@@ -24,6 +24,8 @@
       "/SmartDashboard/Module 1": "Mechanism2d",
       "/SmartDashboard/Module 2": "Mechanism2d",
       "/SmartDashboard/Module 3": "Mechanism2d",
+      "/SmartDashboard/Robot Field": "Field2d",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/VisionSubsystem/Left Camera Field": "Field2d",
       "/SmartDashboard/VisionSubsystem/Right Camera Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
@@ -36,6 +38,16 @@
         "right": 2961,
         "top": 79,
         "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Module 1": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[0]": {
         "window": {
           "visible": true
         }
@@ -80,6 +92,9 @@
       "open": true
     },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
       "Subscribers": {
         "open": true
       },

@@ -33,13 +33,13 @@ public final class Constants {
     /** Boolean that represents whether or not extra vision debug information (specifically creating a Field2d for each camera) should be enabled. This can be intensive, so when not in use, it should be disabled. */
     public static final Boolean kExtraVisionDebug = false;
     /** Boolean that represents whether or not to use vision pose estimation in a simulation. This will allow testing of the vision subsystem, but will also make the testing of other robot components annoying, as the vision pose isn't always 100% right (and is also potentially slow when being simulated). */
-    public static final Boolean kVisionPoseEstimationSimulation = false;
+    public static final Boolean kVisionPoseEstimationSimulation = true;
     public static final AprilTagFieldLayout kFieldLayout =
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final Transform3d kRobotToLeftCam =
-        new Transform3d(new Translation3d(Units.inchesToMeters(-15+2.75), Units.inchesToMeters(18.375), Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(46.5), 0));
+        new Transform3d(new Translation3d(Units.inchesToMeters(18.375), Units.inchesToMeters(15+2.75), Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(-46.5), 0));
     public static final Transform3d kRobotToRightCam =
-        new Transform3d(new Translation3d(Units.inchesToMeters(15+2.75), Units.inchesToMeters(18.375),  Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(46.5), 0));
+        new Transform3d(new Translation3d(Units.inchesToMeters(18.375), Units.inchesToMeters(-15+2.75),  Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(-46.5), 0));
   }
   
   public static final class MotorConstants {

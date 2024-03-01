@@ -31,6 +31,7 @@ import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Drivetrain.alignNote;
+import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakeController;
@@ -155,7 +156,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new ShootNote(true));
+    coJoystick.a().onTrue(new ShootNote(false));
 
 
     coJoystick.b().whileTrue(new ArmHumanPlayer());
@@ -168,7 +169,7 @@ public class RobotContainer {
 
     //Right Bumper --- Auto angle arm to speaker
     coJoystick.rightBumper().whileTrue(new armAutoAngle());
-    coJoystick.leftBumper().whileTrue(new armAmp());
+    coJoystick.leftBumper().whileTrue(new alignNoteDrive());
 
     //Left Trigger --- Retract note with primers
     coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract));
@@ -189,11 +190,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote().withTimeout(5));
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive().withTimeout(3));
 
     autoChooser.setDefaultOption("Amp", "Amp");
     autoChooser.addOption("Leave", "Leave");
     autoChooser.addOption("None", "None");
-
+    autoChooser.addOption("Speaker", "Speaker");
+    
     SmartDashboard.putData(autoChooser);
   }
 
@@ -206,6 +209,8 @@ public class RobotContainer {
       return new PathPlannerAuto("Amp");
     } else if (autoChooser.getSelected() == "Leave") {
       return new PathPlannerAuto("Leave");
+    } else if (autoChooser.getSelected() == "Speaker") {
+      return new PathPlannerAuto("Speaker Right");
     } else {
       return new PathPlannerAuto("None");
     }
