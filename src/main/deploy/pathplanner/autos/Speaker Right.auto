@@ -24,9 +24,35 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Drive Speaker Right"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Drive Speaker Right"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot in Speaker"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]

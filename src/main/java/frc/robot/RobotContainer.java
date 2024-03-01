@@ -60,7 +60,7 @@ public class RobotContainer {
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  public static SendableChooser<String> autoChooser = new SendableChooser<>();
+  public static SendableChooser<String> mainAutoChooser = new SendableChooser<>(), rightAutoChooser = new SendableChooser<>(), leftAutoChooser = new SendableChooser<>(), centerAutoChooser = new SendableChooser<>();
   
   
   private final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
@@ -191,13 +191,23 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
     NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive().withTimeout(3));
+    NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
+    NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(3));
 
-    autoChooser.setDefaultOption("Amp", "Amp");
-    autoChooser.addOption("Leave", "Leave");
-    autoChooser.addOption("None", "None");
-    autoChooser.addOption("Speaker", "Speaker");
-    
-    SmartDashboard.putData(autoChooser);
+    mainAutoChooser.setDefaultOption("Blue Left/Red Right", "Left");
+    mainAutoChooser.addOption("Center", "Center");
+    mainAutoChooser.addOption("Blue Right/Red Left", "Right");
+
+    leftAutoChooser.setDefaultOption("Amp", "Amp");
+    leftAutoChooser.addOption("None", "None");
+
+    centerAutoChooser.setDefaultOption("2 Note Speaker", "2 Note Speaker");
+    centerAutoChooser.addOption("1 Note Speaker", "1 Note Speaker");
+    centerAutoChooser.addOption("Leave", "Leave");
+
+    rightAutoChooser.setDefaultOption("1 Note Speaker", "1 Note Speaker");
+
+    SmartDashboard.putData("Side Auto Chooser", mainAutoChooser);
   }
 
   public RobotContainer() {
@@ -205,12 +215,30 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (autoChooser.getSelected() == "Amp") {
-      return new PathPlannerAuto("Amp");
-    } else if (autoChooser.getSelected() == "Leave") {
-      return new PathPlannerAuto("Leave");
-    } else if (autoChooser.getSelected() == "Speaker") {
-      return new PathPlannerAuto("Speaker Right");
+    if (mainAutoChooser.getSelected() == "Left") {
+      if (leftAutoChooser.getSelected() == "Amp") {
+        return new PathPlannerAuto("Amp");
+      } else if (leftAutoChooser.getSelected() == "None") {
+        return new PathPlannerAuto("None");
+      } else {
+        return new PathPlannerAuto("None");
+      }
+    } else if (mainAutoChooser.getSelected() == "Center") {
+      if (centerAutoChooser.getSelected() == "2 Note Speaker") {
+        return new PathPlannerAuto("Speaker Center 2 Note");
+      } else if (centerAutoChooser.getSelected() == "1 Note Speaker") {
+        return new PathPlannerAuto("Speaker Center 1 Note");
+      } else if (centerAutoChooser.getSelected() == "Leave") {
+        return new PathPlannerAuto("Leave");
+      } else {
+        return new PathPlannerAuto("None");
+      }
+    } else if (mainAutoChooser.getSelected() == "Right") {
+      if (rightAutoChooser.getSelected() == "1 Note Speaker") {
+        return new PathPlannerAuto("Speaker Right");
+      } else {
+        return new PathPlannerAuto("None");
+      }
     } else {
       return new PathPlannerAuto("None");
     }

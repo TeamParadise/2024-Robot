@@ -32,7 +32,7 @@ public class alignNoteDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turnController.setD(SmartDashboard.getNumber("kp Auto Align", 0.1));
+    turnController.setP(SmartDashboard.getNumber("kp Auto Align", 0.1));
     turnController.setD(SmartDashboard.getNumber("kd Auto Align", 0));
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {

@@ -48,6 +48,50 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd note center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Align and pick up note better version"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2nd note score center"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot in Speaker"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
         }
       ]
     }

@@ -20,12 +20,14 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Pose": "Field2d",
+      "/SmartDashboard/Auto Task Chooser": "String Chooser",
       "/SmartDashboard/Module 0": "Mechanism2d",
       "/SmartDashboard/Module 1": "Mechanism2d",
       "/SmartDashboard/Module 2": "Mechanism2d",
       "/SmartDashboard/Module 3": "Mechanism2d",
       "/SmartDashboard/Robot Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/Side Auto Chooser": "String Chooser",
       "/SmartDashboard/VisionSubsystem/Left Camera Field": "Field2d",
       "/SmartDashboard/VisionSubsystem/Right Camera Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
@@ -42,12 +44,17 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Auto Task Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Module 1": {
         "window": {
           "visible": true
         }
       },
-      "/SmartDashboard/SendableChooser[0]": {
+      "/SmartDashboard/Side Auto Chooser": {
         "window": {
           "visible": true
         }

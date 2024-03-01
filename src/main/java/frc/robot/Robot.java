@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
   public static ArmLUT m_ArmLUTAngle;
   public static ArmLUT m_ArmLUTRPM;
   
+  private static String previouslySelectedAuto = "Left", currentlySelectedAuto = "Left";
 
   @Override
   public void robotInit() {
@@ -42,7 +43,19 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    currentlySelectedAuto = RobotContainer.mainAutoChooser.getSelected();
+    
+    if ((DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Blue)) && currentlySelectedAuto == "Left") || (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) && currentlySelectedAuto == "Right")) {
+      SmartDashboard.putData("Auto Task Chooser", RobotContainer.leftAutoChooser);
+    } else if (currentlySelectedAuto == "Center") {
+      SmartDashboard.putData("Auto Task Chooser", RobotContainer.centerAutoChooser);
+    } else {
+      SmartDashboard.putData("Auto Task Chooser", RobotContainer.rightAutoChooser);
+    }
+    
+    previouslySelectedAuto = currentlySelectedAuto;
+  }
 
   @Override
   public void disabledExit() {}

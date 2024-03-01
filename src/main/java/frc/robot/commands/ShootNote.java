@@ -31,8 +31,8 @@ public class ShootNote extends SequentialCommandGroup {
         );
     } else {
       addCommands(
-        new armPID(43).withTimeout(0.25), 
-        new armPID(43).alongWith(
+        new armPID(50).withTimeout(0.25), 
+        new armPID(50).alongWith(
           new RetractNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
           new shooterController(SpeedConstants.kShooter).withTimeout(1)).andThen(
           new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(1.7),
