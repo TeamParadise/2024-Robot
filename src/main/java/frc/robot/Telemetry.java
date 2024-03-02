@@ -10,9 +10,11 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 public class Telemetry {
     private final double MaxSpeed;
     private Field2d field = new Field2d();
+
     /**
      * Construct a telemetry object, with the specified max speed of the robot
      * 
@@ -109,5 +112,10 @@ public class Telemetry {
 
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
+
+        SmartDashboard.putBoolean("CAN Alive", RobotController.getCANStatus().percentBusUtilization == 0);
+        SmartDashboard.putBoolean("Left Camera Alive", RobotContainer.vision.leftCamera.isConnected());
+        SmartDashboard.putBoolean("Right Camera Alive", RobotContainer.vision.rightCamera.isConnected());
+        SmartDashboard.putBoolean("Intake Camera Alive", RobotContainer.vision.intakeCamera.isConnected());
     }
 }

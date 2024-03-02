@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -54,6 +56,9 @@ public final class Constants {
     public static final int rightShooterMotorID = 20; //8  NOT ON CANIVORE
 
     public static final int intakeMotorID = 7; //9  NOT ON CANIVORE
+
+    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.25);
+    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.25);
   }
 
   public static class SpeedConstants {

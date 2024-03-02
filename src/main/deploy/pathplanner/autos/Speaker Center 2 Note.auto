@@ -18,6 +18,25 @@
               {
                 "type": "path",
                 "data": {
+                  "pathName": "Back Up Center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot in Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
                   "pathName": "Drive Back Center"
                 }
               },
@@ -78,7 +97,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.0
+                        "waitTime": 1.0
                       }
                     },
                     {

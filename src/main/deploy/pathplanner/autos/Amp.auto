@@ -12,15 +12,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "1st note amp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Amp"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "1st note amp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Amp"
+                }
+              }
+            ]
           }
         },
         {
@@ -45,19 +52,26 @@
         {
           "type": "named",
           "data": {
-            "name": "Align and Pick Up Note"
+            "name": "Align and pick up note better version"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "2nd note amp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Amp"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2nd note amp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Amp"
+                }
+              }
+            ]
           }
         },
         {

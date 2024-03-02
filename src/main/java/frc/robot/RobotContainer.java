@@ -207,6 +207,15 @@ public class RobotContainer {
     centerAutoChooser.addOption("1 Note Speaker", "1 Note Speaker");
     centerAutoChooser.addOption("Leave", "Leave");
 
+    drivetrain.getModule(0).getDriveMotor().getConfigurator().refresh(Constants.MotorConstants.driveRamp);
+    drivetrain.getModule(0).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
+    drivetrain.getModule(1).getDriveMotor().getConfigurator().refresh(Constants.MotorConstants.driveRamp);
+    drivetrain.getModule(1).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
+    drivetrain.getModule(2).getDriveMotor().getConfigurator().refresh(Constants.MotorConstants.driveRamp);
+    drivetrain.getModule(2).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
+    drivetrain.getModule(3).getDriveMotor().getConfigurator().refresh(Constants.MotorConstants.driveRamp);
+    drivetrain.getModule(3).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
+
     rightAutoChooser.setDefaultOption("1 Note Speaker", "1 Note Speaker");
 
     SmartDashboard.putData("Side Auto Chooser", mainAutoChooser);
