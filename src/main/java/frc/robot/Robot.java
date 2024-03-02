@@ -56,9 +56,6 @@ public class Robot extends TimedRobot {
       SmartDashboard.putData("Auto Task Chooser", RobotContainer.rightAutoChooser);
       allianceCurrentlySelectedAuto = "Right";
     }
-
-    System.out.println(allianceCurrentlySelectedAuto);
-    System.out.println(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)));
   }
 
   @Override

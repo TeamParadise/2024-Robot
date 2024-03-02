@@ -256,4 +256,8 @@ public class RobotContainer {
       return new PathPlannerAuto("None");
     }
   }
+
+  public Command getDriveBack() {
+    return drivetrain.applyRequest(() -> robotDrive.withVelocityX(-0.9)).withTimeout(2).andThen(drivetrain.applyRequest(() -> robotDrive.withVelocityX(0)));
+  }
 }
