@@ -31,7 +31,6 @@ import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armPID;
-import frc.robot.commands.Drivetrain.alignNote;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
@@ -217,6 +216,7 @@ public class RobotContainer {
     drivetrain.getModule(3).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
 
     rightAutoChooser.setDefaultOption("1 Note Speaker", "1 Note Speaker");
+    rightAutoChooser.setDefaultOption("2 Note Speaker", "2 Note Speaker");
 
     SmartDashboard.putData("Side Auto Chooser", mainAutoChooser);
   }
@@ -226,7 +226,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (mainAutoChooser.getSelected() == "Left") {
+    if (Robot.allianceCurrentlySelectedAuto == "Left") {
       if (leftAutoChooser.getSelected() == "Amp") {
         return new PathPlannerAuto("Amp");
       } else if (leftAutoChooser.getSelected() == "None") {
@@ -234,7 +234,7 @@ public class RobotContainer {
       } else {
         return new PathPlannerAuto("None");
       }
-    } else if (mainAutoChooser.getSelected() == "Center") {
+    } else if (Robot.allianceCurrentlySelectedAuto == "Center") {
       if (centerAutoChooser.getSelected() == "2 Note Speaker") {
         return new PathPlannerAuto("Speaker Center 2 Note");
       } else if (centerAutoChooser.getSelected() == "1 Note Speaker") {
@@ -244,9 +244,11 @@ public class RobotContainer {
       } else {
         return new PathPlannerAuto("None");
       }
-    } else if (mainAutoChooser.getSelected() == "Right") {
+    } else if (Robot.allianceCurrentlySelectedAuto == "Right") {
       if (rightAutoChooser.getSelected() == "1 Note Speaker") {
         return new PathPlannerAuto("Speaker Right 1 Note");
+      } else if (rightAutoChooser.getSelected() == "2 Note Speaker") {
+        return new PathPlannerAuto("Speaker Right 2 Note");
       } else {
         return new PathPlannerAuto("None");
       }

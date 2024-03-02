@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
   public static ArmLUT m_ArmLUTAngle;
   public static ArmLUT m_ArmLUTRPM;
   
-  private static String previouslySelectedAuto = "Left", currentlySelectedAuto = "Left";
+  public static String previouslySelectedAuto = "Left", currentlySelectedAutoSD = "Left", allianceCurrentlySelectedAuto = "Left";
 
   @Override
   public void robotInit() {
@@ -44,17 +44,21 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    currentlySelectedAuto = RobotContainer.mainAutoChooser.getSelected();
+    currentlySelectedAutoSD = RobotContainer.mainAutoChooser.getSelected();
     
-    if ((DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Blue)) && currentlySelectedAuto == "Left") || (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) && currentlySelectedAuto == "Right")) {
+    if ((DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Blue)) && currentlySelectedAutoSD == "Left") || (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) && currentlySelectedAutoSD == "Right")) {
       SmartDashboard.putData("Auto Task Chooser", RobotContainer.leftAutoChooser);
-    } else if (currentlySelectedAuto == "Center") {
+      allianceCurrentlySelectedAuto = "Left";
+    } else if (currentlySelectedAutoSD == "Center") {
       SmartDashboard.putData("Auto Task Chooser", RobotContainer.centerAutoChooser);
+      allianceCurrentlySelectedAuto = currentlySelectedAutoSD;
     } else {
       SmartDashboard.putData("Auto Task Chooser", RobotContainer.rightAutoChooser);
+      allianceCurrentlySelectedAuto = "Right";
     }
-    
-    previouslySelectedAuto = currentlySelectedAuto;
+
+    System.out.println(allianceCurrentlySelectedAuto);
+    System.out.println(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)));
   }
 
   @Override
