@@ -14,8 +14,8 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  CANSparkMax intakeMotor;
-  AbsoluteEncoder absEncoder;
+  public CANSparkMax intakeMotor;
+  public AbsoluteEncoder absEncoder;
   public IntakeSubsystem() {
     configMotors();
   }

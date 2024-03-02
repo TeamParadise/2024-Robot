@@ -6,6 +6,7 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -41,17 +42,21 @@ public class armPID extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
-    positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
-    output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
-    // System.out.println(output);
-    SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
-    SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
-    // setpoint = SmartDashboard.getNumber("Position", 0);
-    setpoint = MathUtil.clamp(setpoint, 0, 50);
-    SmartDashboard.putNumber("Error", armController.getPositionError());
+    if (RobotController.getCANStatus().percentBusUtilization != 0) {
+      positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
+      positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
+      output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
+      // System.out.println(output);
+      SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
+      SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
+      // setpoint = SmartDashboard.getNumber("Position", 0);
+      setpoint = MathUtil.clamp(setpoint, 0, 50);
+      SmartDashboard.putNumber("Error", armController.getPositionError());
 
-    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
+      RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
+    } else {
+      RobotContainer.m_ArmSubsystem.setVoltage(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
