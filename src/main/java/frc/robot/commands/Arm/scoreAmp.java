@@ -5,20 +5,28 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
+import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class armAmp extends SequentialCommandGroup {
+public class scoreAmp extends SequentialCommandGroup {
   /** Creates a new ArmHumanPlayer. */
-  public armAmp() {
+  public scoreAmp() {
     // Add your commands in the addCommands() call, e.g.
+
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new startAmp(), new scoreAmp());
+      new armPID(40.175 ).alongWith(
+      new elevatorController(38).withTimeout(2).alongWith(
+      new shooterController(0).withTimeout(0).andThen(
+      new shooterPIDF(2000)).withTimeout(1).alongWith(
+      new PrimeNote(0.4).withTimeout(1))).andThen(
+      new elevatorController(0).alongWith(new WaitCommand(2)))));
   }
 }

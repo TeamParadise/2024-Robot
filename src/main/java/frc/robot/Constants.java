@@ -57,8 +57,8 @@ public final class Constants {
 
     public static final int intakeMotorID = 7; //9  NOT ON CANIVORE
 
-    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.5);
-    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.5);
+    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
+    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
   }
 
   public static class SpeedConstants {

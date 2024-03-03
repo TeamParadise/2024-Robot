@@ -33,7 +33,7 @@ public class TunerConstants {
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
-    private static final double kSlipCurrentA = 75.0;
+    private static final double kSlipCurrentA = 60.0;
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
@@ -138,6 +138,7 @@ public class TunerConstants {
 
     private static final double kBackRightXPosInches = -15;
     private static final double kBackRightYPosInches = -15;
+    
 
 
     private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(

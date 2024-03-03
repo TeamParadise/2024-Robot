@@ -13,12 +13,15 @@ import frc.robot.commands.Shooter.shooterPIDF;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class armAmp extends SequentialCommandGroup {
+public class startAmp extends SequentialCommandGroup {
   /** Creates a new ArmHumanPlayer. */
-  public armAmp() {
+  public startAmp() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new startAmp(), new scoreAmp());
+      new armPID(40.17).withTimeout(1),
+      new armPID(40.17).alongWith(
+      new RetractNote(-0.2,   -0.2).withTimeout(0.15).alongWith(
+      new elevatorController(38).withTimeout(2))));
   }
 }

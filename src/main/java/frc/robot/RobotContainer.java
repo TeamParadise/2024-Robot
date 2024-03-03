@@ -31,12 +31,15 @@ import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armPID;
+import frc.robot.commands.Arm.scoreAmp;
+import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
+import frc.robot.commands.Shooter.setSpeakerPID;
 import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.generated.TunerConstants;
@@ -98,7 +101,7 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(10));
-    m_shooterSubsystem.setDefaultCommand(new shooterController(0));
+    m_shooterSubsystem.setDefaultCommand(new setSpeakerPID());
 
 
     //Driver controlls
@@ -146,7 +149,7 @@ public class RobotContainer {
     //Co-Driver
 
     //POV Up --- Move arm to feed note from intake into barrel
-    coJoystick.povUp().onTrue(new armPID(55));
+    coJoystick.povUp().onTrue(new armPID(62.5));
 
     //POV Down --- Angle arm to 0
     coJoystick.povDown().onTrue(new armPID(0));
@@ -159,18 +162,20 @@ public class RobotContainer {
     //A --- Automatically angle arm and shoot note
     coJoystick.a().onTrue(new ShootNote(false));
 
-
+    //B --- Lift arm to human player feeder. On release, bring arm back down
     coJoystick.b().whileTrue(new ArmHumanPlayer());
     coJoystick.b().toggleOnFalse(new ArmHumanPlayerBack());
 
     //X --- Spin intake out
-    coJoystick.x().whileTrue(new intakeController(SpeedConstants.kOutake));
-    //Y --- Automatically seek and move to notes in front of robot
+    coJoystick.x().onTrue(new scoreAmp());
+    //Y --- Intake note with intake and primers
     coJoystick.y().whileTrue(new IntakeNote());
 
     //Right Bumper --- Auto angle arm to speaker
-    coJoystick.rightBumper().whileTrue(new armAutoAngle());
-    coJoystick.leftBumper().whileTrue(new alignNoteDrive());
+    coJoystick.rightBumper().onTrue(new startAmp());
+
+    //Left Bumper --- Reverse intake
+    coJoystick.leftBumper().whileTrue(new intakeController(SpeedConstants.kOutake));
 
     //Left Trigger --- Retract note with primers
     coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.20));

@@ -42,7 +42,6 @@ public class armPID extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotController.getCANStatus().percentBusUtilization != 0) {
       positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
       positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
       output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
@@ -50,13 +49,10 @@ public class armPID extends Command {
       SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
       SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
       // setpoint = SmartDashboard.getNumber("Position", 0);
-      setpoint = MathUtil.clamp(setpoint, 0, 50);
+      setpoint = MathUtil.clamp(setpoint, 0, 75);
       SmartDashboard.putNumber("Error", armController.getPositionError());
 
       RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
-    } else {
-      RobotContainer.m_ArmSubsystem.setVoltage(0);
-    }
   }
 
   // Called once the command ends or is interrupted.

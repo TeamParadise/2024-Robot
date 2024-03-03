@@ -112,10 +112,5 @@ public class Telemetry {
 
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
-
-        SmartDashboard.putBoolean("CAN Alive", RobotController.getCANStatus().percentBusUtilization == 0);
-        SmartDashboard.putBoolean("Left Camera Alive", RobotContainer.vision.leftCamera.isConnected());
-        SmartDashboard.putBoolean("Right Camera Alive", RobotContainer.vision.rightCamera.isConnected());
-        SmartDashboard.putBoolean("Intake Camera Alive", RobotContainer.vision.intakeCamera.isConnected());
     }
 }
