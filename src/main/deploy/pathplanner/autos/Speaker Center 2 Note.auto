@@ -79,9 +79,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Align and pick up note better version"
+                  "pathName": "2nd note center 2"
                 }
               },
               {
