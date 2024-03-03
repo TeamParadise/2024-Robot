@@ -101,7 +101,7 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(10));
-    m_shooterSubsystem.setDefaultCommand(new setSpeakerPID());
+    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(0));
 
 
     //Driver controlls
@@ -142,7 +142,7 @@ public class RobotContainer {
     joystick.rightBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
     
     //POV Up --- Set arm to optimal angle for shooting note into speaker
-    joystick.povUp().whileTrue(new armAutoAngle());
+    joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
 
     joystick.povDown().onTrue(new armPID(60));
 
@@ -160,7 +160,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new ShootNote(false));
+    coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
     coJoystick.b().whileTrue(new ArmHumanPlayer());

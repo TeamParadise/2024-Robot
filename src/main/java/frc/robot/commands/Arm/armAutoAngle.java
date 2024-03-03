@@ -8,7 +8,10 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Shooter.shooterPIDF;
 
 public class armAutoAngle extends Command {
   /** Creates a new armAutoAngle. */
@@ -50,6 +53,7 @@ public class armAutoAngle extends Command {
 
     
     RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
+    // new RunCommand(() -> new shooterPIDF(Robot.m_ArmLUTRPM.get(RobotContainer.m_ArmSubsystem.getDistance())));
   }
 
   // Called once the command ends or is interrupted.

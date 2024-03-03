@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ArmLUT;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.SingleTagVisionPoseEstimator;
 import frc.robot.commands.Vision.VisionPoseEstimator;
-import frc.robot.generated.ArmLUT;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -124,7 +124,31 @@ public class Robot extends TimedRobot {
     m_ArmLUTAngle = new ArmLUT<>();
     m_ArmLUTRPM = new ArmLUT<>();
 
-    m_ArmLUTAngle.put(2.06, 47.2);
+    m_ArmLUTAngle.put(1.455, 59.05);
+    m_ArmLUTRPM.put(1.455, 1521);
+    
+    m_ArmLUTAngle.put(1.75, 54.95);
+    m_ArmLUTRPM.put(1.75, 1653);
+    
+    m_ArmLUTAngle.put(2.00, 51.44);
+    m_ArmLUTRPM.put(2.00, 1798);
+    
+    m_ArmLUTAngle.put(2.31, 47.03);
+    m_ArmLUTRPM.put(2.31, 1900);
+    
+    m_ArmLUTAngle.put(2.61, 42.04);
+    m_ArmLUTRPM.put(2.61, 2222);
+    
+    m_ArmLUTAngle.put(2.88, 38.79);
+    m_ArmLUTRPM.put(2.88, 2856);
+    
+    m_ArmLUTAngle.put(3.25, 37.06);
+    m_ArmLUTRPM.put(3.25, 2956);
+
+    m_ArmLUTAngle.put(3.56, 34.04);
+    m_ArmLUTRPM.put(3.56, 3287);
+
+    /*m_ArmLUTAngle.put(2.06, 47.2);
     m_ArmLUTRPM.put(2.06, 2500);
     
     m_ArmLUTAngle.put(3.086, 42.19);
@@ -137,6 +161,6 @@ public class Robot extends TimedRobot {
     m_ArmLUTRPM.put(5.04, 3850);
     
     m_ArmLUTAngle.put(6.121, 36.72);
-    m_ArmLUTRPM.put(6.121, 4250);
+    m_ArmLUTRPM.put(6.121, 4250);*/
   }
 }
