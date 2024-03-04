@@ -30,6 +30,7 @@ import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoAngle;
+import frc.robot.commands.Arm.armAutoShoot;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
@@ -55,7 +56,7 @@ public class RobotContainer {
   public static double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  public static final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public static VisionSubsystem vision;
   private final CommandXboxController coJoystick = new CommandXboxController(1);
@@ -67,7 +68,7 @@ public class RobotContainer {
   public static SendableChooser<String> mainAutoChooser = new SendableChooser<>(), rightAutoChooser = new SendableChooser<>(), leftAutoChooser = new SendableChooser<>(), centerAutoChooser = new SendableChooser<>();
   
   
-  private final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
+  public static final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
     .withCenterOfRotation(new Translation2d(0, 0))
   .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
   .withSteerRequestType(SteerRequestType.MotionMagic);
@@ -142,9 +143,13 @@ public class RobotContainer {
     joystick.rightBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
     
     //POV Up --- Set arm to optimal angle for shooting note into speaker
-    joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
+    // joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
+    joystick.rightTrigger().whileTrue(new armAutoShoot());
 
-    joystick.povDown().onTrue(new armPID(60));
+    joystick.leftBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
+
+    coJoystick.a().onTrue(new armPID(60));
 
     //Co-Driver
 
@@ -160,7 +165,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new ShootNote(true));
+    // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
     coJoystick.b().whileTrue(new ArmHumanPlayer());
