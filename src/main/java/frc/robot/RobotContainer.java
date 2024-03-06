@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNote;
@@ -51,6 +52,8 @@ import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
+import java.awt.geom.Path2D;
+
 public class RobotContainer {
   public static double MaxSpeed = 6; // 6 meters per second desired top speed
   public static double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
@@ -66,6 +69,9 @@ public class RobotContainer {
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   public static SendableChooser<String> mainAutoChooser = new SendableChooser<>(), rightAutoChooser = new SendableChooser<>(), leftAutoChooser = new SendableChooser<>(), centerAutoChooser = new SendableChooser<>();
+
+  private Path2D stage = new Path2D.Float();
+  public Trigger underStage = new Trigger(() -> stage.intersects(drivetrain.getState().Pose.getX() - 0.76300749201, 8.220855 - drivetrain.getState().Pose.getY(), 0.76300749201, 0.76300749201));
   
   
   public static final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
@@ -229,6 +235,17 @@ public class RobotContainer {
     rightAutoChooser.setDefaultOption("2 Note Speaker", "2 Note Speaker");
 
     SmartDashboard.putData("Side Auto Chooser", mainAutoChooser);
+
+    // Configure stage coordinates
+    stage.moveTo(10, 2.6211122);
+    stage.lineTo(10, 6.5);
+    stage.lineTo(13, 4.412154);
+    stage.closePath();
+
+    stage.moveTo(5.8, 2.6211122);
+    stage.lineTo(5.8, 6.5);
+    stage.lineTo(2.8, 4.412154);
+    stage.closePath();
   }
 
   public RobotContainer() {
