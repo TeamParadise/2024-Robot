@@ -6,6 +6,9 @@
       }
     },
     "RoboRIO": {
+      "3.3V Rail": {
+        "open": true
+      },
       "RoboRIO Input": {
         "open": true
       }
@@ -45,11 +48,6 @@
         }
       },
       "/SmartDashboard/Auto Task Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Module 1": {
         "window": {
           "visible": true
         }
@@ -94,22 +92,19 @@
       }
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
-    "Clients": {
-      "open": true
-    },
     "Server": {
       "Publishers": {
         "open": true
-      },
-      "Subscribers": {
-        "open": true
-      },
-      "open": true
+      }
     },
     "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }
