@@ -38,6 +38,8 @@ import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
+import frc.robot.commands.Intake.Outtake;
+import frc.robot.commands.Intake.beamBreakerBroken;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
@@ -192,6 +194,9 @@ public class RobotContainer {
     coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.20));
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
+    Trigger beamTrigger = new Trigger(() -> m_intakeSubsystem.getIntakeBeamBreaker());
+    beamTrigger.whileTrue(new beamBreakerBroken());
 
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
