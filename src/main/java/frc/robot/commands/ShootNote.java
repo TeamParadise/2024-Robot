@@ -26,14 +26,11 @@ public class ShootNote extends SequentialCommandGroup {
       double distance = RobotContainer.m_ArmSubsystem.getDistance();
       addCommands(new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45));
     } else {
-      addCommands(
-        new armPID(50).withTimeout(0.25), 
-        new armPID(50).alongWith(
-          new PrimeNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
-          new shooterPIDF(SpeedConstants.kShooter).withTimeout(2)).andThen(
-          new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(3),
-        new shooterPIDF(0).withTimeout(0.1)
-      );
+      addCommands( 
+        new PrimeNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
+        new shooterPIDF(SpeedConstants.kShooter).withTimeout(2)).andThen(
+        new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45)).withTimeout(3),
+        new shooterPIDF(0).withTimeout(0.1));
     }
   }
 }

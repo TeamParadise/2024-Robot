@@ -65,7 +65,6 @@ public class RobotContainer {
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
   public static VisionSubsystem vision;
   private final CommandXboxController coJoystick = new CommandXboxController(1);
-  public final static ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   public final static ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
@@ -109,7 +108,6 @@ public class RobotContainer {
       vision = new VisionSubsystem();
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
-    m_ArmSubsystem.setDefaultCommand(new armPID(10));
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF(0));
 
 
@@ -157,15 +155,8 @@ public class RobotContainer {
     joystick.leftBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
 
-    coJoystick.a().onTrue(new armPID(60));
 
     //Co-Driver
-
-    //POV Up --- Move arm to feed note from intake into barrel
-    coJoystick.povUp().onTrue(new armPID(62.5));
-
-    //POV Down --- Angle arm to 0
-    coJoystick.povDown().onTrue(new armPID(0));
 
     //POV Left - sets position of elavator to bottom
     coJoystick.povLeft().onTrue(new elevatorController(0));
@@ -175,9 +166,6 @@ public class RobotContainer {
     //A --- Automatically angle arm and shoot note
     // coJoystick.a().onTrue(new ShootNote(true));
 
-    //B --- Lift arm to human player feeder. On release, bring arm back down
-    coJoystick.b().whileTrue(new ArmHumanPlayer());
-    coJoystick.b().toggleOnFalse(new ArmHumanPlayerBack());
 
     //X --- Spin intake out
     coJoystick.x().onTrue(new scoreAmp());

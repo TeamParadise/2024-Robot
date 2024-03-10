@@ -38,9 +38,7 @@ public class armAutoShoot extends Command {
 
   public armAutoShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_ArmSubsystem);
     addRequirements(RobotContainer.m_shooterSubsystem);
-    addRequirements(RobotContainer.drivetrain);
 
     leftPIDController = RobotContainer.m_shooterSubsystem.leftShooter.getPIDController();
     rightPIDController = RobotContainer.m_shooterSubsystem.rightShooter.getPIDController();
@@ -50,7 +48,6 @@ public class armAutoShoot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armController.enableContinuousInput(0, 360);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,27 +55,15 @@ public class armAutoShoot extends Command {
   public void execute() {
 
     //Shooter flywheels
-    double speed = Robot.m_ArmLUTRPM.get(RobotContainer.m_ArmSubsystem.getDistance());
+    double speed = 0.9;
     leftPIDController.setReference(speed, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-speed, CANSparkBase.ControlType.kVelocity);
 
-    //Arm angle
-    double angle = Robot.m_ArmLUTAngle.get(RobotContainer.m_ArmSubsystem.getDistance());
-    positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
-    positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
-    output = armController.calculate(positionDegrees, angle) + feedforwardMax * Math.cos(positionRadians);
-    RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
-
-    //Auto heading
-    RobotContainer.drivetrain.applyRequest(() -> RobotContainer.headingDrive.withVelocityX(-RobotContainer.joystick.getLeftY() * MaxSpeed)                                                                       
-    .withVelocityY(-RobotContainer.joystick.getLeftX() * MaxSpeed) 
-    .withTargetDirection(new Rotation2d(Math.atan2(5.475 - RobotContainer.drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - RobotContainer.drivetrain.getState().Pose.getX()))));
-  }
+    }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_ArmSubsystem.setVoltage(0);
 
   }
 

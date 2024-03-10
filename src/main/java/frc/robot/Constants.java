@@ -72,7 +72,6 @@ public final class Constants {
   }
 
   public static class PhysicalConstants {
-    public static final double armGearRatio = 0;
     public static final double primerGearRatio = 1;
     public static final double intakeGearRatio = 1;
     public static final double shooterGearRatio = 1;

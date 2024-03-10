@@ -35,11 +35,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.set(speed);
   }
 
-  public double getArmPosition(){
-    return absEncoder.getPosition();
-  }
-
-
 
   public boolean getIntakeBeamBreaker() {
     return !intakeBeamBreaker.get();
