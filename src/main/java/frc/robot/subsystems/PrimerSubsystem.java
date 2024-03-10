@@ -8,20 +8,26 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class PrimerSubsystem extends SubsystemBase {
   /** Creates a new PrimerSubsystem. */
   CANSparkMax leftPrimer, rightPrimer;
+  public DigitalInput primerBeamBreaker, flywheelBeamBreaker;
   public PrimerSubsystem() {
     configMotors();
+    primerBeamBreaker = new DigitalInput(0);
+    flywheelBeamBreaker = new DigitalInput(1);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    SmartDashboard.putBoolean("flywheel beam breaker state", getFlywheelBeamBreaker());
+    SmartDashboard.putBoolean("primer beam breaker state", getPrimerBeamBreaker());
   }
 
   public void configMotors(){
@@ -38,6 +44,14 @@ public class PrimerSubsystem extends SubsystemBase {
   public void setSpeed(double speed){
     leftPrimer.set(-speed);
     rightPrimer.set(speed);
+  }
+
+  public boolean getFlywheelBeamBreaker() {
+    return !flywheelBeamBreaker.get();
+  }
+
+  public boolean getPrimerBeamBreaker() {
+    return !primerBeamBreaker.get();
   }
 
 }

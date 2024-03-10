@@ -18,9 +18,8 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   CANSparkMax intakeMotor;
   AbsoluteEncoder absEncoder;
-  public DigitalInput intakeBeamBreaker;
+ 
   public IntakeSubsystem() {
-    intakeBeamBreaker = new DigitalInput(0);
     configMotors();
   }
 
@@ -39,15 +38,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return absEncoder.getPosition();
   }
 
-
-
-  public boolean getIntakeBeamBreaker() {
-    return !intakeBeamBreaker.get();
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("intake beam breaker state", getIntakeBeamBreaker());
   }
 }
