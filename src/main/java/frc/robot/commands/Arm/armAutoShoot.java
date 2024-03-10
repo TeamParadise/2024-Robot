@@ -55,7 +55,7 @@ public class armAutoShoot extends Command {
   public void execute() {
 
     //Shooter flywheels
-    double speed = 0.9;
+    double speed = 4500;
     leftPIDController.setReference(speed, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-speed, CANSparkBase.ControlType.kVelocity);
 

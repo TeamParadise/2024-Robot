@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.SpeedConstants;
-import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterController;
@@ -21,16 +20,11 @@ public class ShootNote extends SequentialCommandGroup {
   /** Creates a new ShootNote. */
   public ShootNote(boolean autoAngle) {
     // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    if (autoAngle) {
-      double distance = RobotContainer.m_ArmSubsystem.getDistance();
-      addCommands(new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45));
-    } else {
-      addCommands( 
-        new PrimeNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
-        new shooterPIDF(SpeedConstants.kShooter).withTimeout(2)).andThen(
-        new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45)).withTimeout(3),
-        new shooterPIDF(0).withTimeout(0.1));
-    }
+    addCommands( 
+      new PrimeNote(SpeedConstants.kRetract).withTimeout(0.25).alongWith(
+      new shooterPIDF(SpeedConstants.kShooter).withTimeout(2)).andThen(
+      new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45)).withTimeout(3),
+      new shooterPIDF(0).withTimeout(0.1));
+    
   }
 }

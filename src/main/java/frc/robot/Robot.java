@@ -16,15 +16,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.SingleTagVisionPoseEstimator;
 import frc.robot.commands.Vision.VisionPoseEstimator;
-import frc.robot.subsystems.ArmLUT;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
-  public static ArmLUT m_ArmLUTAngle;
-  public static ArmLUT m_ArmLUTRPM;
   
   public static String previouslySelectedAuto = "Left", currentlySelectedAutoSD = "Left", allianceCurrentlySelectedAuto = "Left";
 
@@ -35,9 +32,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
- 
+    CommandScheduler.getInstance().run(); 
   }
 
   @Override

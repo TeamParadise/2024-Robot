@@ -27,12 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNote;
-import frc.robot.commands.Arm.ArmHumanPlayer;
-import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
-import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armAutoShoot;
-import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
@@ -47,7 +43,6 @@ import frc.robot.commands.Shooter.setSpeakerPID;
 import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
@@ -166,14 +161,12 @@ public class RobotContainer {
     //A --- Automatically angle arm and shoot note
     // coJoystick.a().onTrue(new ShootNote(true));
 
-
-    //X --- Spin intake out
-    coJoystick.x().onTrue(new scoreAmp());
     //Y --- Intake note with intake and primers
     coJoystick.y().whileTrue(new IntakeNote());
 
     //Right Bumper --- Auto angle arm to speaker
-    coJoystick.rightBumper().onTrue(new startAmp());
+    coJoystick.rightBumper().whileTrue(new startAmp());
+    coJoystick.rightBumper().toggleOnFalse(new scoreAmp());
 
     //Left Bumper --- Reverse intake
     coJoystick.leftBumper().whileTrue(new intakeController(SpeedConstants.kOutake));
@@ -199,7 +192,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote().withTimeout(5));
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
-    NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
+    NamedCommands.registerCommand("Arm Intake Position", new elevatorController(0));
     NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive().withTimeout(3));
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
     NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(3));
