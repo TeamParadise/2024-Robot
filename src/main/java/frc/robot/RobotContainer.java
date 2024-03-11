@@ -39,10 +39,11 @@ import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
-import frc.robot.commands.Intake.beamBreakerBroken;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Primer.PrimeNote;
+import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
+import frc.robot.commands.Primer.FlywheelBeamBreakerBroken;
 import frc.robot.commands.Shooter.setSpeakerPID;
 import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
@@ -195,8 +196,10 @@ public class RobotContainer {
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
-    Trigger beamTrigger = new Trigger(() -> m_intakeSubsystem.getIntakeBeamBreaker());
-    beamTrigger.whileTrue(new beamBreakerBroken());
+    Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker()),
+            primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
+    flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
+    primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
 
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
