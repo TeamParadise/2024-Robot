@@ -110,7 +110,7 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(10));
-    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(0));
+    m_shooterSubsystem.setDefaultCommand(new shooterController(-0.1));
 
 
     //Driver controlls
