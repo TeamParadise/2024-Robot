@@ -32,6 +32,7 @@ import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armAutoShoot;
+import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
@@ -46,6 +47,7 @@ import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Primer.FlywheelBeamBreakerBroken;
 import frc.robot.commands.Shooter.setSpeakerPID;
 import frc.robot.commands.Shooter.shooterController;
+import frc.robot.commands.Shooter.shooterManual;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -125,7 +127,7 @@ public class RobotContainer {
 
     //Left Bumper --- Set new robot coordinates in x-direction
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
-    joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
+    // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
 
 
     //X --- Drive field relative
@@ -149,16 +151,21 @@ public class RobotContainer {
         )));
 
     //Right Bumper --- Reset rotation angle to 0
-    joystick.rightBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
+    joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
     
     //POV Up --- Set arm to optimal angle for shooting note into speaker
     // joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
     joystick.rightTrigger().whileTrue(new armAutoShoot());
 
-    joystick.leftBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
+    joystick.rightBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
+    joystick.povUp().whileTrue(new armManual(0.4));
+    joystick.povDown().whileTrue(new armManual(-0.4));
+    joystick.povLeft().whileTrue(new shooterManual(10));
+    joystick.povRight().whileTrue(new shooterManual(-10));
 
 
-    coJoystick.a().onTrue(new armPID(60));
+    
 
     //Co-Driver
 
@@ -174,6 +181,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
+    coJoystick.a().onTrue(new armPID(60));
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
@@ -189,10 +197,11 @@ public class RobotContainer {
     coJoystick.rightBumper().onTrue(new startAmp());
 
     //Left Bumper --- Reverse intake
-    coJoystick.leftBumper().whileTrue(new intakeController(SpeedConstants.kOutake));
+    coJoystick.leftBumper().whileTrue(new
+     intakeController(SpeedConstants.kOutake));
 
     //Left Trigger --- Retract note with primers
-    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.20));
+    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.1));
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 

@@ -25,7 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private void configMotors() {
     intakeMotor = new CANSparkMax(Constants.MotorConstants.intakeMotorID, MotorType.kBrushless);
-    intakeMotor.setSmartCurrentLimit(60);
+    intakeMotor.setSmartCurrentLimit(30);
     absEncoder = intakeMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
   }

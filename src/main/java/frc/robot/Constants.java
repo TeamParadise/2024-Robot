@@ -39,9 +39,9 @@ public final class Constants {
     public static final AprilTagFieldLayout kFieldLayout =
         AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
     public static final Transform3d kRobotToLeftCam =
-        new Transform3d(new Translation3d(Units.inchesToMeters(18.375), Units.inchesToMeters(15+2.75), Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(-46.5), 0));
+        new Transform3d(new Translation3d(Units.inchesToMeters(18.375), Units.inchesToMeters(-15+2.75), Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(-46.5), 0));
     public static final Transform3d kRobotToRightCam =
-        new Transform3d(new Translation3d(Units.inchesToMeters(18.375), Units.inchesToMeters(-15+2.75),  Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(-46.5), 0));
+        new Transform3d(new Translation3d(Units.inchesToMeters(18.375), Units.inchesToMeters(15+2.75),  Units.inchesToMeters(7.34)), new Rotation3d(0, Units.degreesToRadians(-46.5), 0));
   }
   
   public static final class MotorConstants {
@@ -57,8 +57,8 @@ public final class Constants {
 
     public static final int intakeMotorID = 7; //9  NOT ON CANIVORE
 
-    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
-    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
+    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.85);
+    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.85);
   }
 
   public static class SpeedConstants {

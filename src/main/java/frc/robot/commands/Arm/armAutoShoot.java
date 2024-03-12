@@ -67,6 +67,8 @@ public class armAutoShoot extends Command {
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, angle) + feedforwardMax * Math.cos(positionRadians);
     RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
+
+    //Auto heading
   }
 
   // Called once the command ends or is interrupted.

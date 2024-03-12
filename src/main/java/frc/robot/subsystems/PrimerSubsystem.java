@@ -34,8 +34,8 @@ public class PrimerSubsystem extends SubsystemBase {
     leftPrimer = new CANSparkMax(Constants.MotorConstants.leftPrimerMotorID, MotorType.kBrushless);
     rightPrimer = new CANSparkMax(Constants.MotorConstants.rightPrimerMotorID, MotorType.kBrushless);
 
-    leftPrimer.setSmartCurrentLimit(60);
-    rightPrimer.setSmartCurrentLimit(60);
+    leftPrimer.setSmartCurrentLimit(50);
+    rightPrimer.setSmartCurrentLimit(50);
 
     leftPrimer.setIdleMode(IdleMode.kCoast);
     rightPrimer.setIdleMode(IdleMode.kCoast);

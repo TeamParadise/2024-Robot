@@ -7,6 +7,7 @@ package frc.robot.commands.Arm;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -45,7 +46,6 @@ public class armPID extends Command {
       positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
       positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
       output = armController.calculate(positionDegrees, setpoint) + feedforwardMax*Math.cos(positionRadians);
-      // System.out.println(output);
       SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
       SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
       setpoint = MathUtil.clamp(setpoint, 0, 75);
