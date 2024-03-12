@@ -40,7 +40,6 @@ public class armAutoShoot extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_ArmSubsystem);
     addRequirements(RobotContainer.m_shooterSubsystem);
-    addRequirements(RobotContainer.drivetrain);
 
     leftPIDController = RobotContainer.m_shooterSubsystem.leftShooter.getPIDController();
     rightPIDController = RobotContainer.m_shooterSubsystem.rightShooter.getPIDController();
@@ -70,9 +69,6 @@ public class armAutoShoot extends Command {
     RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
 
     //Auto heading
-    RobotContainer.drivetrain.applyRequest(() -> RobotContainer.headingDrive.withVelocityX(-RobotContainer.joystick.getLeftY() * MaxSpeed)                                                                       
-    .withVelocityY(-RobotContainer.joystick.getLeftX() * MaxSpeed) 
-    .withTargetDirection(new Rotation2d(Math.atan2(5.475 - RobotContainer.drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - RobotContainer.drivetrain.getState().Pose.getX()))));
   }
 
   // Called once the command ends or is interrupted.

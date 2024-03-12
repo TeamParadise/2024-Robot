@@ -28,8 +28,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // absEncoder.setPositionConversionFactor(2);
     // absEncoder.setVelocityConversionFactor(2);
 
-    leftShooter.setSmartCurrentLimit(50);
-    rightShooter.setSmartCurrentLimit(50);
+    leftShooter.setSmartCurrentLimit(30);
+    rightShooter.setSmartCurrentLimit(30);
   }
 
   public void setSpeed(double speed){

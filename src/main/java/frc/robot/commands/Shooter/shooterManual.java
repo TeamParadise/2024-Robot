@@ -6,22 +6,23 @@ package frc.robot.commands.Shooter;
 
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.SparkPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.RobotContainer;
 
-public class shooterPIDF extends Command {
+public class shooterManual extends Command {
+  /** Creates a new shooterManual. */
   private final SparkPIDController leftPIDController, rightPIDController;
-  private double setpoint;
+  double speed = 0;
+  double change;
 
-  /** Creates a new shooterPIDF. */
-  public shooterPIDF(double velocity) {
+  public shooterManual(double change) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_shooterSubsystem);
     leftPIDController = RobotContainer.m_shooterSubsystem.leftShooter.getPIDController();
     rightPIDController = RobotContainer.m_shooterSubsystem.rightShooter.getPIDController();
-    this.setpoint = velocity;
+    this.change = change;
 
     leftPIDController.setP(ShooterConstants.kLeftP);
     leftPIDController.setI(ShooterConstants.kLeftI);
@@ -36,23 +37,20 @@ public class shooterPIDF extends Command {
     rightPIDController.setIZone(ShooterConstants.kRightIz);
     rightPIDController.setFF(ShooterConstants.kRightFF);
     rightPIDController.setOutputRange(ShooterConstants.kRightMin, ShooterConstants.kRightMax);
-    
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Speed", 0);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    setpoint = SmartDashboard.getNumber("Speed", 0);
-    leftPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-setpoint, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(speed, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-speed, CANSparkBase.ControlType.kVelocity);
+    System.out.println(speed);
   }
 
   // Called once the command ends or is interrupted.
