@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -43,8 +44,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    RobotContainer.drivetrain.configurePathPlanner(false);
-    m_autonomousCommand = new PathPlannerAuto("None");
+    if (!AutoBuilder.isConfigured()) {
+      RobotContainer.drivetrain.configurePathPlanner(false);
+      m_autonomousCommand = new PathPlannerAuto("None");
+    }
   }
 
   @Override

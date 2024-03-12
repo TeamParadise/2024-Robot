@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.ShootNote;
+import frc.robot.commands.ShootNoteAuto;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
@@ -225,7 +226,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
     NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive().withTimeout(3));
-    NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
+    NamedCommands.registerCommand("Shoot in Speaker", new ShootNoteAuto(false));
     NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(3));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
