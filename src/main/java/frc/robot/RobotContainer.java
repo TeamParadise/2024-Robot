@@ -151,7 +151,7 @@ public class RobotContainer {
         )));
 
     //Right Bumper --- Reset rotation angle to 0
-    joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
+    // joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
     
     //POV Up --- Set arm to optimal angle for shooting note into speaker
     // joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
