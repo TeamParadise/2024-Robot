@@ -39,16 +39,8 @@ public class alignNoteDrive extends Command {
     turnController.setD(SmartDashboard.getNumber("kd Auto Align", 0.03));
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
-      lastTimeDetected = 0;
+      lastTimeDetected = RobotController.getFPGATime();
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(velocity));
-    } else if (lastTimeDetected < 0.3) {
-      lastTimeDetected = RobotController.getFPGATime() - lastTimeDetected;
-    } else {
-      this.cancel();
-    }
-
-    if (RobotContainer.primerBeamTrigger.getAsBoolean()) {
-      this.cancel();
     }
   }
 
@@ -61,6 +53,9 @@ public class alignNoteDrive extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) {
+      return true;
+    }
     return false;
   }
 }
