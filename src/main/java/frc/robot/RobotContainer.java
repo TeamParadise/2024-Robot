@@ -78,6 +78,9 @@ public class RobotContainer {
 
   private Path2D stage = new Path2D.Float();
   public Trigger underStage = new Trigger(() -> stage.intersects(drivetrain.getState().Pose.getX() - 0.76300749201, 8.220855 - drivetrain.getState().Pose.getY(), 0.76300749201, 0.76300749201));
+
+  public Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker());
+  public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
   
   
   public static final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
@@ -114,7 +117,7 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(10));
-    m_shooterSubsystem.setDefaultCommand(new shooterController(-0.1));
+    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-0.1));
 
 
     //Driver controlls
@@ -171,8 +174,7 @@ public class RobotContainer {
     //Co-Driver
 
     //POV Up --- Move arm to feed note from intake into barrel
-    coJoystick.povUp().onTrue(new armPID(62.5));
-
+    coJoystick.povUp().onTrue(new armPID(52));
     //POV Down --- Angle arm to 0
     coJoystick.povDown().onTrue(new armPID(0));
 
@@ -182,7 +184,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new armPID(60));
+    coJoystick.a().onTrue(new alignNoteDrive(-1).withTimeout(3));
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
@@ -206,8 +208,6 @@ public class RobotContainer {
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
-    Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker()),
-            primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
     flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
 
@@ -225,9 +225,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote().withTimeout(5));
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive().withTimeout(3));
-    NamedCommands.registerCommand("Shoot in Speaker", new ShootNoteAuto(false));
-    NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(3));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-1.2).withTimeout(1));
+    NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
+    NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
+    NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");

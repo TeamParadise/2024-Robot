@@ -16,10 +16,12 @@ import frc.robot.RobotContainer;
 public class alignNoteDrive extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
-  double tx, lastTimeDetected;
+  double tx, lastTimeDetected, timeSinceNote, velocity;
   
   /** Creates a new allignNote. */
-  public alignNoteDrive() {}
+  public alignNoteDrive(double speed) {
+    this.velocity = speed;
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -38,10 +40,14 @@ public class alignNoteDrive extends Command {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
       lastTimeDetected = 0;
-      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(-4));
-    } else if (lastTimeDetected < 0.5) {
+      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(velocity));
+    } else if (lastTimeDetected < 0.3) {
       lastTimeDetected = RobotController.getFPGATime() - lastTimeDetected;
     } else {
+      this.cancel();
+    }
+
+    if (RobotContainer.primerBeamTrigger.getAsBoolean()) {
       this.cancel();
     }
   }

@@ -24,7 +24,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot in Speaker"
+                  "name": "Shoot in Speaker No Retract"
                 }
               }
             ]
@@ -38,6 +38,19 @@
                 "type": "path",
                 "data": {
                   "pathName": "Drive Back Center"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version"
                 }
               },
               {
@@ -82,6 +95,25 @@
                 "type": "path",
                 "data": {
                   "pathName": "2nd note center 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version"
                 }
               },
               {

@@ -128,28 +128,28 @@ public class Robot extends TimedRobot {
     m_ArmLUTRPM = new ArmLUT<>();
 
     m_ArmLUTAngle.put(1.455, 59.05);
-    m_ArmLUTRPM.put(1.455, 1800); //1521
+    m_ArmLUTRPM.put(1.455, 1800);
     
-    m_ArmLUTAngle.put(1.75, 54.95);
-    m_ArmLUTRPM.put(1.75, 1800); //1653
-    
-    m_ArmLUTAngle.put(2.00, 51.44);
-    m_ArmLUTRPM.put(2.00, 1800); // 1798
-    
-    m_ArmLUTAngle.put(2.31, 47.03);
-    m_ArmLUTRPM.put(2.31, 1900);
-    
-    m_ArmLUTAngle.put(2.61, 42.04);
-    m_ArmLUTRPM.put(2.61, 2222);
-    
-    m_ArmLUTAngle.put(2.88, 38.79);
-    m_ArmLUTRPM.put(2.88, 2856);
-    
-    m_ArmLUTAngle.put(3.25, 37.06);
-    m_ArmLUTRPM.put(3.25, 2956);
+    m_ArmLUTAngle.put(1.75, 51.00);
+    m_ArmLUTRPM.put(1.75, 2004);
 
-    m_ArmLUTAngle.put(3.56, 34.04);
-    m_ArmLUTRPM.put(3.56, 3287);
+    m_ArmLUTAngle.put(2.00, 48.01);
+    m_ArmLUTRPM.put(2.00, 2209);
+    
+    m_ArmLUTAngle.put(2.31, 45.03);
+    m_ArmLUTRPM.put(2.31, 2501);
+    
+    m_ArmLUTAngle.put(2.61, 39.01);
+    m_ArmLUTRPM.put(2.61, 3051);
+    
+    m_ArmLUTAngle.put(2.91, 35.50);
+    m_ArmLUTRPM.put(2.91, 3500);
+    
+    m_ArmLUTAngle.put(3.25, 33.50);
+    m_ArmLUTRPM.put(3.25, 3750);
+
+    m_ArmLUTAngle.put(3.56, 33.00); //34.04
+    m_ArmLUTRPM.put(3.56, 4000);
 
     /*m_ArmLUTAngle.put(2.06, 47.2);
     m_ArmLUTRPM.put(2.06, 2500);

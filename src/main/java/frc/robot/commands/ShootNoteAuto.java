@@ -29,8 +29,8 @@ public class ShootNoteAuto extends SequentialCommandGroup {
       addCommands(
         new armPID(50).withTimeout(0.25), 
         new armPID(50).alongWith(
-          new shooterPIDF(SpeedConstants.kShooter).withTimeout(2).andThen(
-          new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(3),
+          new shooterPIDF(SpeedConstants.kShooter).withTimeout(1.3).andThen(
+          new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(1.8),
         new shooterPIDF(0).withTimeout(0.1)
       );
     }
