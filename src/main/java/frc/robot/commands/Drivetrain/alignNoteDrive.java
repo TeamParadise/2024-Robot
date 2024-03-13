@@ -19,7 +19,7 @@ public class alignNoteDrive extends Command {
   double tx, lastTimeDetected, timeSinceNote, velocity;
   
   /** Creates a new allignNote. */
-  public alignNoteDrive(double speed) {
+  public  alignNoteDrive(double speed) {
     this.velocity = speed;
   }
 
@@ -39,7 +39,7 @@ public class alignNoteDrive extends Command {
     turnController.setD(SmartDashboard.getNumber("kd Auto Align", 0.03));
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
-      lastTimeDetected = RobotController.getFPGATime();
+      // lastTimeDetected = RobotController.getFPGATime();
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(velocity));
     }
   }
@@ -53,9 +53,10 @@ public class alignNoteDrive extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) {
-      return true;
-    }
-    return false;
+    // if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) {
+    //   return true;
+    // }
+    // return false;
+    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
   }
 }

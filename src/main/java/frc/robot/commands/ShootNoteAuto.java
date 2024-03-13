@@ -22,10 +22,11 @@ public class ShootNoteAuto extends SequentialCommandGroup {
   public ShootNoteAuto(boolean autoAngle) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    if (autoAngle) {
+    
+    /*if (autoAngle) {
       double distance = RobotContainer.m_ArmSubsystem.getDistance();
       addCommands(new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45));
-    } else {
+    } else {*/
       addCommands(
         new armPID(50).withTimeout(0.25), 
         new armPID(50).alongWith(
@@ -33,6 +34,7 @@ public class ShootNoteAuto extends SequentialCommandGroup {
           new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(1.8),
         new shooterPIDF(0).withTimeout(0.1)
       );
-    }
+    //}
+    
   }
 }

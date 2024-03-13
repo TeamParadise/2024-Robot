@@ -38,7 +38,6 @@ import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
-import frc.robot.commands.Drivetrain.pickUpNote;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
 import frc.robot.commands.Intake.intakeController;
@@ -184,7 +183,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new alignNoteDrive(-1).withTimeout(3));
+    coJoystick.a().onTrue(new alignNoteDrive(-3).withTimeout(3));
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
@@ -222,7 +221,6 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    NamedCommands.registerCommand("Align and Pick Up Note", new pickUpNote().withTimeout(5));
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
     NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-1.2).withTimeout(1));
