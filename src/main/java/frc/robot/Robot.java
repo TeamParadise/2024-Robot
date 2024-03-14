@@ -146,10 +146,19 @@ public class Robot extends TimedRobot {
     m_ArmLUTRPM.put(2.91, 3500);
     
     m_ArmLUTAngle.put(3.25, 33.50);
-    m_ArmLUTRPM.put(3.25, 3750);
+    m_ArmLUTRPM.put(3.25, 3600); //3750
 
     m_ArmLUTAngle.put(3.56, 33.00); //34.04
-    m_ArmLUTRPM.put(3.56, 4000);
+    m_ArmLUTRPM.put(3.56, 3600);
+
+    m_ArmLUTAngle.put(3.78, 32.00); //34.04
+    m_ArmLUTRPM.put(3.78, 3600);
+
+    m_ArmLUTAngle.put(4.04, 31.30); //34.04
+    m_ArmLUTRPM.put(4.04, 3600);
+    
+    m_ArmLUTAngle.put(4.45, 30.00); //34.04
+    m_ArmLUTRPM.put(4.45, 3600);
 
     /*m_ArmLUTAngle.put(2.06, 47.2);
     m_ArmLUTRPM.put(2.06, 2500);

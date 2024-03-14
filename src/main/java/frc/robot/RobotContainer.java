@@ -183,7 +183,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new alignNoteDrive(-3).withTimeout(3));
+    coJoystick.a().onTrue(new ShootNote(false));
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
