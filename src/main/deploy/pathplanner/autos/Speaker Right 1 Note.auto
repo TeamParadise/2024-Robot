@@ -24,10 +24,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot in Speaker"
+                  "name": "Arm Auto Angle"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Arm Auto Shoot"
           }
         },
         {
@@ -62,29 +68,22 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Speaker Right Far"
+                  "pathName": "Speaker to Amp Note"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 2.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shoot in Speaker"
-                      }
-                    }
-                  ]
+                  "name": "Arm Auto Angle"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Arm Auto Shoot"
           }
         }
       ]

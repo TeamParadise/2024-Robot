@@ -49,7 +49,7 @@ public class armPID extends Command {
       SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
       SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
       // setpoint = SmartDashboard.getNumber("Position", 50);
-      setpoint = MathUtil.clamp(setpoint, 0, 65);
+      setpoint = MathUtil.clamp(setpoint, 0, 60);
       SmartDashboard.putNumber("Error", armController.getPositionError());
 
       RobotContainer.m_ArmSubsystem.setVoltage(MathUtil.clamp(output, -5, 5));
