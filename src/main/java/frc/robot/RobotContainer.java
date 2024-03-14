@@ -31,7 +31,6 @@ import frc.robot.commands.ShootNoteAuto;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
-import frc.robot.commands.Arm.armAutoAngle;
 import frc.robot.commands.Arm.armAutoShoot;
 import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
@@ -116,7 +115,7 @@ public class RobotContainer {
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(10));
-    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-1000));
+    m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-1500));
 
 
     //Driver controlls
@@ -128,9 +127,9 @@ public class RobotContainer {
     joystick.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    //Left Bumper --- Set new robot coordinates in x-direction
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    //Left Trigger --- Set new robot coordinates in x-direction
     // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
+    joystick.leftTrigger().whileTrue(new alignNoteDrive(-3).alongWith(new IntakeNote()));
 
 
     //X --- Drive field relative
@@ -147,11 +146,13 @@ public class RobotContainer {
             .withRotationalRate(-joystick.getRightX() * MaxAngularRate
         )));})));
 
-    //Left Trigger --- Set robot angle to track the speaker
-    joystick.leftTrigger().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
+    //Left Bumper --- Set robot angle to track the speaker
+    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+
+    /* joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
             .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
             .withTargetDirection(new Rotation2d(360 - Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
-        )));
+        ))); */
 
     //Right Bumper --- Reset rotation angle to 0
     // joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
@@ -183,7 +184,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new alignNoteDrive(-3).withTimeout(3));
+    coJoystick.a().whileTrue(new alignNoteDrive(-3).withTimeout(3));
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
@@ -223,12 +224,13 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-1.2).withTimeout(1));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-1.5).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-3).withTimeout(1.5));
     NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
     NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
-    NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(2));
-    NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.5));
+    NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
+    NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
     NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
@@ -236,9 +238,11 @@ public class RobotContainer {
     mainAutoChooser.addOption("Right", "Right");
 
     leftAutoChooser.setDefaultOption("Amp", "Amp");
+    leftAutoChooser.addOption("1 Note Speaker", "1 Note Speaker");
     leftAutoChooser.addOption("None", "None");
 
-    centerAutoChooser.setDefaultOption("2 Note Speaker", "2 Note Speaker");
+    centerAutoChooser.setDefaultOption("3 Note Speaker", "3 Note Speaker");
+    centerAutoChooser.addOption("2 Note Speaker", "2 Note Speaker");
     centerAutoChooser.addOption("1 Note Speaker", "1 Note Speaker");
     centerAutoChooser.addOption("Leave", "Leave");
 
@@ -276,6 +280,8 @@ public class RobotContainer {
     if (Robot.allianceCurrentlySelectedAuto == "Left") {
       if (leftAutoChooser.getSelected() == "Amp") {
         return new PathPlannerAuto("Amp");
+      } else if (leftAutoChooser.getSelected() == "1 Note Speaker") {
+        return new PathPlannerAuto("Speaker Left 1 Note");
       } else if (leftAutoChooser.getSelected() == "None") {
         return new PathPlannerAuto("None");
       } else {
@@ -284,6 +290,8 @@ public class RobotContainer {
     } else if (Robot.allianceCurrentlySelectedAuto == "Center") {
       if (centerAutoChooser.getSelected() == "2 Note Speaker") {
         return new PathPlannerAuto("Speaker Center 2 Note Fast");
+      } else if (centerAutoChooser.getSelected() == "3 Note Speaker") {
+        return new PathPlannerAuto("Speaker Center 3 Note Fast");
       } else if (centerAutoChooser.getSelected() == "1 Note Speaker") {
         return new PathPlannerAuto("Speaker Center 1 Note");
       } else if (centerAutoChooser.getSelected() == "Leave") {

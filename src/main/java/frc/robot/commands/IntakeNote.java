@@ -21,7 +21,7 @@ public class IntakeNote extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(//new armPID(35).withTimeout(1),
-                new armPID(52.4).alongWith(new intakeController(SpeedConstants.kIntake).alongWith(new PrimeNote(0.65)).alongWith(new shooterPIDF(-1500))));
+                new armPID(52.4).alongWith(new intakeController(SpeedConstants.kIntake).alongWith(new PrimeNote(0.65)).alongWith(new shooterPIDF(-2500))));
                 
         
   }

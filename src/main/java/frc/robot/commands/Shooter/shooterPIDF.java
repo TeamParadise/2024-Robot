@@ -54,7 +54,7 @@ public class shooterPIDF extends Command {
     leftPIDController.setReference(setpoint, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-setpoint, CANSparkBase.ControlType.kVelocity);
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

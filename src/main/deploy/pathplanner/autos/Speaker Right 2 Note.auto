@@ -16,12 +16,6 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "New Path"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Shoot in Speaker"
@@ -100,7 +94,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Speaker Right Far"
+                  "pathName": "Speaker to Amp Note"
                 }
               },
               {
