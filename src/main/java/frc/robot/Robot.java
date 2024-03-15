@@ -106,6 +106,11 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+      RobotContainer.drivetrain.setDefaultCommand(RobotContainer.drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-RobotContainer.joystick.getLeftY() * RobotContainer.MaxSpeed) // Drive forward with
+                                                                                           // negative Y (forward)
+            .withVelocityY(-RobotContainer.joystick.getLeftX() * RobotContainer.MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-RobotContainer.joystick.getRightX() * RobotContainer.MaxAngularRate
+         )));
     }
 
     if (Constants.VisionConstants.kVisionEnabled) {
