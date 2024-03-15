@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.SingleTagVisionPoseEstimator;
 import frc.robot.commands.Vision.VisionPoseEstimator;
+import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmLUT;
 
 public class Robot extends TimedRobot {
@@ -26,6 +27,8 @@ public class Robot extends TimedRobot {
 
   public static ArmLUT m_ArmLUTAngle;
   public static ArmLUT m_ArmLUTRPM;
+
+  static PathPlannerAuto speaker3NoteCenter;
   
   public static String previouslySelectedAuto = "Left", currentlySelectedAutoSD = "Left", allianceCurrentlySelectedAuto = "Left";
 
@@ -33,6 +36,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     initLUT();
     m_robotContainer = new RobotContainer();
+    RobotContainer.drivetrain.configurePathPlanner(false);
+    speaker3NoteCenter = new PathPlannerAuto("Speaker Center 3 Note Fast");
+    m_autonomousCommand = new PathPlannerAuto("None");
   }
 
   @Override
@@ -44,10 +50,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    if (!AutoBuilder.isConfigured()) {
-      RobotContainer.drivetrain.configurePathPlanner(false);
-      m_autonomousCommand = new PathPlannerAuto("None");
-    }
+    RobotContainer.drivetrain.configurePathPlanner(false);
+    m_autonomousCommand = new PathPlannerAuto("None");
   }
 
   @Override

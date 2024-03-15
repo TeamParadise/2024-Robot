@@ -63,7 +63,7 @@ public class armAutoShoot extends Command {
 
     //Arm angle
     double angle = Robot.m_ArmLUTAngle.get(RobotContainer.m_ArmSubsystem.getDistance());
-    angle = MathUtil.clamp(angle, 0, 60);
+    angle = MathUtil.clamp(angle, 0, 55);
     positionDegrees = RobotContainer.m_intakeSubsystem.getArmPosition();
     positionRadians = Math.toRadians(Math.toRadians(positionDegrees));
     output = armController.calculate(positionDegrees, angle) + feedforwardMax * Math.cos(positionRadians);

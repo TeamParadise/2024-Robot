@@ -79,6 +79,8 @@ public class RobotContainer {
 
   public Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker());
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
+
+  PathPlannerAuto speaker3NoteCenter;
   
   
   public static final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
@@ -208,6 +210,9 @@ public class RobotContainer {
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
+    coJoystick.leftStick().whileTrue(new armPID(45).alongWith(new shooterPIDF(3500)));
+    coJoystick.leftStick().toggleOnFalse(new armPID(45).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
+
     flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
 
@@ -224,7 +229,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-1.5).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-2).withTimeout(1.5));
     NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-3).withTimeout(1.5));
     NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
@@ -291,7 +296,7 @@ public class RobotContainer {
       if (centerAutoChooser.getSelected() == "2 Note Speaker") {
         return new PathPlannerAuto("Speaker Center 2 Note Fast");
       } else if (centerAutoChooser.getSelected() == "3 Note Speaker") {
-        return new PathPlannerAuto("Speaker Center 3 Note Fast");
+        return Robot.speaker3NoteCenter;
       } else if (centerAutoChooser.getSelected() == "1 Note Speaker") {
         return new PathPlannerAuto("Speaker Center 1 Note");
       } else if (centerAutoChooser.getSelected() == "Leave") {
