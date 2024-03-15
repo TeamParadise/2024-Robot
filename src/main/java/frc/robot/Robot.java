@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   public static ArmLUT m_ArmLUTAngle;
   public static ArmLUT m_ArmLUTRPM;
 
-  static PathPlannerAuto speaker3NoteCenter;
+  static PathPlannerAuto centerSpeakerThreeNote, centerSpeakerTwoNote, centerSpeakerOneNote, leftSpeakerOneNote, amp, leave, none, rightSpeakerOneNote, rightSpeakerTwoNote, rightSpeakerThreeNote;
   
   public static String previouslySelectedAuto = "Left", currentlySelectedAutoSD = "Left", allianceCurrentlySelectedAuto = "Left";
 
@@ -37,7 +37,17 @@ public class Robot extends TimedRobot {
     initLUT();
     m_robotContainer = new RobotContainer();
     RobotContainer.drivetrain.configurePathPlanner(false);
-    speaker3NoteCenter = new PathPlannerAuto("Speaker Center 3 Note Fast");
+    centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
+    centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note Fast");
+    centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
+    leftSpeakerOneNote = new PathPlannerAuto("Speaker Left 1 Note");
+    amp = new PathPlannerAuto("Amp");
+    leave = new PathPlannerAuto("Leave");
+    none = new PathPlannerAuto("None");
+    rightSpeakerOneNote = new PathPlannerAuto("Speaker Right 1 Note");
+    rightSpeakerTwoNote = new PathPlannerAuto("Speaker Right 2 Note");
+    rightSpeakerThreeNote = new PathPlannerAuto("Speaker Right 3 Note");
+
     m_autonomousCommand = new PathPlannerAuto("None");
   }
 

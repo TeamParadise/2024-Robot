@@ -284,36 +284,36 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     if (Robot.allianceCurrentlySelectedAuto == "Left") {
       if (leftAutoChooser.getSelected() == "Amp") {
-        return new PathPlannerAuto("Amp");
+        return Robot.amp;
       } else if (leftAutoChooser.getSelected() == "1 Note Speaker") {
-        return new PathPlannerAuto("Speaker Left 1 Note");
+        return Robot.leftSpeakerOneNote;
       } else if (leftAutoChooser.getSelected() == "None") {
-        return new PathPlannerAuto("None");
+        return Robot.none;
       } else {
-        return new PathPlannerAuto("None");
+        return Robot.none;
       }
     } else if (Robot.allianceCurrentlySelectedAuto == "Center") {
       if (centerAutoChooser.getSelected() == "2 Note Speaker") {
-        return new PathPlannerAuto("Speaker Center 2 Note Fast");
+        return Robot.centerSpeakerTwoNote;
       } else if (centerAutoChooser.getSelected() == "3 Note Speaker") {
-        return Robot.speaker3NoteCenter;
+        return Robot.centerSpeakerThreeNote;
       } else if (centerAutoChooser.getSelected() == "1 Note Speaker") {
-        return new PathPlannerAuto("Speaker Center 1 Note");
+        return Robot.centerSpeakerOneNote;
       } else if (centerAutoChooser.getSelected() == "Leave") {
-        return new PathPlannerAuto("Leave");
+        return Robot.leave;
       } else {
-        return new PathPlannerAuto("None");
+        return Robot.none;
       }
     } else if (Robot.allianceCurrentlySelectedAuto == "Right") {
       if (rightAutoChooser.getSelected() == "1 Note Speaker") {
-        return new PathPlannerAuto("Speaker Right 1 Note");
+        return Robot.rightSpeakerOneNote;
       } else if (rightAutoChooser.getSelected() == "2 Note Speaker") {
-        return new PathPlannerAuto("Speaker Right 2 Note");
+        return Robot.rightSpeakerTwoNote;
       } else {
-        return new PathPlannerAuto("None");
+        return Robot.none;
       }
     } else {
-      return new PathPlannerAuto("None");
+      return Robot.none;
     }
   }
 
