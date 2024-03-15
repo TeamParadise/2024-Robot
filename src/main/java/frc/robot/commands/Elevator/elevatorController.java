@@ -18,7 +18,7 @@ public class elevatorController extends Command {
     // Use addRequirements() here to declare subsystem dependencies
     
     addRequirements(RobotContainer.m_ElevatorSubsystem);
-    elevatorController = new PIDController(0.4, 0, 0);
+    elevatorController = new PIDController(0.5, 0, 0);
     this.setpoint = setpoint;
   }
 
@@ -37,7 +37,7 @@ public class elevatorController extends Command {
     setpoint = MathUtil.clamp(setpoint, 0, 52.5);
     elevatorController.setSetpoint(setpoint);
     double output = elevatorController.calculate(RobotContainer.m_ElevatorSubsystem.getEncoder());
-    RobotContainer.m_ElevatorSubsystem.setSpeed(MathUtil.clamp(output, -0.3, 0.3));  
+    RobotContainer.m_ElevatorSubsystem.setSpeed(MathUtil.clamp(output, -0.4, 0.4));  
   }
 
   // Called once the command ends or is interrupted.
