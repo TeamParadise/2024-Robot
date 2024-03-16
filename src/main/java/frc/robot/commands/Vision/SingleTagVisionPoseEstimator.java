@@ -37,6 +37,8 @@ public class SingleTagVisionPoseEstimator extends Command {
         if (RobotContainer.vision.getLatestLeftResult().getBestTarget().getPoseAmbiguity() <= 0.3) {
           RobotContainer.drivetrain.addVisionMeasurement(estimatedLeftPose.get().estimatedPose.toPose2d(), estimatedLeftPose.get().timestampSeconds);
         }
+      } catch(Exception e) {}
+      try {
         if (RobotContainer.vision.getLatestRightResult().getBestTarget().getPoseAmbiguity() <= 0.3) {
           RobotContainer.drivetrain.addVisionMeasurement(estimatedRightPose.get().estimatedPose.toPose2d(), estimatedRightPose.get().timestampSeconds);
         }
