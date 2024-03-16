@@ -16,47 +16,28 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "Right 1"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
-                  "name": "Shoot in Speaker"
+                  "name": "Arm Auto Angle"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Drive Back Right Close"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Drive Speaker Right Close"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot in Speaker"
+                  "name": "Arm Auto Shoot"
                 }
               }
             ]
@@ -69,7 +50,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -104,13 +85,82 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.0
+                        "waitTime": 1.79
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Shoot in Speaker"
+                        "name": "Arm Auto Angle"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Shoot"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right 3 note"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right 4 Shoot"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.73
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Angle"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Shoot"
                       }
                     }
                   ]

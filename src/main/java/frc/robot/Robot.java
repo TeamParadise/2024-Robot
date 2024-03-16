@@ -36,12 +36,12 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     initLUT();
     m_robotContainer = new RobotContainer();
-    RobotContainer.drivetrain.configurePathPlanner(false);
+    RobotContainer.drivetrain.configurePathPlanner(true);
     centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
     centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note Fast");
     centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
     leftSpeakerOneNote = new PathPlannerAuto("Speaker Left 1 Note");
-    amp = new PathPlannerAuto("Amp");
+    amp = new PathPlannerAuto("Amp Defense");
     leave = new PathPlannerAuto("Leave");
     none = new PathPlannerAuto("None");
     rightSpeakerOneNote = new PathPlannerAuto("Speaker Right 1 Note");
@@ -147,21 +147,21 @@ public class Robot extends TimedRobot {
     m_ArmLUTRPM = new ArmLUT<>();
 
     m_ArmLUTAngle.put(1.455, 59.05);
-    m_ArmLUTRPM.put(1.455, 1800);
+    m_ArmLUTRPM.put(1.455, 2000);
     
     m_ArmLUTAngle.put(1.75, 51.00);
-    m_ArmLUTRPM.put(1.75, 2004);
+    m_ArmLUTRPM.put(1.75, 2204);
 
     m_ArmLUTAngle.put(2.00, 48.01);
-    m_ArmLUTRPM.put(2.00, 2209);
+    m_ArmLUTRPM.put(2.00, 2409);
     
     m_ArmLUTAngle.put(2.31, 45.03);
-    m_ArmLUTRPM.put(2.31, 2501);
+    m_ArmLUTRPM.put(2.31, 2701);
     
     m_ArmLUTAngle.put(2.61, 39.01);
-    m_ArmLUTRPM.put(2.61, 3051);
+    m_ArmLUTRPM.put(2.61, 3251);
     
-    m_ArmLUTAngle.put(2.91, 35.50);
+    m_ArmLUTAngle.put(2.91, 35.50); 
     m_ArmLUTRPM.put(2.91, 3500);
     
     m_ArmLUTAngle.put(3.25, 33.50);

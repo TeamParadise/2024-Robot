@@ -237,6 +237,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
     NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
     NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
+    NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.3).withTimeout(1.5)));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");

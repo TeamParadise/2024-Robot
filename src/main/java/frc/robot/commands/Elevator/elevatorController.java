@@ -18,7 +18,7 @@ public class elevatorController extends Command {
     // Use addRequirements() here to declare subsystem dependencies
     
     addRequirements(RobotContainer.m_ElevatorSubsystem);
-    elevatorController = new PIDController(0.5, 0, 0);
+    elevatorController = new PIDController(0.5, 0, .00025);
     this.setpoint = setpoint;
   }
 
