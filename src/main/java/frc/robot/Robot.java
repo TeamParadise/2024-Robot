@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     initLUT();
     m_robotContainer = new RobotContainer();
-    RobotContainer.drivetrain.configurePathPlanner(true);
+    RobotContainer.drivetrain.configurePathPlanner(false);
     centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
     centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note Fast");
     centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
