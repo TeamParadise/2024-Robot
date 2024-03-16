@@ -40,10 +40,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getDistance(){
     //Red
-    return Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+    // return Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
 
     //Blue
-    // return Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+    return Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
 
   }
   
