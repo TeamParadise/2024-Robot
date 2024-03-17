@@ -12,7 +12,7 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -24,10 +24,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Arm Auto Angle"
+                  "name": "Arm Auto Angle No Timeout"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Arm Auto Angle Quick"
           }
         },
         {
@@ -41,6 +47,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         },
         {
@@ -69,38 +81,51 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Speaker to Amp Note"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
-                      "type": "wait",
+                      "type": "path",
                       "data": {
-                        "waitTime": 1.79
+                        "pathName": "Speaker to Amp Note"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "Arm Auto Angle"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Arm Auto Shoot"
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.5
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Arm Auto Angle No Timeout"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Shoot"
                 }
               }
             ]
@@ -132,38 +157,51 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Right 4 Shoot"
-                }
-              },
-              {
-                "type": "sequential",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
-                      "type": "wait",
+                      "type": "path",
                       "data": {
-                        "waitTime": 1.73
+                        "pathName": "Right 4 Shoot"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "Arm Auto Angle"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Arm Auto Shoot"
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.5
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Arm Auto Angle No Timeout"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle Quick"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Shoot"
                 }
               }
             ]

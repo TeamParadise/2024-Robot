@@ -29,9 +29,9 @@ public class ShootNote extends SequentialCommandGroup {
       addCommands(
         new armPID(54).withTimeout(0.25), 
         new armPID(54).alongWith(
-          new PrimeNote(SpeedConstants.kRetract).withTimeout(0.25).andThen(
-          new shooterPIDF(SpeedConstants.kShooter).withTimeout(1)).andThen(
-          new PrimeNote(SpeedConstants.kPrime).withTimeout(0.45))).withTimeout(2),
+          new PrimeNote(SpeedConstants.kRetract).withTimeout(0.15).andThen(
+          new shooterPIDF(SpeedConstants.kShooter).withTimeout(0.85)).andThen(
+          new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35))).withTimeout(2),
         new shooterPIDF(0).withTimeout(0.1)
       );
     }

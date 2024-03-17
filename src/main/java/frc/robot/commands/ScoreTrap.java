@@ -5,24 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.Arm.armPID;
-import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Primer.PrimeNote;
+import frc.robot.commands.Primer.RetractNote;
+import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
-import frc.robot.commands.Shooter.shooterSetpoint;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeNote extends SequentialCommandGroup {
-  /** Creates a new IntakeNote. */
-  public IntakeNote() {
+public class ScoreTrap extends SequentialCommandGroup {
+  /** Creates a new ShootNote. */
+  public ScoreTrap() {
     // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(//new armPID(35).withTimeout(1),
-                new armPID(51.0).alongWith(new intakeController(SpeedConstants.kIntake).alongWith(new PrimeNote(0.65)).alongWith(new shooterPIDF(-2500))));
-                
-        
-  }
+    // addCommands(new FooCommand(), new BarCommand()); 
+      addCommands(
+        new armPID(54).withTimeout(0.25), 
+        new armPID(54).alongWith(
+          new PrimeNote(SpeedConstants.kRetract).withTimeout(0.15).andThen(
+          new shooterPIDF(2000).withTimeout(0.85)).andThen(
+          new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35))).withTimeout(2),
+        new shooterPIDF(0).withTimeout(0.1));
+    }
 }

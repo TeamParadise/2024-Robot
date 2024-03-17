@@ -25,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase {
   private void configMotors() {
     leftArmMotor = new TalonFX(Constants.MotorConstants.leftArmMotorID, "rhino");
     rightArmMotor = new TalonFX(Constants.MotorConstants.rightArmMotorID, "rhino");
-  }
+  } 
 
   public void setSpeed(double speed){
     leftArmMotor.set(speed);
@@ -40,10 +40,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getDistance(){
     //Red
-    // return Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+     return Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
 
     //Blue
-    return Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+    // return Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
 
   }
   

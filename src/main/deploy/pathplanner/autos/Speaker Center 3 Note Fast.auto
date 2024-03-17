@@ -80,7 +80,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
@@ -102,13 +102,19 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Arm Auto Angle"
+                              "name": "Arm Auto Angle No Timeout"
                             }
                           }
                         ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle Quick"
                 }
               },
               {
@@ -150,7 +156,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "race",
                 "data": {
                   "commands": [
                     {
@@ -172,13 +178,19 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Arm Auto Angle"
+                              "name": "Arm Auto Angle No Timeout"
                             }
                           }
                         ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle Quick"
                 }
               },
               {
@@ -227,7 +239,7 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
@@ -249,13 +261,19 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Arm Auto Angle"
+                              "name": "Arm Auto Angle No Timeout"
                             }
                           }
                         ]
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle Quick"
                 }
               },
               {

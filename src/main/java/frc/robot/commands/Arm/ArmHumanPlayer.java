@@ -20,8 +20,8 @@ public class ArmHumanPlayer extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new armPID(52).withTimeout(1),
-      new armPID(52).alongWith(
+      new armPID(43).withTimeout(1),
+      new armPID(43).alongWith(
       new elevatorController(50)).alongWith(
       new intakeController(SpeedConstants.kIntake).alongWith(
       new PrimeNote(0.2)).alongWith(

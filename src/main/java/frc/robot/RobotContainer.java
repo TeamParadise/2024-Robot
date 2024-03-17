@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
+import frc.robot.commands.ScoreTrap;
 import frc.robot.commands.ShootNote;
 import frc.robot.commands.ShootNoteAuto;
 import frc.robot.commands.Arm.ArmHumanPlayer;
@@ -126,8 +127,10 @@ public class RobotContainer {
     joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
 
     //B --- Drive with left joystick?
-    joystick.b().whileTrue(drivetrain
-        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    // joystick.b().whileTrue(drivetrain
+    //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+
+    joystick.b().onTrue(new ScoreTrap());
 
     //Left Trigger --- Set new robot coordinates in x-direction
     // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
@@ -238,6 +241,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
     NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
     NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.3).withTimeout(1.5)));
+    NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
+    NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.5));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");
