@@ -15,7 +15,6 @@ public class alignNote extends Command {
   PIDController turnController;
   double tx;
   
-  \
   /** Creates a new allignNote. */
   public alignNote() {}
 

@@ -19,11 +19,14 @@ import frc.robot.commands.Vision.SingleTagVisionPoseEstimator;
 import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmLUT;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  public static Optional<Alliance> currentAlliance = Optional.empty();
 
   public static ArmLUT m_ArmLUTAngle;
   public static ArmLUT m_ArmLUTRPM;
@@ -36,19 +39,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     initLUT();
     m_robotContainer = new RobotContainer();
-    RobotContainer.drivetrain.configurePathPlanner(false);
-    centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
-    centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note Fast");
-    centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
-    leftSpeakerOneNote = new PathPlannerAuto("Speaker Left 1 Note");
-    amp = new PathPlannerAuto("Amp Defense");
-    leave = new PathPlannerAuto("Leave");
-    none = new PathPlannerAuto("None");
-    rightSpeakerOneNote = new PathPlannerAuto("Speaker Right 1 Note");
-    rightSpeakerTwoNote = new PathPlannerAuto("Speaker Right 2 Note");
-    rightSpeakerThreeNote = new PathPlannerAuto("Speaker Right 3 Note");
-
-    m_autonomousCommand = new PathPlannerAuto("None");
   }
 
   @Override
@@ -60,15 +50,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    RobotContainer.drivetrain.configurePathPlanner(false);
-    m_autonomousCommand = new PathPlannerAuto("None");
   }
 
   @Override
   public void disabledPeriodic() {
     currentlySelectedAutoSD = RobotContainer.mainAutoChooser.getSelected();
     
-    if ((DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Blue)) && currentlySelectedAutoSD == "Left") || (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) && currentlySelectedAutoSD == "Right")) {
+    if ((currentAlliance.equals(Optional.of(DriverStation.Alliance.Blue)) && currentlySelectedAutoSD == "Left") || (currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) && currentlySelectedAutoSD == "Right")) {
       SmartDashboard.putData("Auto Task Chooser", RobotContainer.leftAutoChooser);
       allianceCurrentlySelectedAuto = "Left";
     } else if (currentlySelectedAutoSD == "Center") {
@@ -78,6 +66,22 @@ public class Robot extends TimedRobot {
       SmartDashboard.putData("Auto Task Chooser", RobotContainer.rightAutoChooser);
       allianceCurrentlySelectedAuto = "Right";
     }
+
+    if (DriverStation.isDSAttached() && !currentAlliance.equals(DriverStation.getAlliance())) {
+      RobotContainer.drivetrain.configurePathPlanner(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
+      centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
+      centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note Fast");
+      centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
+      leftSpeakerOneNote = new PathPlannerAuto("Speaker Left 1 Note");
+      amp = new PathPlannerAuto("Amp Defense");
+      leave = new PathPlannerAuto("Leave");
+      none = new PathPlannerAuto("None");
+      rightSpeakerOneNote = new PathPlannerAuto("Speaker Right 1 Note");
+      rightSpeakerTwoNote = new PathPlannerAuto("Speaker Right 2 Note");
+      rightSpeakerThreeNote = new PathPlannerAuto("Speaker Right 3 Note");
+
+      currentAlliance = DriverStation.getAlliance();
+    }
   }
 
   @Override
@@ -85,7 +89,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotContainer.drivetrain.configurePathPlanner(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
@@ -100,7 +103,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+    RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(0).withVelocityX(0).withVelocityY(0));
+  }
 
   @Override
   public void teleopInit() {
