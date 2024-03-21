@@ -124,7 +124,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putBoolean("Arm Auto Aim Trigger", RobotContainer.autoAimTrigger.and(m_robotContainer.underStage.negate()).getAsBoolean());
+  }
 
   @Override
   public void teleopExit() {}

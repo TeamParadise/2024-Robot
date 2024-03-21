@@ -17,7 +17,7 @@ public class armPID extends Command {
   double setpoint, output, positionDegrees, positionRadians, velocity;
 
   private final double 
-    kp = .55, 
+    kp = .65, 
     ki = 0, 
     kd = 0,
     maxAccel = .5,
@@ -54,7 +54,7 @@ public class armPID extends Command {
 
       SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
       SmartDashboard.putNumber("feedforward", feedforwardMax*Math.cos(positionRadians));
-      // setpoint = SmartDashboard.getNumber("Position", 50);
+      // setpoint = SmartDashboard.getNumber("Position", 10);
       setpoint = MathUtil.clamp(setpoint, 0, 54);
       SmartDashboard.putNumber("Error", armController.getPositionError());
 

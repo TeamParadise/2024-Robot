@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Back Up Center"
+          }
+        },
+        {
           "type": "sequential",
           "data": {
             "commands": [
@@ -19,12 +25,6 @@
                 "type": "parallel",
                 "data": {
                   "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Back Up Center"
-                      }
-                    },
                     {
                       "type": "named",
                       "data": {
@@ -44,16 +44,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Drive Back Center"
-                }
-              }
-            ]
+            "pathName": "Drive Back Center"
           }
         },
         {
@@ -63,7 +56,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Align and pick up note better version fast"
+                  "name": "Align and pick up note better version"
                 }
               },
               {
@@ -80,7 +73,7 @@
           "data": {
             "commands": [
               {
-                "type": "deadline",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
@@ -96,25 +89,25 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.5
+                              "waitTime": 0.15
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Arm Auto Angle No Timeout"
+                              "name": "Retract"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Arm Auto Angle"
                             }
                           }
                         ]
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Arm Auto Angle Quick"
                 }
               },
               {
@@ -172,7 +165,13 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.5
+                              "waitTime": 0.15
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Retract"
                             }
                           },
                           {
@@ -219,7 +218,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Align and pick up note better version fast"
+                        "name": "Align and pick up note better version"
                       }
                     },
                     {
@@ -255,7 +254,13 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.5
+                              "waitTime": 0.15
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Retract"
                             }
                           },
                           {
@@ -280,6 +285,44 @@
                 "type": "named",
                 "data": {
                   "name": "Arm Auto Shoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Speaker to Mid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Intake Position"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
                 }
               }
             ]

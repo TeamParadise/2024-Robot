@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,6 +42,7 @@ import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
 import frc.robot.commands.Intake.intakeController;
+import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
@@ -58,6 +60,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import java.awt.geom.Path2D;
+import java.util.Optional;
 
 public class RobotContainer {
   public static double MaxSpeed = 6; // 6 meters per second desired top speed
@@ -80,6 +83,7 @@ public class RobotContainer {
 
   public Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker());
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
+  public static Trigger autoAimTrigger = new Trigger(() -> drivetrain.getState().Pose.getX() > 9.5);
 
   PathPlannerAuto speaker3NoteCenter;
   
@@ -119,6 +123,7 @@ public class RobotContainer {
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
     m_ArmSubsystem.setDefaultCommand(new armPID(10));
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-1500));
+    m_intakeSubsystem.setDefaultCommand(new intakePIDF(0));
 
 
     //Driver controlls
@@ -130,7 +135,9 @@ public class RobotContainer {
     // joystick.b().whileTrue(drivetrain
     //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
-    joystick.b().onTrue(new ScoreTrap());
+    joystick.b().onTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
+            .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
+            .withTargetDirection(new Rotation2d(Robot.currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? 315 : 45))));
 
     //Left Trigger --- Set new robot coordinates in x-direction
     // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
@@ -154,11 +161,10 @@ public class RobotContainer {
     //Left Bumper --- Set robot angle to track the speaker
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-    /* joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
-            .withTargetDirection(new Rotation2d(360 - Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
-        ))); */
-
+    // joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
+    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
+    //         .withTargetDirection(new Rotation2d(360 - Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
+    //     ))); 
     //Right Bumper --- Reset rotation angle to 0
     // joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
     
@@ -205,8 +211,7 @@ public class RobotContainer {
     coJoystick.rightBumper().onTrue(new startAmp());
 
     //Left Bumper --- Reverse intake
-    coJoystick.leftBumper().whileTrue(new
-     intakeController(SpeedConstants.kOutake));
+    coJoystick.leftBumper().whileTrue(new intakePIDF(-2500));
 
     //Left Trigger --- Retract note with primers
     coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.1));
@@ -222,6 +227,9 @@ public class RobotContainer {
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
 
+    autoAimTrigger.and(() -> SmartDashboard.getBoolean("Zoning Enabled", false)).and(underStage.negate()).and(() -> m_ArmSubsystem.getCurrentCommand() == null).whileTrue(new armAutoShoot());
+
+
     headingDrive.HeadingController.setPID(10, 0, 0);
 
     if (Utils.isSimulation()) {
@@ -232,8 +240,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-2).withTimeout(1.5));
-    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-3).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-2.5).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-4).withTimeout(1.5));
     NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
     NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
@@ -243,6 +251,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.3).withTimeout(1.5)));
     NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
     NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.5));
+    NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");
@@ -270,6 +279,9 @@ public class RobotContainer {
     rightAutoChooser.setDefaultOption("2 Note Speaker", "2 Note Speaker");
 
     SmartDashboard.putData("Side Auto Chooser", mainAutoChooser);
+    SmartDashboard.putBoolean("Zoning Enabled", true);
+
+    
 
     // Configure stage coordinates
     stage.moveTo(10, 2.6211122);

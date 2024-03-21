@@ -22,11 +22,11 @@ public class scoreAmp extends SequentialCommandGroup {
 
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new armPID(48).alongWith(
-      new elevatorController(0).withTimeout(2).alongWith(
+      new armPID(35).alongWith(
+      new elevatorController(40).withTimeout(2).alongWith(
       new shooterController(0).withTimeout(0).andThen(
-      new shooterPIDF(750)).withTimeout(1).andThen(
-      new PrimeNote(0.4).withTimeout(1))).andThen(
+      new shooterPIDF(550)).withTimeout(1).andThen(
+      new PrimeNote(0.25).withTimeout(1))).andThen(
       new elevatorController(0).alongWith(new WaitCommand(2)))));
   }
 }

@@ -19,8 +19,8 @@ public class startAmp extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new armPID(48).withTimeout(1),
-      new armPID(48).alongWith(
-      new elevatorController(0).withTimeout(2)));
+      new armPID(35).withTimeout(1),
+      new armPID(35).alongWith(
+      new elevatorController(40).withTimeout(2)));
   }
 }

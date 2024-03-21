@@ -86,6 +86,16 @@ public final class Constants {
 
   }
   
+  public static class IntakeConstants {
+    public static final double kLeftP = 0.0000455;
+    public static final double kLeftI = 0;
+    public static final double kLeftD = 0.11;
+    public static final double kLeftIz = 0;
+    public static final double kLeftFF = 0.00018;
+    public static final double kLeftMax = 1;
+    public static final double kLeftMin = -1;
+  }
+  
   public static class ShooterConstants  {
     public static final double kLeftP = 0.0005;
     public static final double kLeftI = 0;

@@ -50,7 +50,6 @@ public class shooterManual extends Command {
   public void execute() {
     leftPIDController.setReference(speed, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-speed, CANSparkBase.ControlType.kVelocity);
-    System.out.println(speed);
   }
 
   // Called once the command ends or is interrupted.

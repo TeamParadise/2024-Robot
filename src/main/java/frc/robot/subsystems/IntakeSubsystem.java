@@ -16,7 +16,7 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
-  CANSparkMax intakeMotor;
+  public CANSparkMax intakeMotor;
   AbsoluteEncoder absEncoder;
  
   public IntakeSubsystem() {
@@ -41,5 +41,6 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ABS Position", absEncoder.getPosition());
   }
 }
