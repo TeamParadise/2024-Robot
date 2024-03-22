@@ -27,17 +27,13 @@ public class alignNoteDriveReq extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnController = new PIDController(0.12, 0.0, 0.03);
+    turnController = new PIDController(0.18, 0.0, 0);
     turnController.reset();
-    SmartDashboard.putNumber("kp Auto Align", 0.1);
-    SmartDashboard.putNumber("kd Auto Align", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turnController.setP(SmartDashboard.getNumber("kp Auto Align", 0.12));
-    turnController.setD(SmartDashboard.getNumber("kd Auto Align", 0.03));
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
       // lastTimeDetected = RobotController.getFPGATime();
