@@ -39,6 +39,7 @@ import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
+import frc.robot.commands.Drivetrain.alignNoteDriveReq;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
 import frc.robot.commands.Intake.intakeController;
@@ -141,7 +142,7 @@ public class RobotContainer {
 
     //Left Trigger --- Set new robot coordinates in x-direction
     // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
-    joystick.leftTrigger().whileTrue(new alignNoteDrive(-3).alongWith(new IntakeNote()));
+    joystick.leftTrigger().whileTrue(new alignNoteDriveReq(-2).alongWith(new IntakeNote()));
 
 
     //X --- Drive field relative
@@ -175,7 +176,7 @@ public class RobotContainer {
     joystick.rightBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
     joystick.povUp().whileTrue(new armManual(0.4));
-    joystick.povDown().whileTrue(new armManual(-0.4));
+    joystick.povDown().whileTrue(new armPID(20));
     joystick.povLeft().whileTrue(new shooterManual(10));
     joystick.povRight().whileTrue(new shooterManual(-10));
 
@@ -218,8 +219,8 @@ public class RobotContainer {
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
-    coJoystick.leftStick().whileTrue(new armPID(45).alongWith(new shooterPIDF(3500)));
-    coJoystick.leftStick().toggleOnFalse(new armPID(45).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
+    coJoystick.leftStick().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
+    coJoystick.leftStick().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
 
     flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
@@ -227,7 +228,7 @@ public class RobotContainer {
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
 
-    autoAimTrigger.and(() -> SmartDashboard.getBoolean("Zoning Enabled", false)).and(underStage.negate()).and(() -> m_ArmSubsystem.getCurrentCommand() == null).whileTrue(new armAutoShoot());
+    // autoAimTrigger.and(() -> SmartDashboard.getBoolean("Zoning Enabled", false)).and(underStage.negate()).and(() -> m_ArmSubsystem.getCurrentCommand() == null).whileTrue(new armAutoShoot());
 
 
     headingDrive.HeadingController.setPID(10, 0, 0);
@@ -240,8 +241,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-2.5).withTimeout(1.5));
-    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-4).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-2.8).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-2.5).withTimeout(1.5));
     NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
     NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));

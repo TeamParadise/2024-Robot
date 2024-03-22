@@ -47,16 +47,6 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Auto Task Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Side Auto Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/VisionSubsystem/Left Camera Field": {
         "bottom": 1476,
         "height": 8.210550308227539,
