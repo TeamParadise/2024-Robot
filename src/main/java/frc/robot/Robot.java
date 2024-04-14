@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
     if (DriverStation.isDSAttached() && !currentAlliance.equals(DriverStation.getAlliance())) {
       RobotContainer.drivetrain.configurePathPlanner(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
       centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
-      centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note Fast");
+      centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note");
       centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
       leftSpeakerOneNote = new PathPlannerAuto("Speaker Left 1 Note");
       amp = new PathPlannerAuto("Amp Defense");
@@ -165,13 +165,13 @@ public class Robot extends TimedRobot {
     m_ArmLUTAngle.put(2.00, 48.01);
     m_ArmLUTRPM.put(2.00, 2409);
     
-    m_ArmLUTAngle.put(2.31, 45.03);
+    m_ArmLUTAngle.put(2.31, 43.03);
     m_ArmLUTRPM.put(2.31, 2701);
     
-    m_ArmLUTAngle.put(2.61, 39.01);
+    m_ArmLUTAngle.put(2.61, 37.01);
     m_ArmLUTRPM.put(2.61, 3251);
     
-    m_ArmLUTAngle.put(2.91, 35.50); 
+    m_ArmLUTAngle.put(2.91, 34.50); 
     m_ArmLUTRPM.put(2.91, 3500);
     
     m_ArmLUTAngle.put(3.25, 33.50);

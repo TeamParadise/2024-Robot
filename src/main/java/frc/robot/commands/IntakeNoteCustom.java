@@ -16,13 +16,13 @@ import frc.robot.commands.Shooter.shooterSetpoint;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeNote extends SequentialCommandGroup {
+public class IntakeNoteCustom extends SequentialCommandGroup {
   /** Creates a new IntakeNote. */
-  public IntakeNote() {
+  public IntakeNoteCustom() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(//new armPID(35).withTimeout(1),
-                new armPID(40).alongWith(new intakePIDF(4250).alongWith(new PrimeNote(0.45)).alongWith(new shooterPIDF(-2500))));
+                new armPID(15).alongWith(new intakePIDF(4250).alongWith(new PrimeNote(0.45)).alongWith(new shooterPIDF(-2500))));
                 
         
   }

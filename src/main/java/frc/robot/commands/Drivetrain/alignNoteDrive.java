@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 public class alignNoteDrive extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
-  double tx, lastTimeDetected, timeSinceNote, velocity;
+  double tx, lastTimeDetected, timeSinceNote, velocity, originalDetection;
   
   /** Creates a new allignNote. */
   public  alignNoteDrive(double speed) {
@@ -26,6 +26,8 @@ public class alignNoteDrive extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timeSinceNote = -1;
+    originalDetection = 0;
     turnController = new PIDController(0.12, 0.0, 0.03);
     turnController.reset();
     SmartDashboard.putNumber("kp Auto Align", 0.1);
@@ -35,8 +37,6 @@ public class alignNoteDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turnController.setP(SmartDashboard.getNumber("kp Auto Align", 0.12));
-    turnController.setD(SmartDashboard.getNumber("kd Auto Align", 0.03));
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
       // lastTimeDetected = RobotController.getFPGATime();
@@ -56,7 +56,21 @@ public class alignNoteDrive extends Command {
     // if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) {
     //   return true;
     // }
-    // return false;
+    // if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker() && timeSinceNote == -1) {
+    //   originalDetection = RobotController.getFPGATime();
+    //   timeSinceNote = 0;
+    // } else if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) {
+    //   timeSinceNote = RobotController.getFPGATime() - originalDetection;
+    // } else {
+    //   originalDetection = 0;
+    //   timeSinceNote = -1;
+    // }
+
+    // if (timeSinceNote > 200000) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
     return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
   }
 }

@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 public class alignNoteDriveReq extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
-  double tx, lastTimeDetected, timeSinceNote, velocity;
+  double tx, lastTimeDetected, timeSinceNote, velocity, originalDetection;
   
   /** Creates a new allignNote. */
   public  alignNoteDriveReq(double speed) {
@@ -27,6 +27,8 @@ public class alignNoteDriveReq extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timeSinceNote = -1;
+    originalDetection = 0;
     turnController = new PIDController(0.18, 0.0, 0);
     turnController.reset();
   }
@@ -54,6 +56,22 @@ public class alignNoteDriveReq extends Command {
     //   return true;
     // }
     // return false;
-    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
+  //   if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker() && timeSinceNote == -1) {
+  //     originalDetection = RobotController.getFPGATime();
+  //     timeSinceNote = 0;
+  //   } else if (RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) {
+  //     timeSinceNote = RobotController.getFPGATime() - originalDetection;
+  //   } else {
+  //     originalDetection = 0;
+  //     timeSinceNote = -1;
+  //   }
+
+  //   if (timeSinceNote > 350000) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+  return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
   }
 }

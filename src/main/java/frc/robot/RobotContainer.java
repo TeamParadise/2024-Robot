@@ -23,13 +23,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
+import frc.robot.commands.IntakeNoteCustom;
 import frc.robot.commands.ScoreTrap;
 import frc.robot.commands.ShootNote;
 import frc.robot.commands.ShootNoteAuto;
+import frc.robot.commands.ShootNoteCustom;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
@@ -222,6 +225,11 @@ public class RobotContainer {
     coJoystick.leftStick().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
     coJoystick.leftStick().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
 
+    coJoystick.back().whileTrue(new armPID(54));
+    coJoystick.start().whileTrue(new IntakeNoteCustom());
+
+    coJoystick.rightStick().onTrue(new ShootNoteCustom(false));
+
     flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
 
@@ -249,10 +257,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
     NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
     NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
-    NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.3).withTimeout(1.5)));
+    NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.15).withTimeout(1.5)));
     NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
-    NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.5));
+    NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.75));
     NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
+    NamedCommands.registerCommand("Arm Pos", new armPID(10).withTimeout(1));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");
