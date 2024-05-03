@@ -41,8 +41,10 @@ import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
+import frc.robot.commands.Drivetrain.alignNote;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.alignNoteDriveReq;
+import frc.robot.commands.Drivetrain.alignNoteTranslation;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.Outtake;
 import frc.robot.commands.Intake.intakeController;
@@ -103,7 +105,7 @@ public class RobotContainer {
                                                                // driving in open loop                         
                                                                
   public static final SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric()
-      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDeadband(0).withRotationalDeadband(0) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
 
@@ -145,7 +147,7 @@ public class RobotContainer {
 
     //Left Trigger --- Set new robot coordinates in x-direction
     // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
-    joystick.leftTrigger().whileTrue(new alignNoteDriveReq(-2).alongWith(new IntakeNote()));
+    joystick.leftTrigger().whileTrue(new alignNoteTranslation().alongWith(new IntakeNote()));
 
 
     //X --- Drive field relative

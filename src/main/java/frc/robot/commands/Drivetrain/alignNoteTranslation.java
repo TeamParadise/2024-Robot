@@ -7,30 +7,32 @@ package frc.robot.commands.Drivetrain;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
-public class alignNote extends Command {
+public class alignNoteTranslation extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
-  double tx;
+  double tx, applyY;
+  ChassisSpeeds applyX;
   
   /** Creates a new allignNote. */
-  public alignNote() {}
+  public alignNoteTranslation() {}
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnController = new PIDController(0.12, 0.0, 0.001);
+    turnController = new PIDController(0.12, 0.0, 0.03);
     turnController.reset();
   }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
-      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)));
+      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withVelocityX(-1).withVelocityY(applyX));
     } else {
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(0));
     }
