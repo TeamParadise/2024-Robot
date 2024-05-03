@@ -14,9 +14,9 @@ import frc.robot.RobotContainer;
 
 public class alignNoteTranslation extends Command {
   PhotonPipelineResult visionResult;
-  PIDController turnController;
-  double tx, applyY;
-  ChassisSpeeds applyX;
+  double robotX, robotY;
+  PIDController driveController;
+  Translation2d translated;
   
   /** Creates a new allignNote. */
   public alignNoteTranslation() {}
@@ -24,24 +24,29 @@ public class alignNoteTranslation extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnController = new PIDController(0.12, 0.0, 0.03);
-    turnController.reset();
+    driveController = new PIDController(0.12, 0.0, 0.03);
+    driveController.reset();
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
+
     if (visionResult.hasTargets()) {
-      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withVelocityX(-1).withVelocityY(applyX));
+      robotX = 0;
+      robotY = -driveController.calculate(visionResult.getBestTarget().getYaw(), 0);
+
+      translated = new Translation2d(robotX, robotY).rotateBy(RobotContainer.drivetrain.getPoseRotation());
+      RobotContainer.drivetrain.setControl(RobotContainer.drive.withVelocityX(translated.getX()).withVelocityY(translated.getY()));
     } else {
-      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(0));
+      RobotContainer.drivetrain.setControl(RobotContainer.drive.withRotationalRate(0));
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(0).withVelocityX(0).withVelocityY(0));
+      RobotContainer.drivetrain.setControl(RobotContainer.drive.withRotationalRate(0).withVelocityX(0).withVelocityY(0));
   }
 
   // Returns true when the command should end.
