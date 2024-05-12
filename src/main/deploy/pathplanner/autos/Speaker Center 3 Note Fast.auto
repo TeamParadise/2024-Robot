@@ -77,9 +77,9 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "path",
+                      "type": "named",
                       "data": {
-                        "pathName": "New New Path"
+                        "name": "Point At Speaker"
                       }
                     },
                     {
@@ -193,6 +193,25 @@
                 }
               },
               {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Angle Quick"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Point At Speaker"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "Arm Auto Shoot"
@@ -276,9 +295,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "deadline",
                 "data": {
-                  "name": "Arm Auto Angle Quick"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Angle Quick"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Point At Speaker"
+                      }
+                    }
+                  ]
                 }
               },
               {

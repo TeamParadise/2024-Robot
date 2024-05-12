@@ -7,8 +7,10 @@ package frc.robot.commands.Drivetrain;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
@@ -24,7 +26,8 @@ public class alignNoteTranslation extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveController = new PIDController(0.12, 0.0, 0.03);
+    driveController = new PIDController(0.13, 0.0, 0.004 );
+    driveController.setTolerance(0);
     driveController.reset();
   }
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,13 +36,14 @@ public class alignNoteTranslation extends Command {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
 
     if (visionResult.hasTargets()) {
-      robotX = 0;
+      robotX = -2;
       robotY = -driveController.calculate(visionResult.getBestTarget().getYaw(), 0);
 
       translated = new Translation2d(robotX, robotY).rotateBy(RobotContainer.drivetrain.getPoseRotation());
-      RobotContainer.drivetrain.setControl(RobotContainer.drive.withVelocityX(translated.getX()).withVelocityY(translated.getY()));
+      RobotContainer.drivetrain.setControl(RobotContainer.headingDrive.withVelocityX(translated.getX()).withVelocityY(translated.getY()).withTargetDirection(new Rotation2d(Math.atan2(5.475 - RobotContainer.drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - RobotContainer.drivetrain.getState().Pose.getX()))));
     } else {
-      RobotContainer.drivetrain.setControl(RobotContainer.drive.withRotationalRate(0));
+      RobotContainer.drivetrain.setControl(RobotContainer.headingDrive.withVelocityX(0));
+      System.out.println("not found");
     }
   }
 
@@ -47,7 +51,7 @@ public class alignNoteTranslation extends Command {
   @Override
   public void end(boolean interrupted) {
       RobotContainer.drivetrain.setControl(RobotContainer.drive.withRotationalRate(0).withVelocityX(0).withVelocityY(0));
-  }
+  } 
 
   // Returns true when the command should end.
   @Override
