@@ -23,6 +23,7 @@ import frc.robot.commands.Vision.VisionPoseEstimator;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmLUT;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -94,7 +95,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    RobotContainer.drivetrain.seedFieldRelative(new Pose2d().rotateBy(RobotContainer.drivetrain.getState().Pose.getRotation().minus(Rotation2d.fromDegrees(180))));
+    Shuffleboard.selectTab("Match");
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {

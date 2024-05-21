@@ -187,12 +187,6 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "Arm Auto Angle Quick"
-                }
-              },
-              {
                 "type": "parallel",
                 "data": {
                   "commands": [

@@ -50,7 +50,7 @@ public class PrimerSubsystem extends SubsystemBase {
     return !flywheelBeamBreaker.get();
   }
 
-  public boolean getPrimerBeamBreaker() {
+  public boolean  getPrimerBeamBreaker() {
     return !primerBeamBreaker.get();
   }
 
