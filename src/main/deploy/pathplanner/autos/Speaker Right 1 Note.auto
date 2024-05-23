@@ -12,78 +12,33 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Back Up Right"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Arm Auto Angle"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Arm Auto Shoot"
+            "pathName": "Back Up Right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Right Far"
+            "pathName": "there is no way this works"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Align and pick up note better version"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
+            "pathName": "there is no way this works 2"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Speaker to Amp Note"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Arm Auto Angle"
-                }
-              }
-            ]
+            "pathName": "there is no way this works 3"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Arm Auto Shoot"
+            "pathName": "there is no way this works 4"
           }
         }
       ]
