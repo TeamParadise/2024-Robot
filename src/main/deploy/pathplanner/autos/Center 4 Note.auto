@@ -10,7 +10,50 @@
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 1 (2nd Note Pick)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 2 (2nd Note Score)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 3 (3nd Note Pick)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 4 (3rd Note Score)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 5 (4th Note Pick)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 6 (4th Note Score)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center 4 Note 7 (Center Pick)"
+          }
+        }
+      ]
     }
   },
   "folder": null,
