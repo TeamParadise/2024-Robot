@@ -28,7 +28,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Arm Auto Angle"
+                        "name": "Arm Auto Angle Quick"
                       }
                     }
                   ]
@@ -77,9 +77,22 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "Point At Speaker"
+                        "commands": [
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Center"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Point At Speaker"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -111,9 +124,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "deadline",
                 "data": {
-                  "name": "Arm Auto Shoot"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Shoot"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Point At Speaker"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -187,7 +213,7 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
