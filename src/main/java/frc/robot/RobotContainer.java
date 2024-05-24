@@ -136,57 +136,90 @@ public class RobotContainer {
 
     //Driver controlls
 
-    //A --- Brake drivetrain
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-
-    //B --- Drive with left joystick?
-    // joystick.b().whileTrue(drivetrain
-    //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-
-    joystick.b().onTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
-            // .withTargetDirection(new Rotation2d(Robot.currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? 315 : 45))
-            .withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX()))))); //Trig for speaker rotation
-
-    //Left Trigger --- Set new robot coordinates in x-direction
-    // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
-    joystick.leftTrigger().whileTrue(new alignNoteTranslation().alongWith(new IntakeNote()));
-
-
-    //X --- Drive field relative
+    joystick.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    joystick.rightTrigger(0.1).whileTrue(new armAutoShoot());
+    joystick.rightBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
+             .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
+             .withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
+    joystick.a().whileTrue(new PrimeNote(SpeedConstants.kPrime));
+    joystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.1).alongWith(new intakePIDF(-2500)));
+    joystick.leftBumper().whileTrue(new IntakeNote());
     joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
-         )));})));
-
-    //Y --- Drive non-field relative?
+           .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+           .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+          )));})));
+    joystick.b().onTrue(new ShootNote(false));
     joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-                                                                                           // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
-        )));})));
-
-    //Left Bumper --- Set robot angle to track the speaker
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
-
-    // joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
-    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
-    //         .withTargetDirection(new Rotation2d(360 - Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
-    //     ))); 
-    //Right Bumper --- Reset rotation angle to 0
-    // joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
+         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+         .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+       )));})));
+    joystick.start().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
+    joystick.start().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
+    joystick.rightStick().whileTrue(drivetrain.applyRequest(() -> brake));
     
-    //POV Up --- Set arm to optimal angle for shooting note into speaker
-    // joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
-    joystick.rightTrigger().whileTrue(new armAutoShoot());
+    
+    //POV Up --- Move arm to feed note from intake into barrel
+    joystick.povUp().onTrue(new armPID(52));
+    //POV Down --- Angle arm to 0
+    joystick.povDown().onTrue(new armPID(0));
 
-    joystick.rightBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
+    //POV Left - sets position of elavator to bottom
+    joystick.povLeft().onTrue(new elevatorController(0));
+    //POV Right --- Sets position of elevator to top
+    joystick.povRight().onTrue(new elevatorController(52.5));
 
-    joystick.povUp().whileTrue(new armManual(0.4));
-    joystick.povDown().whileTrue(new armPID(20));
-    joystick.povLeft().whileTrue(new shooterManual(10));
-    joystick.povRight().whileTrue(new shooterManual(-10));
+
+    // //A --- Brake drivetrain
+    // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+
+    // //B --- Drive with left joystick?
+    // // joystick.b().whileTrue(drivetrain
+    // //     .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+
+    // joystick.b().onTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
+    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
+    //         // .withTargetDirection(new Rotation2d(Robot.currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? 315 : 45))
+    //         .withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX()))))); //Trig for speaker rotation
+
+    // //Left Trigger --- Set new robot coordinates in x-direction
+    // // joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative(new Pose2d(Units.inchesToMeters(15), 3, new Rotation2d(0)))));
+    // joystick.leftTrigger().whileTrue(new alignNoteTranslation().alongWith(new IntakeNote()));
+
+
+    // //X --- Drive field relative
+    // joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+    //                                                                                        // negative Y (forward)
+    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+    //      )));})));
+
+    // //Y --- Drive non-field relative?
+    // joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+    //                                                                                        // negative Y (forward)
+    //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+    //     )));})));
+
+    // //Left Bumper --- Set robot angle to track the speaker
+    // joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+
+    // // joystick.leftBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
+    // //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
+    // //         .withTargetDirection(new Rotation2d(360 - Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5 - Units.inchesToMeters(36.125)) - drivetrain.getState().Pose.getX())) //Trig for speaker rotation
+    // //     ))); 
+    // //Right Bumper --- Reset rotation angle to 0
+    // // joystick.leftBumper().onTrue(new InstantCommand(() -> drivetrain.seedFieldRelative(new Pose2d(16.03, 5.475, new Rotation2d(0)))));
+    
+    // //POV Up --- Set arm to optimal angle for shooting note into speaker
+    // // joystick.povUp().whileTrue(new armAutoAngle().alongWith(new shooterPIDF(m_ArmSubsystem.getDistance())));
+    // joystick.rightTrigger().whileTrue(new armAutoShoot());
+
+    // joystick.rightBumper().whileTrue(new PrimeNote(SpeedConstants.kPrime));
+
+    // joystick.povUp().whileTrue(new armManual(0.4));
+    // joystick.povDown().whileTrue(new armPID(20));
+    // joystick.povLeft().whileTrue(new shooterManual(10));
+    // joystick.povRight().whileTrue(new shooterManual(-10));
 
 
     
@@ -267,7 +300,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.75));
     NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
     NamedCommands.registerCommand("Arm Pos", new armPID(10).withTimeout(1));
-    NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.5) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))).withTimeout(1));
+    NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))).withTimeout(1));
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");
