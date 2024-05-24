@@ -84,7 +84,6 @@ public class Robot extends TimedRobot {
       none = new PathPlannerAuto("None");
       rightSpeakerOneNote = new PathPlannerAuto("Speaker Right 1 Note");
       rightSpeakerTwoNote = new PathPlannerAuto("Speaker Right 2 Note");
-      rightSpeakerThreeNote = new PathPlannerAuto("Speaker Right 3 Note");
 
       currentAlliance = DriverStation.getAlliance();
     }

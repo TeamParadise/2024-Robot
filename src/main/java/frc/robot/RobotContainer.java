@@ -6,31 +6,26 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 
-import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.IntakeNoteCustom;
-import frc.robot.commands.ScoreTrap;
 import frc.robot.commands.ShootNote;
 import frc.robot.commands.ShootNoteAuto;
 import frc.robot.commands.ShootNoteCustom;
@@ -38,26 +33,20 @@ import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoShoot;
-import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
-import frc.robot.commands.Drivetrain.alignNote;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
-import frc.robot.commands.Drivetrain.alignNoteDriveReq;
 import frc.robot.commands.Drivetrain.alignNoteTranslation;
 import frc.robot.commands.Elevator.elevatorController;
-import frc.robot.commands.Intake.Outtake;
-import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Primer.FlywheelBeamBreakerBroken;
-import frc.robot.commands.Shooter.setSpeakerPID;
 import frc.robot.commands.Shooter.shooterController;
-import frc.robot.commands.Shooter.shooterManual;
 import frc.robot.commands.Shooter.shooterPIDF;
+import frc.robot.commands.Vision.VisionCheck;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -91,6 +80,7 @@ public class RobotContainer {
   public Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker());
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
   public static Trigger autoAimTrigger = new Trigger(() -> drivetrain.getState().Pose.getX() > 9.5);
+  public static Trigger visionStatusTrigger = new Trigger(() -> vision.leftCamera.isConnected() || vision.rightCamera.isConnected());
 
   PathPlannerAuto speaker3NoteCenter;
   
@@ -270,6 +260,7 @@ public class RobotContainer {
 
     flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
+    visionStatusTrigger.whileTrue(new VisionCheck());
 
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
