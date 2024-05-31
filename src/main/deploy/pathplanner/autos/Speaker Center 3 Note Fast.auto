@@ -85,12 +85,6 @@
                             "data": {
                               "pathName": "Center"
                             }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Point At Speaker"
-                            }
                           }
                         ]
                       }
@@ -221,12 +215,6 @@
                       "data": {
                         "name": "Arm Auto Angle Quick"
                       }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Point At Speaker"
-                      }
                     }
                   ]
                 }
@@ -322,12 +310,6 @@
                       "type": "named",
                       "data": {
                         "name": "Arm Auto Angle Quick"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Point At Speaker"
                       }
                     }
                   ]

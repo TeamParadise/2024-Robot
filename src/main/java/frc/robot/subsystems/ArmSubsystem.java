@@ -34,7 +34,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void setSpeed(double speed){
     leftArmMotor.set(speed);
     rightArmMotor.set(-speed);
-
   }
 
   public void setVoltage(double voltage) {

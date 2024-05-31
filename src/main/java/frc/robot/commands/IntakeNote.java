@@ -22,7 +22,7 @@ public class IntakeNote extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(//new armPID(35).withTimeout(1),
-                new armPID(40).alongWith(new intakePIDF(4250).alongWith(new PrimeNote(0.45)).alongWith(new shooterPIDF(-2500))));
+                new armPID(30).alongWith(new intakePIDF(4250).alongWith(new PrimeNote(0.45)).alongWith(new shooterPIDF(-2500))));
                 
         
   }

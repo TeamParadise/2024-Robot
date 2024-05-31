@@ -33,6 +33,7 @@ import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoShoot;
+import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
@@ -149,9 +150,9 @@ public class RobotContainer {
     
     
     //POV Up --- Move arm to feed note from intake into barrel
-    joystick.povUp().onTrue(new armPID(52));
+    joystick.povUp().onTrue(new armManual(0.3));
     //POV Down --- Angle arm to 0
-    joystick.povDown().onTrue(new armPID(0));
+    joystick.povDown().onTrue(new armManual(-0.3));
 
     //POV Left - sets position of elavator to bottom
     joystick.povLeft().onTrue(new elevatorController(0));
@@ -278,7 +279,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
     NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteTranslation().withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-3).withTimeout(1.5));
     NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-2.5).withTimeout(1.5));
     NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
     NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
