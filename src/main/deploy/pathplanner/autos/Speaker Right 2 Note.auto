@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right 1"
+                  "pathName": null
                 }
               },
               {
@@ -52,7 +52,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Right Far"
+            "pathName": null
           }
         },
         {
@@ -85,7 +85,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Speaker to Amp Note"
+                        "pathName": null
                       }
                     },
                     {
@@ -128,7 +128,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right 3 note"
+            "pathName": null
           }
         },
         {
@@ -161,7 +161,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Right 4 Shoot"
+                        "pathName": null
                       }
                     },
                     {

@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "1st note amp"
+                  "pathName": null
                 }
               },
               {
@@ -37,7 +37,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Pickup Note"
+                  "pathName": null
                 }
               },
               {
@@ -56,7 +56,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "2nd note amp"
+                  "pathName": null
                 }
               },
               {
@@ -71,7 +71,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Hide"
+            "pathName": null
           }
         },
         {

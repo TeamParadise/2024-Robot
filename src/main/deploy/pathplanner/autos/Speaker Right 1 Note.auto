@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Back Up Right"
+                  "pathName": null
                 }
               },
               {
@@ -39,7 +39,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Right Far"
+            "pathName": null
           }
         },
         {
@@ -68,7 +68,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Speaker to Amp Note"
+                  "pathName": null
                 }
               },
               {

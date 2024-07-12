@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Back Up Center"
+                  "pathName": null
                 }
               },
               {
@@ -37,7 +37,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Back Center"
+                  "pathName": null
                 }
               },
               {
@@ -56,7 +56,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Drive Forward Center"
+                  "pathName": null
                 }
               },
               {
