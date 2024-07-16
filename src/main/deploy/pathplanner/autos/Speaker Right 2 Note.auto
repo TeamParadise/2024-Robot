@@ -18,7 +18,11 @@
               {
                 "type": "path",
                 "data": {
+<<<<<<< HEAD
                   "pathName": "Back Up Right"
+=======
+                  "pathName": null
+>>>>>>> 9f347d3 (Start work on new Center 3 Note)
                 }
               },
               {
@@ -65,7 +69,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Right Far"
+            "pathName": null
           }
         },
         {
@@ -117,7 +121,11 @@
                     {
                       "type": "wait",
                       "data": {
+<<<<<<< HEAD
                         "waitTime": 0.4
+=======
+                        "pathName": null
+>>>>>>> 9f347d3 (Start work on new Center 3 Note)
                       }
                     },
                     {
@@ -141,7 +149,81 @@
         {
           "type": "path",
           "data": {
+<<<<<<< HEAD
             "pathName": "Right Leave"
+=======
+            "pathName": null
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version fast"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": null
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.5
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Arm Auto Angle No Timeout"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle Quick"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Shoot"
+                }
+              }
+            ]
+>>>>>>> 9f347d3 (Start work on new Center 3 Note)
           }
         }
       ]

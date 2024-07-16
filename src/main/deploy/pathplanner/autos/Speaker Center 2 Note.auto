@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Back Up Center"
+            "pathName": null
           }
         },
         {
@@ -46,7 +46,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Drive Back Center"
+            "pathName": null
           }
         },
         {
@@ -79,7 +79,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "New New Path"
+                        "pathName": null
                       }
                     },
                     {
@@ -122,7 +122,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2nd note 2 note"
+            "pathName": null
           }
         },
         {
@@ -155,7 +155,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "2nd note score 2"
+                        "pathName": null
                       }
                     },
                     {
@@ -223,7 +223,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": null
           }
         },
         {

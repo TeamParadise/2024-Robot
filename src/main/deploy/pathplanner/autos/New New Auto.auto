@@ -10,7 +10,18 @@
   "command": {
     "type": "sequential",
     "data": {
+<<<<<<< HEAD:src/main/deploy/pathplanner/autos/New New Auto.auto
       "commands": []
+=======
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": null
+          }
+        }
+      ]
+>>>>>>> 9f347d3 (Start work on new Center 3 Note):src/main/deploy/pathplanner/autos/New Auto.auto
     }
   },
   "folder": null,

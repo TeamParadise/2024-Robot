@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp Defense 1"
+                  "pathName": null
                 }
               },
               {
@@ -75,7 +75,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp Defense 2"
+                  "pathName": null
                 }
               },
               {

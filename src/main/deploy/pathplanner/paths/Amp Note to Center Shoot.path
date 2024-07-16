@@ -3,25 +3,34 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.34,
-        "y": 5.55
+        "x": 2.89,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.37695587020093,
-        "y": 5.577305999357534
+        "x": 1.5148426719035912,
+        "y": 6.696671139317234
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.45,
+<<<<<<< HEAD:src/main/deploy/pathplanner/paths/Speaker to Amp Note.path
+        "x": 1.34,
+        "y": 3.906391497935054
+      },
+      "prevControl": {
+        "x": 2.0742841161532053,
+        "y": 0.6608557045378859
+=======
+        "x": 2.0,
         "y": 5.55
       },
       "prevControl": {
-        "x": 1.408287396727466,
-        "y": 5.535530663936646
+        "x": 2.1022699648261556,
+        "y": 5.933015658517901
+>>>>>>> 9f347d3 (Start work on new Center 3 Note):src/main/deploy/pathplanner/paths/Amp Note to Center Shoot.path
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,13 +48,17 @@
   },
   "goalEndState": {
     "velocity": 0,
+<<<<<<< HEAD:src/main/deploy/pathplanner/paths/Speaker to Amp Note.path
+    "rotation": 123.17851165939275,
+=======
     "rotation": 180.0,
+>>>>>>> 9f347d3 (Start work on new Center 3 Note):src/main/deploy/pathplanner/paths/Amp Note to Center Shoot.path
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": -126.18664866723104,
     "velocity": 0
   },
   "useDefaultConstraints": true

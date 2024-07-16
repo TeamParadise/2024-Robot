@@ -33,11 +33,70 @@
         {
           "type": "path",
           "data": {
+<<<<<<< HEAD
             "pathName": "Left 1 (2nd Note Pickup)"
           }
         },
         {
           "type": "parallel",
+=======
+            "pathName": null
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version fast"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": null
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Shoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+>>>>>>> 9f347d3 (Start work on new Center 3 Note)
           "data": {
             "commands": [
               {
@@ -72,7 +131,11 @@
                     {
                       "type": "wait",
                       "data": {
+<<<<<<< HEAD
                         "waitTime": 0.15
+=======
+                        "pathName": null
+>>>>>>> 9f347d3 (Start work on new Center 3 Note)
                       }
                     },
                     {

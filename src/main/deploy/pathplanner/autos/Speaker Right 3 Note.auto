@@ -12,11 +12,8 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-<<<<<<< HEAD
-            "pathName": "Back Up Right"
-=======
             "commands": [
               {
                 "type": "path",
@@ -37,31 +34,36 @@
           "type": "named",
           "data": {
             "name": "Arm Auto Shoot"
->>>>>>> 9f347d3 (Start work on new Center 3 Note)
           }
         },
         {
           "type": "path",
           "data": {
-<<<<<<< HEAD
-            "pathName": "there is no way this works"
-=======
             "pathName": null
->>>>>>> 9f347d3 (Start work on new Center 3 Note)
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "there is no way this works 2"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Align and pick up note better version"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-<<<<<<< HEAD
-            "pathName": "there is no way this works 3"
-=======
             "commands": [
               {
                 "type": "path",
@@ -76,13 +78,31 @@
                 }
               }
             ]
->>>>>>> 9f347d3 (Start work on new Center 3 Note)
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "there is no way this works 4"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": null
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Arm Auto Shoot"
           }
         }
       ]
