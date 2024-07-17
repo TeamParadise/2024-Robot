@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9,
+        "x": 2.8968988847068604,
         "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.85,
+        "x": 2.4117256394741964,
         "y": 5.55
       },
       "isLocked": false,
@@ -16,21 +16,12 @@
     },
     {
       "anchor": {
-<<<<<<< HEAD:src/main/deploy/pathplanner/paths/Drive Speaker Right Far.path
-        "x": 1.2211290254423093,
-        "y": 4.097305368134887
-      },
-      "prevControl": {
-        "x": 0.8686726496887707,
-        "y": -0.014685682323063259
-=======
         "x": 2.0,
         "y": 5.55
       },
       "prevControl": {
-        "x": 2.05,
+        "x": 2.3745907362060206,
         "y": 5.55
->>>>>>> 9f347d3 (Start work on new Center 3 Note):src/main/deploy/pathplanner/paths/Center Note to Center Shoot.path
       },
       "nextControl": null,
       "isLocked": false,
