@@ -58,6 +58,10 @@ public class ShooterSubsystem extends SubsystemBase {
     return rpm;
   }
 
+  public double getAverageVelocity() {
+    return (leftShooter.getEncoder().getVelocity() + rightShooter.getEncoder().getVelocity()) / 2;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
