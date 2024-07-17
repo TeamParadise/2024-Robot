@@ -41,6 +41,7 @@ import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Drivetrain.alignNoteTranslation;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakePIDF;
+import frc.robot.commands.NewAuto.AutoShoot;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
@@ -105,7 +106,6 @@ public class RobotContainer {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
-  PhoenixPIDController headingController = new PhoenixPIDController(0, 0, 0);
 
   private void configureBindings() {
       SmartDashboard.putNumber("Speed", 0);
@@ -270,6 +270,7 @@ public class RobotContainer {
 
 
     headingDrive.HeadingController.setPID(10, 0, 0);
+    headingDrive.HeadingController.enableContinuousInput(-Math.PI, Math.PI);
 
     if (Utils.isSimulation()) {
       drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
@@ -277,22 +278,25 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
-    NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-3).withTimeout(1.5));
-    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-2.5).withTimeout(1.5));
-    NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
-    NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
-    NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
-    NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
-    NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
-    NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
-    NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.15).withTimeout(1.5)));
-    NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
-    NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.75));
-    NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
-    NamedCommands.registerCommand("Arm Pos", new armPID(10).withTimeout(1));
-    NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))).withTimeout(1));
+    // NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
+    // NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
+    // NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-3).withTimeout(1.5));
+    // NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-2.5).withTimeout(1.5));
+    // NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
+    // NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
+    // NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
+    // NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
+    // NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
+    // NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
+    // NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.15).withTimeout(1.5)));
+    // NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
+    // NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.75));
+    // NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
+    // NamedCommands.registerCommand("Arm Pos", new armPID(10).withTimeout(1));
+    // NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))).withTimeout(1));
+
+    // New auto commands
+    NamedCommands.registerCommand("New Shoot", new AutoShoot());
 
     mainAutoChooser.setDefaultOption("Left", "Left");
     mainAutoChooser.addOption("Center", "Center");
