@@ -15,6 +15,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public CANSparkMax leftShooter;
   public CANSparkMax rightShooter;
+  public SparkPIDController leftPID = leftShooter.getPIDController();
   public double speed = 0;
   AbsoluteEncoder absEncoder;
 

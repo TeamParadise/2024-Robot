@@ -5,13 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Primer.PrimeNote;
-import frc.robot.commands.Primer.RetractNote;
-import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -19,7 +15,7 @@ import frc.robot.commands.Shooter.shooterPIDF;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShootNoteAuto extends SequentialCommandGroup {
   /** Creates a new ShootNote. */
-  public ShootNoteAuto(boolean autoAngle) {
+  public ShootNoteAuto() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     

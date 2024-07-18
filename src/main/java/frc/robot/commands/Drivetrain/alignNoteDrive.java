@@ -26,8 +26,6 @@ public class alignNoteDrive extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timeSinceNote = -1;
-    originalDetection = 0;
     turnController = new PIDController(0.12, 0.0, 0.03);
     turnController.reset();
     SmartDashboard.putNumber("kp Auto Align", 0.1);
@@ -39,7 +37,6 @@ public class alignNoteDrive extends Command {
   public void execute() {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
-      // lastTimeDetected = RobotController.getFPGATime();
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(velocity));
     }
   }

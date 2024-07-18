@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
@@ -31,21 +32,18 @@ import frc.robot.commands.ShootNoteAuto;
 import frc.robot.commands.ShootNoteCustom;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
-import frc.robot.commands.Arm.armAmp;
 import frc.robot.commands.Arm.armAutoShoot;
 import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
-import frc.robot.commands.Drivetrain.alignNoteTranslation;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.NewAuto.AutoShoot;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
-import frc.robot.commands.Primer.FlywheelBeamBreakerBroken;
 import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.commands.Vision.VisionCheck;
@@ -74,18 +72,9 @@ public class RobotContainer {
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  public static SendableChooser<String> mainAutoChooser = new SendableChooser<>(), rightAutoChooser = new SendableChooser<>(), leftAutoChooser = new SendableChooser<>(), centerAutoChooser = new SendableChooser<>();
+  public static SendableChooser<Command> autoChooser;
 
-  private Path2D stage = new Path2D.Float();
-  public Trigger underStage = new Trigger(() -> stage.intersects(drivetrain.getState().Pose.getX() - 0.76300749201, 8.220855 - drivetrain.getState().Pose.getY(), 0.76300749201, 0.76300749201));
-
-  public Trigger flywheelBeamTrigger = new Trigger(() -> m_primerSubsystem.getFlywheelBeamBreaker());
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
-  public static Trigger autoAimTrigger = new Trigger(() -> drivetrain.getState().Pose.getX() > 9.5);
-  public static Trigger visionStatusTrigger = new Trigger(() -> vision.leftCamera.isConnected() || vision.rightCamera.isConnected());
-
-  PathPlannerAuto speaker3NoteCenter;
-  
   
   public static final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
   .withDeadband(MaxSpeed * 0.05)
@@ -259,9 +248,7 @@ public class RobotContainer {
 
     coJoystick.rightStick().onTrue(new ShootNoteCustom(false));
 
-    flywheelBeamTrigger.whileTrue(new FlywheelBeamBreakerBroken());
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
-    visionStatusTrigger.whileTrue(new VisionCheck());
 
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
@@ -298,18 +285,9 @@ public class RobotContainer {
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
 
-    mainAutoChooser.setDefaultOption("Left", "Left");
-    mainAutoChooser.addOption("Center", "Center");
-    mainAutoChooser.addOption("Right", "Right");
-
-    leftAutoChooser.setDefaultOption("Amp", "Amp");
-    leftAutoChooser.addOption("1 Note Speaker", "1 Note Speaker");
-    leftAutoChooser.addOption("None", "None");
-
-    centerAutoChooser.setDefaultOption("3 Note Speaker", "3 Note Speaker");
-    centerAutoChooser.addOption("2 Note Speaker", "2 Note Speaker");
-    centerAutoChooser.addOption("1 Note Speaker", "1 Note Speaker");
-    centerAutoChooser.addOption("Leave", "Leave");
+    // Create auto chooser
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     drivetrain.getModule(0).getDriveMotor().getConfigurator().refresh(Constants.MotorConstants.driveRamp);
     drivetrain.getModule(0).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
@@ -319,25 +297,6 @@ public class RobotContainer {
     drivetrain.getModule(2).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
     drivetrain.getModule(3).getDriveMotor().getConfigurator().refresh(Constants.MotorConstants.driveRamp);
     drivetrain.getModule(3).getSteerMotor().getConfigurator().refresh(Constants.MotorConstants.steerRamp);
-
-    rightAutoChooser.setDefaultOption("1 Note Speaker", "1 Note Speaker");
-    rightAutoChooser.setDefaultOption("2 Note Speaker", "2 Note Speaker");
-
-    SmartDashboard.putData("Side Auto Chooser", mainAutoChooser);
-    SmartDashboard.putBoolean("Zoning Enabled", true);
-
-    
-
-    // Configure stage coordinates
-    stage.moveTo(10, 2.6211122);
-    stage.lineTo(10, 6.5);
-    stage.lineTo(13, 4.412154);
-    stage.closePath();
-
-    stage.moveTo(5.8, 2.6211122);
-    stage.lineTo(5.8, 6.5);
-    stage.lineTo(2.8, 4.412154);
-    stage.closePath();
   }
 
   public RobotContainer() {
@@ -345,42 +304,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if (Robot.allianceCurrentlySelectedAuto == "Left") {
-      if (leftAutoChooser.getSelected() == "Amp") {
-        return Robot.amp;
-      } else if (leftAutoChooser.getSelected() == "1 Note Speaker") {
-        return Robot.leftSpeakerOneNote;
-      } else if (leftAutoChooser.getSelected() == "None") {
-        return Robot.none;
-      } else {
-        return Robot.none;
-      }
-    } else if (Robot.allianceCurrentlySelectedAuto == "Center") {
-      if (centerAutoChooser.getSelected() == "2 Note Speaker") {
-        return Robot.centerSpeakerTwoNote;
-      } else if (centerAutoChooser.getSelected() == "3 Note Speaker") {
-        return Robot.centerSpeakerThreeNote;
-      } else if (centerAutoChooser.getSelected() == "1 Note Speaker") {
-        return Robot.centerSpeakerOneNote;
-      } else if (centerAutoChooser.getSelected() == "Leave") {
-        return Robot.leave;
-      } else {
-        return Robot.none;
-      }
-    } else if (Robot.allianceCurrentlySelectedAuto == "Right") {
-      if (rightAutoChooser.getSelected() == "1 Note Speaker") {
-        return Robot.rightSpeakerOneNote;
-      } else if (rightAutoChooser.getSelected() == "2 Note Speaker") {
-        return Robot.rightSpeakerTwoNote;
-      } else {
-        return Robot.none;
-      }
-    } else {
-      return Robot.none;
-    }
-  }
-
-  public Command getDriveBack() {
-    return drivetrain.applyRequest(() -> robotDrive.withVelocityX(-0.9)).withTimeout(2).andThen(drivetrain.applyRequest(() -> robotDrive.withVelocityX(0)));
+    return autoChooser.getSelected();
   }
 }
