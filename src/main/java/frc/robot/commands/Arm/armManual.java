@@ -4,8 +4,6 @@
 
 package frc.robot.commands.Arm;
 
-import com.revrobotics.CANSparkBase;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 public class armManual extends Command {

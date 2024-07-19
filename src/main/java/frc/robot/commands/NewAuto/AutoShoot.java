@@ -20,12 +20,10 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -36,8 +34,6 @@ public class AutoShoot extends Command {
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
   private final CommandSwerveDrivetrain drive = RobotContainer.drivetrain;
 
-  private double shooterRPM;
-  private double armPos;
   private double primerFeedTime = 4000000;
 
   // Create items to track the amount of time the command has been running for
@@ -58,9 +54,7 @@ public class AutoShoot extends Command {
   private final double 
     kp = .85, 
     ki = 0, 
-    kd = 0,
-    maxAccel = .5,
-    maxVelo = 1;
+    kd = 0;
   
   double MaxSpeed = 6;
 
@@ -92,7 +86,7 @@ public class AutoShoot extends Command {
     double currentArmPosition = RobotContainer.m_intakeSubsystem.getArmPosition();
 
     // Set velocity of flywheels and intake depending on time elapsed here
-    if (timeElapsed < 4000000 && !(shooterDebouncer.calculate(currentShooterVelocity > shooterSetpoint - Math.pow(shooterSetpoint, 0.635) && currentShooterVelocity < shooterSetpoint + Math.pow(shooterSetpoint, 0.635))
+    if (timeElapsed < primerFeedTime && !(shooterDebouncer.calculate(currentShooterVelocity > shooterSetpoint - Math.pow(shooterSetpoint, 0.635) && currentShooterVelocity < shooterSetpoint + Math.pow(shooterSetpoint, 0.635))
         && !armDebouncer.calculate(currentArmPosition > armSetpoint - Math.pow(armSetpoint, 0.2) && currentArmPosition < armSetpoint - Math.pow(armSetpoint, 0.2)))) {
       leftPIDController.setReference(shooterSetpoint, CANSparkBase.ControlType.kVelocity);
       rightPIDController.setReference(-shooterSetpoint, CANSparkBase.ControlType.kVelocity);
@@ -102,8 +96,8 @@ public class AutoShoot extends Command {
     } else {
       // Just set time elapsed to 4 seconds if it is not 4 seconds already, so there is 1 second
       // left to shoot the note
-      if (timeElapsed < 4000000) {
-        timeElapsed = 4000000;
+      if (timeElapsed < primerFeedTime) {
+        timeElapsed = primerFeedTime;
       }
 
       leftPIDController.setReference(shooterSetpoint, CANSparkBase.ControlType.kVelocity);

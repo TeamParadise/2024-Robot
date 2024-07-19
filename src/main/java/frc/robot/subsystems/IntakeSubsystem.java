@@ -6,16 +6,19 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new IntakeSubsystem. */
   public CANSparkMax intakeMotor;
+  public SparkPIDController intakePIDController;
   AbsoluteEncoder absEncoder;
  
   public IntakeSubsystem() {
@@ -25,6 +28,15 @@ public class IntakeSubsystem extends SubsystemBase {
   private void configMotors() {
     intakeMotor = new CANSparkMax(Constants.MotorConstants.intakeMotorID, MotorType.kBrushless);
     intakeMotor.setSmartCurrentLimit(30);
+
+    intakePIDController = intakeMotor.getPIDController();
+    intakePIDController.setOutputRange(-1, 1);
+    intakePIDController.setP(IntakeConstants.kLeftP);
+    intakePIDController.setI(IntakeConstants.kLeftI);
+    intakePIDController.setD(IntakeConstants.kLeftD);
+    intakePIDController.setIZone(IntakeConstants.kLeftIz);
+    intakePIDController.setFF(IntakeConstants.kLeftFF);
+
     absEncoder = intakeMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
   }

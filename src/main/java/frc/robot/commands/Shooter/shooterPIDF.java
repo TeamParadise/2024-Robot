@@ -9,7 +9,6 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.ShooterConstants;
 
 public class shooterPIDF extends Command {
   private final SparkPIDController leftPIDController, rightPIDController;
@@ -22,21 +21,6 @@ public class shooterPIDF extends Command {
     leftPIDController = RobotContainer.m_shooterSubsystem.leftShooter.getPIDController();
     rightPIDController = RobotContainer.m_shooterSubsystem.rightShooter.getPIDController();
     this.setpoint = velocity;
-
-    leftPIDController.setP(ShooterConstants.kLeftP);
-    leftPIDController.setI(ShooterConstants.kLeftI);
-    leftPIDController.setD(ShooterConstants.kLeftD);
-    leftPIDController.setIZone(ShooterConstants.kLeftIz);
-    leftPIDController.setFF(ShooterConstants.kLeftFF);
-    leftPIDController.setOutputRange(ShooterConstants.kLeftMin, ShooterConstants.kLeftMax);
-
-    rightPIDController.setP(ShooterConstants.kRightP);
-    rightPIDController.setI(ShooterConstants.kRightI);
-    rightPIDController.setD(ShooterConstants.kRightD);
-    rightPIDController.setIZone(ShooterConstants.kRightIz);
-    rightPIDController.setFF(ShooterConstants.kRightFF);
-    rightPIDController.setOutputRange(ShooterConstants.kRightMin, ShooterConstants.kRightMax);
-    
   }
 
   

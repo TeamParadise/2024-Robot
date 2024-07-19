@@ -8,10 +8,8 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
-import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -28,7 +26,6 @@ import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.IntakeNoteCustom;
 import frc.robot.commands.ShootNote;
-import frc.robot.commands.ShootNoteAuto;
 import frc.robot.commands.ShootNoteCustom;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
@@ -37,16 +34,13 @@ import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
-import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.NewAuto.AutoShoot;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
-import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
-import frc.robot.commands.Vision.VisionCheck;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -55,7 +49,6 @@ import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
-import java.awt.geom.Path2D;
 import java.util.Optional;
 
 public class RobotContainer {
@@ -93,7 +86,6 @@ public class RobotContainer {
                                                                // driving in open loop
 
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   private void configureBindings() {
@@ -128,7 +120,7 @@ public class RobotContainer {
            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
           )));})));
-    joystick.b().onTrue(new ShootNote(false));
+    joystick.b().onTrue(new ShootNote());
     joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
          .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
          .withRotationalRate(-joystick.getRightX() * MaxAngularRate
@@ -217,7 +209,7 @@ public class RobotContainer {
     coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
-    coJoystick.a().onTrue(new ShootNote(false));
+    coJoystick.a().onTrue(new ShootNote());
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
@@ -246,7 +238,7 @@ public class RobotContainer {
     coJoystick.back().whileTrue(new armPID(54));
     coJoystick.start().whileTrue(new IntakeNoteCustom());
 
-    coJoystick.rightStick().onTrue(new ShootNoteCustom(false));
+    coJoystick.rightStick().onTrue(new ShootNoteCustom());
 
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
 
