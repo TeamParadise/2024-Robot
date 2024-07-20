@@ -6,9 +6,6 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Elevator.elevatorController;
-import frc.robot.commands.Primer.PrimeNote;
-import frc.robot.commands.Primer.RetractNote;
-import frc.robot.commands.Shooter.shooterPIDF;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

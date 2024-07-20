@@ -5,13 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.Arm.armPID;
-import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Shooter.shooterPIDF;
-import frc.robot.commands.Shooter.shooterSetpoint;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,7 +19,7 @@ public class IntakeNote extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(//new armPID(35).withTimeout(1),
-                new armPID(40).alongWith(new intakePIDF(4250).alongWith(new PrimeNote(0.45)).alongWith(new shooterPIDF(-2500))));
+                new armPID(30).alongWith(new intakePIDF(4250).alongWith(new PrimeNote(0.45)).alongWith(new shooterPIDF(-2500))));
                 
         
   }

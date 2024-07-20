@@ -6,11 +6,6 @@ package frc.robot;
 
 import java.util.Optional;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -19,8 +14,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.SingleTagVisionPoseEstimator;
-import frc.robot.commands.Vision.VisionPoseEstimator;
-import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmLUT;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -32,16 +25,18 @@ public class Robot extends TimedRobot {
 
   public static Optional<Alliance> currentAlliance = Optional.empty();
 
-  public static ArmLUT m_ArmLUTAngle;
-  public static ArmLUT m_ArmLUTRPM;
-
-  static PathPlannerAuto centerSpeakerThreeNote, centerSpeakerTwoNote, centerSpeakerOneNote, leftSpeakerOneNote, amp, leave, none, rightSpeakerOneNote, rightSpeakerTwoNote, rightSpeakerThreeNote;
-  
-  public static String previouslySelectedAuto = "Left", currentlySelectedAutoSD = "Left", allianceCurrentlySelectedAuto = "Left";
+  public static ArmLUT<Double, Double> m_ArmLUTAngle;
+  public static ArmLUT<Double, Integer> m_ArmLUTRPM;
 
   @Override
   public void robotInit() {
     initLUT();
+    
+    // Get alliance and configure auto
+    currentAlliance = DriverStation.getAlliance();
+    RobotContainer.drivetrain.configurePathPlanner(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
+
+    // Configure robot container
     m_robotContainer = new RobotContainer();
   }
 
@@ -60,31 +55,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    currentlySelectedAutoSD = RobotContainer.mainAutoChooser.getSelected();
-    
-    if ((currentAlliance.equals(Optional.of(DriverStation.Alliance.Blue)) && currentlySelectedAutoSD == "Left") || (currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) && currentlySelectedAutoSD == "Right")) {
-      SmartDashboard.putData("Auto Task Chooser", RobotContainer.leftAutoChooser);
-      allianceCurrentlySelectedAuto = "Left";
-    } else if (currentlySelectedAutoSD == "Center") {
-      SmartDashboard.putData("Auto Task Chooser", RobotContainer.centerAutoChooser);
-      allianceCurrentlySelectedAuto = currentlySelectedAutoSD;
-    } else {
-      SmartDashboard.putData("Auto Task Chooser", RobotContainer.rightAutoChooser);
-      allianceCurrentlySelectedAuto = "Right";
-    }
-
     if (DriverStation.isDSAttached() && !currentAlliance.equals(DriverStation.getAlliance())) {
       RobotContainer.drivetrain.configurePathPlanner(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
-      centerSpeakerThreeNote = new PathPlannerAuto("Speaker Center 3 Note Fast");
-      centerSpeakerTwoNote = new PathPlannerAuto("Speaker Center 2 Note");
-      centerSpeakerOneNote = new PathPlannerAuto("Speaker Center 1 Note");
-      leftSpeakerOneNote = new PathPlannerAuto("Speaker Left 1 Note");
-      amp = new PathPlannerAuto("Amp Defense");
-      leave = new PathPlannerAuto("Leave");
-      none = new PathPlannerAuto("None");
-      rightSpeakerOneNote = new PathPlannerAuto("Speaker Right 1 Note");
-      rightSpeakerTwoNote = new PathPlannerAuto("Speaker Right 2 Note");
-      rightSpeakerThreeNote = new PathPlannerAuto("Speaker Right 3 Note");
 
       currentAlliance = DriverStation.getAlliance();
     }

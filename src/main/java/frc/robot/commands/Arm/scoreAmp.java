@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Primer.PrimeNote;
-import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterController;
 import frc.robot.commands.Shooter.shooterPIDF;
 

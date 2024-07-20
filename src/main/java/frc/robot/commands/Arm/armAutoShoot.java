@@ -9,8 +9,6 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -26,10 +24,8 @@ public class armAutoShoot extends Command {
   private final double 
     kp = .85, 
     ki = 0, 
-    kd = 0,
-    maxAccel = .5,
-    maxVelo = 1;
-  
+    kd = 0;
+
   double MaxSpeed = 6;
 
   /*feedforwardMax is the max volts that need to be supplied to match gravity (arm at 0 degrees)*/

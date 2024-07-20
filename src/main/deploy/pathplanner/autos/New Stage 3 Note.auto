@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.72,
-      "y": 4.39
+      "x": 0.7,
+      "y": 4.38
     },
     "rotation": 120.0
   },
@@ -12,69 +12,37 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": null
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Arm Auto Angle"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Arm Auto Shoot"
+            "name": "Just Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "Stage Speaker to 5th Center Note"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Align and pick up note better version"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
+            "name": "Auto Intake"
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": null
+                  "pathName": "5th Center Note to Stage Shoot"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Arm Auto Angle"
+                  "name": "Arm Auto Angle No Timeout"
                 }
               }
             ]
@@ -83,7 +51,44 @@
         {
           "type": "named",
           "data": {
-            "name": "Arm Auto Shoot"
+            "name": "New Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Stage Shoot to 4th Center Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Intake"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "4th Center Note to Stage Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Arm Auto Angle No Timeout"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "New Shoot"
           }
         }
       ]

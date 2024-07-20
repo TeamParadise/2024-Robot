@@ -6,8 +6,6 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
@@ -19,9 +17,7 @@ public class armPID extends Command {
   private final double 
     kp = .65, 
     ki = 0, 
-    kd = 0,
-    maxAccel = .5,
-    maxVelo = 1;
+    kd = 0;
 
     /*feedforwardMax is the max volts that need to be supplied to match gravity (arm at 0 degrees)*/
   public double feedforwardMax = 0;

@@ -17,7 +17,6 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -32,7 +31,7 @@ public class VisionSubsystem extends SubsystemBase {
   public final PhotonCamera leftCamera, rightCamera, intakeCamera;
   private final PhotonPoseEstimator leftEstimator, rightEstimator;
   private VisionSystemSim visionSimulator;
-  private TargetModel target = new TargetModel(0.3556, 0.3556), target2 = new TargetModel(0.3556, 0.3556), target3 = new TargetModel(0.3556, 0.3556), target4 = new TargetModel(0.3556, 0.3556), target5 = new TargetModel(0.3556, 0.3556);
+  private TargetModel target = new TargetModel(0.3556, 0.3556), target2 = new TargetModel(0.3556, 0.3556);
   private VisionTargetSim targetSim1 = new VisionTargetSim(new Pose3d(8.232666, 7.506370, 0, new Rotation3d(0, 0, 0)), target), targetSim2 = new VisionTargetSim(new Pose3d(8.232666, 0.828734, 0, new Rotation3d(0, 0, 0)), target2);
   private PhotonCameraSim leftCameraSimulator, rightCameraSimulator, intakeCameraSimulator;
   private SimCameraProperties cameraSimulatorProperties;

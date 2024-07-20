@@ -7,9 +7,8 @@ package frc.robot.commands.Drivetrain;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
@@ -17,6 +16,8 @@ public class alignNoteDrive extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
   double tx, lastTimeDetected, timeSinceNote, velocity, originalDetection;
+
+private final Debouncer debouncer = new Debouncer(0.05, DebounceType.kRising);
   
   /** Creates a new allignNote. */
   public  alignNoteDrive(double speed) {
@@ -26,12 +27,8 @@ public class alignNoteDrive extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timeSinceNote = -1;
-    originalDetection = 0;
     turnController = new PIDController(0.12, 0.0, 0.03);
     turnController.reset();
-    SmartDashboard.putNumber("kp Auto Align", 0.1);
-    SmartDashboard.putNumber("kd Auto Align", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +36,6 @@ public class alignNoteDrive extends Command {
   public void execute() {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
-      // lastTimeDetected = RobotController.getFPGATime();
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(velocity));
     }
   }
@@ -71,6 +67,6 @@ public class alignNoteDrive extends Command {
     // } else {
     //   return false;
     // }
-    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
+    return debouncer.calculate(RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
   }
 }

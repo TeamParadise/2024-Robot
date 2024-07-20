@@ -9,7 +9,6 @@ import java.util.Optional;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants;
@@ -34,7 +33,6 @@ public class ArmSubsystem extends SubsystemBase {
   public void setSpeed(double speed){
     leftArmMotor.set(speed);
     rightArmMotor.set(-speed);
-
   }
 
   public void setVoltage(double voltage) {
@@ -44,7 +42,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getDistance(){
     //Red
-    return Robot.currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? Math.sqrt(Math.pow(16.5 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2)) : Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
+    return Robot.currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? Math.sqrt(Math.pow(16.541748 - drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2)) : Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
 
     //Blue
     // return Math.sqrt(Math.pow(drivetrain.getState().Pose.getX() , 2) + Math.pow(5.475 - drivetrain.getState().Pose.getY(), 2));
