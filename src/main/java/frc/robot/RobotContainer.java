@@ -30,10 +30,10 @@ import frc.robot.commands.ShootNoteCustom;
 import frc.robot.commands.Arm.ArmHumanPlayer;
 import frc.robot.commands.Arm.ArmHumanPlayerBack;
 import frc.robot.commands.Arm.armAutoShoot;
-import frc.robot.commands.Arm.armManual;
 import frc.robot.commands.Arm.armPID;
 import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
+import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.NewAuto.AutoShoot;
@@ -54,6 +54,7 @@ import java.util.Optional;
 public class RobotContainer {
   public static double MaxSpeed = 6; // 6 meters per second desired top speed
   public static double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  public double customAngle = 52;
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -128,12 +129,14 @@ public class RobotContainer {
     joystick.start().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
     joystick.start().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
     joystick.rightStick().whileTrue(drivetrain.applyRequest(() -> brake));
+    // joystick.leftStick().whileTrue(new alignNoteDrive(-3).alongWith(new IntakeNote()));
+    joystick.leftStick().onTrue(new AutoShoot());
     
     
     //POV Up --- Move arm to feed note from intake into barrel
-    joystick.povUp().onTrue(new armManual(0.3));
+    joystick.povUp().whileTrue(new InstantCommand(() -> customAngle += 1).andThen(new armPID(customAngle)));
     //POV Down --- Angle arm to 0
-    joystick.povDown().onTrue(new armManual(-0.3));
+    joystick.povDown().whileTrue(new InstantCommand(() -> customAngle -= 1).andThen(new armPID(customAngle)));
 
     //POV Left - sets position of elavator to bottom
     joystick.povLeft().onTrue(new elevatorController(0));
@@ -276,6 +279,7 @@ public class RobotContainer {
 
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
+    NamedCommands.registerCommand("Auto Intake", new alignNoteDrive(-3).alongWith(new IntakeNote()).withTimeout(2));
 
     // Create auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
