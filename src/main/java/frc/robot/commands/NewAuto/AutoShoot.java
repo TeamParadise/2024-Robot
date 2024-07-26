@@ -42,8 +42,8 @@ public class AutoShoot extends Command {
 
   // Used to reduce false positives or negatives by making sure something is true for long enough.
   // This is used to detect if our flywheels are up to speed
-  private final Debouncer shooterDebouncer = new Debouncer(0.20, DebounceType.kBoth);
-  private final Debouncer armDebouncer = new Debouncer(0.20, DebounceType.kBoth);
+  private final Debouncer shooterDebouncer = new Debouncer(0.10, DebounceType.kBoth);
+  private final Debouncer armDebouncer = new Debouncer(0.10, DebounceType.kBoth);
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
   private final SparkPIDController rightPIDController = shooter.leftShooter.getPIDController();

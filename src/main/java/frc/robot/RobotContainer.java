@@ -54,7 +54,7 @@ import java.util.Optional;
 public class RobotContainer {
   public static double MaxSpeed = 6; // 6 meters per second desired top speed
   public static double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
-  public double customAngle = 52;
+  public double customAngle = 51;
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final CommandXboxController joystick = new CommandXboxController(0); // My joystick
@@ -260,26 +260,23 @@ public class RobotContainer {
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    // NamedCommands.registerCommand("Shoot Amp", new armAmp().withTimeout(5));
-    // NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
-    // NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-3).withTimeout(1.5));
-    // NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-2.5).withTimeout(1.5));
-    // NamedCommands.registerCommand("Shoot in Speaker No Retract", new ShootNoteAuto(false));
-    // NamedCommands.registerCommand("Shoot in Speaker", new ShootNote(false));
-    // NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
-    // NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
-    // NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
-    // NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
-    // NamedCommands.registerCommand("Spit Note", new PrimeNote(0.2).withTimeout(1.5).alongWith(new shooterController(0.15).withTimeout(1.5)));
-    // NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
-    // NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.75));
-    // NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
-    // NamedCommands.registerCommand("Arm Pos", new armPID(10).withTimeout(1));
-    // NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))).withTimeout(1));
+    NamedCommands.registerCommand("Arm Intake Position", new armPID(50).alongWith(new elevatorController(0)).withTimeout(2));
+    NamedCommands.registerCommand("Align and pick up note better version", new alignNoteDrive(-3).withTimeout(1.5));
+    NamedCommands.registerCommand("Align and pick up note better version fast", new alignNoteDrive(-2.5).withTimeout(1.5));
+    NamedCommands.registerCommand("Intake", new IntakeNote().withTimeout(2));
+    NamedCommands.registerCommand("Arm Auto Angle", new armAutoShoot().withTimeout(1));
+    NamedCommands.registerCommand("Arm Auto Shoot", new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35));
+    NamedCommands.registerCommand("Auto Heading", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0)).withTimeout(3));
+    NamedCommands.registerCommand("Arm Auto Angle No Timeout", new armAutoShoot());
+    NamedCommands.registerCommand("Arm Auto Angle Quick", new armAutoShoot().withTimeout(0.75));
+    NamedCommands.registerCommand("Retract", new RetractNote(-0.1, -0.1));
+    NamedCommands.registerCommand("Arm Pos", new armPID(10).withTimeout(1));
+    NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))).withTimeout(1));
 
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
     NamedCommands.registerCommand("Auto Intake", new alignNoteDrive(-3).alongWith(new IntakeNote()).withTimeout(2));
+    NamedCommands.registerCommand("Just Shoot", new ShootNote());
 
     // Create auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();

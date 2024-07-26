@@ -40,9 +40,28 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Arm Auto Angle No Timeout"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Retract"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Angle No Timeout"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -77,9 +96,28 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Arm Auto Angle No Timeout"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Retract"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Angle No Timeout"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -114,9 +152,28 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Arm Auto Angle No Timeout"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Retract"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Arm Auto Angle No Timeout"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -126,6 +183,12 @@
           "type": "named",
           "data": {
             "name": "New Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Speaker to Mid"
           }
         }
       ]
