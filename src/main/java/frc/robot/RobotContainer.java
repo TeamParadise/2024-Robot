@@ -42,6 +42,7 @@ import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterPIDF;
+import frc.robot.commands.ShooterOnly.ShooterAuto;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -135,9 +136,9 @@ public class RobotContainer {
     
     
     //POV Up --- Move arm to feed note from intake into barrel
-    joystick.povUp().onTrue(new InstantCommand(() -> customAngle += 1).andThen(new armPID(customAngle)));
+    joystick.povUp().onTrue(new armPID(52));
     //POV Down --- Angle arm to 0
-    joystick.povDown().onTrue(new InstantCommand(() -> customAngle -= 1).andThen(new armPID(customAngle)));
+    joystick.povDown().onTrue(new armPID(20));
 
     //POV Left - sets position of elavator to bottom
     joystick.povLeft().onTrue(new elevatorController(0));
@@ -277,7 +278,8 @@ public class RobotContainer {
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
     NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4).withTimeout(2), new IntakeNote()));
-    NamedCommands.registerCommand("Just Shoot", new ShootNote());
+    NamedCommands.registerCommand("Speaker", new ShooterAuto(SpeedConstants.kShooter));
+    NamedCommands.registerCommand("Shooter Speedup", new shooterPIDF(SpeedConstants.kShooter));
 
     // Create auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
