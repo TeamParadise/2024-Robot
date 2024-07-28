@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.CommandSwerveDrivetrain;
 import frc.robot.Constants.SpeedConstants;
@@ -34,7 +35,7 @@ public class AutoShoot extends Command {
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
   private final CommandSwerveDrivetrain drive = RobotContainer.drivetrain;
 
-  private double primerFeedTime = 4000000;
+  private double primerFeedTime = 3000000;
 
   // Create items to track the amount of time the command has been running for
   private double timeElapsed = 0.0;
@@ -42,11 +43,11 @@ public class AutoShoot extends Command {
 
   // Used to reduce false positives or negatives by making sure something is true for long enough.
   // This is used to detect if our flywheels are up to speed
-  private final Debouncer shooterDebouncer = new Debouncer(0.10, DebounceType.kBoth);
-  private final Debouncer armDebouncer = new Debouncer(0.10, DebounceType.kBoth);
+  private Debouncer shooterDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+  private Debouncer armDebouncer = new Debouncer(0.1, DebounceType.kBoth);
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
-  private final SparkPIDController rightPIDController = shooter.leftShooter.getPIDController();
+  private final SparkPIDController rightPIDController = shooter.rightShooter.getPIDController();
 
 
   double setpoint, output, positionDegrees, positionRadians, velocity;
@@ -70,6 +71,9 @@ public class AutoShoot extends Command {
   public void initialize() {
     armController.enableContinuousInput(0, 360);
 
+    shooterDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    armDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    
     // Reset time elapsed values
     timeElapsed = 0.0;
     previousTimestamp = RobotController.getFPGATime();
@@ -80,19 +84,25 @@ public class AutoShoot extends Command {
     // Set flywheel RPM and flywheel velocity for this loop
     double shooterSetpoint = Robot.m_ArmLUTRPM.get(arm.getDistance());
     double currentShooterVelocity = shooter.getAverageVelocity();
+    SmartDashboard.putNumber("current shooter velocity", currentShooterVelocity);
+    SmartDashboard.putNumber("shooter setpoint", shooterSetpoint);
 
     // arm
     double armSetpoint = MathUtil.clamp(Robot.m_ArmLUTAngle.get(arm.getDistance()), 0, 55);
     double currentArmPosition = RobotContainer.m_intakeSubsystem.getArmPosition();
 
+    SmartDashboard.putBoolean("Arm Debouncer", armDebouncer.calculate(currentArmPosition > armSetpoint - Math.pow(armSetpoint, 0.2) && currentArmPosition < armSetpoint + Math.pow(armSetpoint, 0.2)));
+    SmartDashboard.putBoolean("Shooter Debouncer", shooterDebouncer.calculate(currentShooterVelocity > shooterSetpoint - Math.pow(shooterSetpoint, 0.7) && currentShooterVelocity < shooterSetpoint + Math.pow(shooterSetpoint, 0.7)));
+
+
     // Set velocity of flywheels and intake depending on time elapsed here
-    if (timeElapsed < primerFeedTime && !(shooterDebouncer.calculate(currentShooterVelocity > shooterSetpoint - Math.pow(shooterSetpoint, 0.635) && currentShooterVelocity < shooterSetpoint + Math.pow(shooterSetpoint, 0.635))
-        && !armDebouncer.calculate(currentArmPosition > armSetpoint - Math.pow(armSetpoint, 0.2) && currentArmPosition < armSetpoint - Math.pow(armSetpoint, 0.2)))) {
+    if (timeElapsed < primerFeedTime && !(shooterDebouncer.calculate(currentShooterVelocity > shooterSetpoint - Math.pow(shooterSetpoint, 0.7) && currentShooterVelocity < shooterSetpoint + Math.pow(shooterSetpoint, 0.7))
+        && armDebouncer.calculate(currentArmPosition > armSetpoint - Math.pow(armSetpoint, 0.25) && currentArmPosition < armSetpoint + Math.pow(armSetpoint, 0.25)))) {
       leftPIDController.setReference(shooterSetpoint, CANSparkBase.ControlType.kVelocity);
       rightPIDController.setReference(-shooterSetpoint, CANSparkBase.ControlType.kVelocity);
       output = armController.calculate(currentArmPosition, armSetpoint) + feedforwardMax * Math.cos(Math.toRadians(Math.toRadians(positionDegrees)));
       arm.setVoltage(MathUtil.clamp(output, -9, 9));
-      drive.setControl(RobotContainer.headingDrive.withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drive.getState().Pose.getY(),  (16.541748) - drive.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drive.getState().Pose.getY(),  (0) - drive.getState().Pose.getX()))));
+      drive.setControl(RobotContainer.headingDrive.withVelocityX(0).withVelocityY(0).withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drive.getState().Pose.getY(),  (16.541748) - drive.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drive.getState().Pose.getY(),  (0) - drive.getState().Pose.getX()))));
     } else {
       // Just set time elapsed to 4 seconds if it is not 4 seconds already, so there is 1 second
       // left to shoot the note
@@ -103,7 +113,7 @@ public class AutoShoot extends Command {
       leftPIDController.setReference(shooterSetpoint, CANSparkBase.ControlType.kVelocity);
       rightPIDController.setReference(-shooterSetpoint, CANSparkBase.ControlType.kVelocity);
       output = armController.calculate(currentArmPosition, armSetpoint) + feedforwardMax * Math.cos(Math.toRadians(Math.toRadians(positionDegrees)));
-      arm.setVoltage(MathUtil.clamp(output, -9, 9));
+      arm.setVoltage(MathUtil.clamp(output, -10, 10));
 
       primer.setSpeed(SpeedConstants.kPrime);
     }
@@ -115,7 +125,7 @@ public class AutoShoot extends Command {
 
   @Override
   public boolean isFinished() {
-    return timeElapsed >= 5000000;
+    return timeElapsed >= 3500000;
   }
 
   @Override

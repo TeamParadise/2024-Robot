@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
@@ -77,7 +78,7 @@ public class RobotContainer {
   .withSteerRequestType(SteerRequestType.MotionMagic);
 
   public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop                         
                                                                
@@ -129,14 +130,14 @@ public class RobotContainer {
     joystick.start().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
     joystick.start().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
     joystick.rightStick().whileTrue(drivetrain.applyRequest(() -> brake));
-    // joystick.leftStick().whileTrue(new alignNoteDrive(-3).alongWith(new IntakeNote()));
-    joystick.leftStick().onTrue(new AutoShoot());
+    joystick.leftStick().whileTrue(new alignNoteDrive(-3).alongWith(new IntakeNote()));
+    // joystick.leftStick().onTrue(new AutoShoot());
     
     
     //POV Up --- Move arm to feed note from intake into barrel
-    joystick.povUp().whileTrue(new InstantCommand(() -> customAngle += 1).andThen(new armPID(customAngle)));
+    joystick.povUp().onTrue(new InstantCommand(() -> customAngle += 1).andThen(new armPID(customAngle)));
     //POV Down --- Angle arm to 0
-    joystick.povDown().whileTrue(new InstantCommand(() -> customAngle -= 1).andThen(new armPID(customAngle)));
+    joystick.povDown().onTrue(new InstantCommand(() -> customAngle -= 1).andThen(new armPID(customAngle)));
 
     //POV Left - sets position of elavator to bottom
     joystick.povLeft().onTrue(new elevatorController(0));
@@ -275,7 +276,7 @@ public class RobotContainer {
 
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
-    NamedCommands.registerCommand("Auto Intake", new alignNoteDrive(-3).alongWith(new IntakeNote()).withTimeout(2));
+    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4).withTimeout(2), new IntakeNote()));
     NamedCommands.registerCommand("Just Shoot", new ShootNote());
 
     // Create auto chooser

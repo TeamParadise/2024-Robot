@@ -79,7 +79,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getAverageVelocity() {
-    return (leftShooter.getEncoder().getVelocity() + rightShooter.getEncoder().getVelocity()) / 2;
+    return (leftShooter.getEncoder().getVelocity() - rightShooter.getEncoder().getVelocity()) / 2;
   }
 
   @Override
