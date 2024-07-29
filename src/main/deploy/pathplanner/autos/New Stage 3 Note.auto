@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Just Shoot"
+            "name": "Speaker"
           }
         },
         {
@@ -58,7 +58,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Arm Auto Angle No Timeout"
+                        "name": "Shooter Speedup"
                       }
                     }
                   ]
@@ -70,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "New Shoot"
+            "name": "Speaker"
           }
         },
         {
@@ -114,7 +114,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Arm Auto Angle No Timeout"
+                        "name": "Shooter Speedup"
                       }
                     }
                   ]
@@ -126,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "New Shoot"
+            "name": "Speaker"
           }
         }
       ]
