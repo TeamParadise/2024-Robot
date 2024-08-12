@@ -52,6 +52,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.util.FOCSwitch;
 
+import java.awt.geom.Path2D;
 import java.util.Optional;
 
 public class RobotContainer {
@@ -72,6 +73,8 @@ public class RobotContainer {
   public static SendableChooser<Command> autoChooser;
 
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
+
+  private static Path2D speaker = new Path2D.Float();
   
   public static final SwerveRequest.FieldCentricFacingAngle headingDrive = new SwerveRequest.FieldCentricFacingAngle()
   .withDeadband(MaxSpeed * 0.05)
@@ -89,7 +92,7 @@ public class RobotContainer {
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
 
-  public static final FOCSwitch focDrive = new FOCSwitch().withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1).withSwitchSpeed(4.50);
+  public static final FOCSwitch focDrive = new FOCSwitch().withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1).withSwitchSpeed(3.5);
 
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -253,8 +256,6 @@ public class RobotContainer {
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
 
-    // autoAimTrigger.and(() -> SmartDashboard.getBoolean("Zoning Enabled", false)).and(underStage.negate()).and(() -> m_ArmSubsystem.getCurrentCommand() == null).whileTrue(new armAutoShoot());
-
 
     headingDrive.HeadingController.setPID(10, 0, 0);
     headingDrive.HeadingController.enableContinuousInput(-Math.PI, Math.PI);
@@ -300,9 +301,38 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
+
+    // MAKE SURE TO TUNE THESE VALUES ON A REAL ROBOT (these are kind of annoying to tune on a simulation)
+    speaker.moveTo(16.541748, 1.606837);
+    speaker.lineTo(15.441748, 1.970854);
+    speaker.lineTo(15.441748, 3.220854);
+    speaker.lineTo(16.541748, 3.738242);
+    speaker.closePath();
+
+    speaker.moveTo(0, 1.606837);
+    speaker.lineTo(1.1, 1.970854);
+    speaker.lineTo(1.1, 3.220854);
+    speaker.lineTo(0, 3.738242);
+    speaker.closePath();
   }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public static Boolean checkIntersection() {
+    return speaker.intersects(drivetrain.getState().Pose.getX() - 0.381503746, 8.220855 - drivetrain.getState().Pose.getY(), 0.76300749201, 0.76300749201);
+  }
+
+  public static Rotation2d getSpeakerRotation() {
+    return DriverStation.getAlliance().equals(Optional.of(Alliance.Red))
+      ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX()))
+      : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX()));
+  }
+
+  public static Boolean getRobotPointedToSpeaker() {
+    double rotationToSpeaker = getSpeakerRotation().getDegrees();
+    
+    return (drivetrain.getState().Pose.getRotation().getDegrees() - 20 < rotationToSpeaker) && (drivetrain.getState().Pose.getRotation().getDegrees() + 20 > rotationToSpeaker);
   }
 }
