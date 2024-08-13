@@ -9,15 +9,20 @@ import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class AutoSpeakerShoot extends Command {
+public class AutoSpeakerShootWithRetract extends Command {
   private final ShooterSubsystem shooter = RobotContainer.m_shooterSubsystem;
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
+
+  // Create items to track the amount of time the command has been running for
+  private double timeElapsed = 0.0;
+  private double previousTimestamp = 0.0;
 
   private Debouncer noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
 
@@ -26,7 +31,7 @@ public class AutoSpeakerShoot extends Command {
 
   private boolean noteShooting = false;
   /** Creates a new SpeakerShoot. */
-  public AutoSpeakerShoot() {
+  public AutoSpeakerShootWithRetract() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter, primer);
   }
@@ -36,6 +41,9 @@ public class AutoSpeakerShoot extends Command {
   public void initialize() {
     noteShooting = false;
     noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    // Reset time elapsed values
+    timeElapsed = 0.0;
+    previousTimestamp = RobotController.getFPGATime();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,7 +56,11 @@ public class AutoSpeakerShoot extends Command {
     rightPIDController.setReference(-4000, CANSparkBase.ControlType.kVelocity);
     
     if (currentShooterVelocity > 2000 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
-      primer.setSpeed(SpeedConstants.kPrime);
+      primer.setSpeed(0.75);
+    } else if (timeElapsed < 150000) {
+      primer.setSpeed(-0.15);
+    } else {
+      primer.setSpeed(0);
     };
   }
 

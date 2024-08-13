@@ -15,7 +15,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class AutoSpeakerShoot extends Command {
+public class Shoot extends Command {
   private final ShooterSubsystem shooter = RobotContainer.m_shooterSubsystem;
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
 
@@ -26,7 +26,7 @@ public class AutoSpeakerShoot extends Command {
 
   private boolean noteShooting = false;
   /** Creates a new SpeakerShoot. */
-  public AutoSpeakerShoot() {
+  public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter, primer);
   }
@@ -47,14 +47,15 @@ public class AutoSpeakerShoot extends Command {
     leftPIDController.setReference(4000, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-4000, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 2000 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
+    if (currentShooterVelocity > 2000) {
       primer.setSpeed(SpeedConstants.kPrime);
     };
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
