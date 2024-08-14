@@ -62,6 +62,6 @@ public class AutoSpeakerShootWithoutRetract extends Command {
   @Override
   public boolean isFinished() {
     // Add end condition eventually
-    return false;
+    return noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
   }
 }

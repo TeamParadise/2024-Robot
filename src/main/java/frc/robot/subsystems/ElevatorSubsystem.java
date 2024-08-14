@@ -25,16 +25,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double speed){
-    if (RobotContainer.m_intakeSubsystem.getArmPosition() < 130 && RobotContainer.m_intakeSubsystem.getArmPosition() > 9){
-      leftElevatorMotor.set(speed);
-      rightElevatorMotor.set(speed);
-      // System.out.println(speed + ", " + getEncoder());
-      // System.out.println(RobotContainer.m_ArmSubsystem.getArmPos());
-    }
-    else {
-      leftElevatorMotor.set(0);
-      rightElevatorMotor.set(0);
-    }
+    // if (RobotContainer.m_intakeSubsystem.getArmPosition() < 130 && RobotContainer.m_intakeSubsystem.getArmPosition() > 9){
+    //   leftElevatorMotor.set(speed);
+    //   rightElevatorMotor.set(speed);
+    //   // System.out.println(speed + ", " + getEncoder());
+    //   // System.out.println(RobotContainer.m_ArmSubsystem.getArmPos());
+    // }
+    // else {
+    //   leftElevatorMotor.set(0);
+    //   rightElevatorMotor.set(0);
+    // }
+    leftElevatorMotor.set(speed);
+    rightElevatorMotor.set(speed);
   }
 
   public double getEncoder(){

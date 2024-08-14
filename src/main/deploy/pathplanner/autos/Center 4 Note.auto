@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Speaker"
+            "name": "Just Shoot"
           }
         },
         {
@@ -54,12 +54,6 @@
                       "data": {
                         "name": "Retract"
                       }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shooter Speedup"
-                      }
                     }
                   ]
                 }
@@ -70,7 +64,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Speaker"
+            "name": "Just Shoot"
           }
         },
         {
@@ -110,12 +104,6 @@
                       "data": {
                         "name": "Retract"
                       }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shooter Speedup"
-                      }
                     }
                   ]
                 }
@@ -126,7 +114,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Speaker"
+            "name": "Just Shoot"
           }
         },
         {
@@ -176,13 +164,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Speaker"
+            "name": "Just Shoot"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Speaker to Mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Intake"
           }
         }
       ]

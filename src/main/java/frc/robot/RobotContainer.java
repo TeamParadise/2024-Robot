@@ -46,6 +46,7 @@ import frc.robot.commands.ShooterOnly.AutoSpeakerShootWithoutRetract;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShoot;
 import frc.robot.commands.ShooterOnly.Shoot;
 import frc.robot.commands.ShooterOnly.ShooterAuto;
+import frc.robot.commands.ShooterOnly.StartAmp;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -147,9 +148,9 @@ public class RobotContainer {
     
     
     //POV Up --- Move arm to feed note from intake into barrel
-    joystick.povUp().onTrue(new armPID(52));
+    joystick.povUp().onTrue(new StartAmp());
     //POV Down --- Angle arm to 0
-    joystick.povDown().onTrue(new armPID(20));
+    joystick.povDown().onTrue(new ShootAmp());
 
     //POV Left - sets position of elavator to bottom
     joystick.povLeft().onTrue(new elevatorController(0));

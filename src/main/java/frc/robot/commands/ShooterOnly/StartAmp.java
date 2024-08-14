@@ -7,61 +7,64 @@ package frc.robot.commands.ShooterOnly;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.SpeedConstants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class Shoot extends Command {
+public class StartAmp extends Command {
   private final ShooterSubsystem shooter = RobotContainer.m_shooterSubsystem;
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
-
-  private Debouncer noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+  private final ElevatorSubsystem elevator = RobotContainer.m_ElevatorSubsystem;
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
   private final SparkPIDController rightPIDController = shooter.rightShooter.getPIDController();
 
-  private boolean noteShooting = false;
-  /** Creates a new SpeakerShoot. */
-  public Shoot() {
+  PIDController elevatorController;
+
+  double elevatorSetpoint;
+
+
+  /** Creates a new AmpCommand. */
+  public StartAmp() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter, primer);
+    addRequirements(shooter, primer, elevator);
+
+    elevatorController = new PIDController(0.5, 0, .00025);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    noteShooting = false;
-    noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    elevatorController.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double currentShooterVelocity = shooter.getAverageVelocity();
-
     // Set speed of flywheels.
-    leftPIDController.setReference(4000, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-4000, CANSparkBase.ControlType.kVelocity);
-    
-    if (currentShooterVelocity > 2000) {
-      primer.setSpeed(SpeedConstants.kPrime);
-    };
+    leftPIDController.setReference(SmartDashboard.getNumber("Amp Flywheel Speed", 0), CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-SmartDashboard.getNumber("Amp Flywheel Speed", 0), CANSparkBase.ControlType.kVelocity);
+
+    // Get setpoint of elevator and set it.
+    elevatorSetpoint = MathUtil.clamp(SmartDashboard.getNumber("Amp Elevator Setpoint", 0), 0, 52.5);
+    elevatorController.setSetpoint(elevatorSetpoint);
+    double output = elevatorController.calculate(elevator.getEncoder());
+    elevator.setSpeed(MathUtil.clamp(output, -0.4, 0.4));  
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    primer.setSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Add end condition eventually
-    return noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
+    return false;
   }
 }
