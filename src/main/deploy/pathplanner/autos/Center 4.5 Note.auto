@@ -40,22 +40,9 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Retract"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shoot At Speaker"
-                      }
-                    }
-                  ]
+                  "name": "Shoot At Speaker"
                 }
               }
             ]
@@ -100,6 +87,37 @@
                 "type": "path",
                 "data": {
                   "pathName": "Amp Note to Center Shoot to Center Line"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot At Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Intake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center Line to Center Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot At Speaker"
                 }
               }
             ]

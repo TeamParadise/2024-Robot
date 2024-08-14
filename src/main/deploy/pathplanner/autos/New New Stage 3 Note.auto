@@ -30,7 +30,7 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -51,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Speaker"
+            "name": "Just Shoot"
           }
         },
         {
@@ -67,7 +67,7 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -77,37 +77,12 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.1
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Retract"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shooter Speedup"
-                      }
-                    }
-                  ]
+                  "name": "Shoot At Speaker"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Speaker"
           }
         }
       ]

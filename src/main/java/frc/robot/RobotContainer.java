@@ -42,8 +42,8 @@ import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterPIDF;
+import frc.robot.commands.ShooterOnly.AutoSpeakerShootWithoutRetract;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShoot;
-import frc.robot.commands.ShooterOnly.AutoSpeakerShootWithRetract;
 import frc.robot.commands.ShooterOnly.Shoot;
 import frc.robot.commands.ShooterOnly.ShooterAuto;
 import frc.robot.generated.TunerConstants;
@@ -122,7 +122,7 @@ public class RobotContainer {
 
     joystick.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
     // joystick.rightTrigger(0.1).whileTrue(new armAutoShoot());
-    joystick.rightTrigger(0.1).whileTrue(new AutoSpeakerShoot());
+    joystick.rightTrigger(0.1).whileTrue(new AutoSpeakerShootWithoutRetract());
     joystick.rightBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
              .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
              .withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
@@ -135,8 +135,8 @@ public class RobotContainer {
            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
           )));})));
     joystick.b().onTrue(new ShootNote());
-    joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> focDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> focDrive.withVelocityX(joystick.getLeftY() * MaxSpeed) // Drive forward with
+         .withVelocityY(joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
          .withRotationalRate(-joystick.getRightX() * MaxAngularRate
        )));})));
     joystick.start().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
@@ -292,8 +292,8 @@ public class RobotContainer {
 
     // New Auto Commands V2
     NamedCommands.registerCommand("Just Shoot", new Shoot());
-    NamedCommands.registerCommand("Shoot At Speaker", new AutoSpeakerShootWithRetract());
-    NamedCommands.registerCommand("Shoot At Speaker No Retract", new AutoSpeakerShoot());
+    NamedCommands.registerCommand("Shoot At Speaker", new AutoSpeakerShoot());
+    NamedCommands.registerCommand("Shoot At Speaker No Retract", new AutoSpeakerShootWithoutRetract());
 
     // Create auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
