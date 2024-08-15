@@ -19,7 +19,7 @@ public class AutoSpeakerShootWithoutRetract extends Command {
   private final ShooterSubsystem shooter = RobotContainer.m_shooterSubsystem;
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
 
-  private Debouncer noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+  private Debouncer noteDebouncer = new Debouncer(0.75, DebounceType.kBoth);
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
   private final SparkPIDController rightPIDController = shooter.rightShooter.getPIDController();
@@ -44,10 +44,11 @@ public class AutoSpeakerShootWithoutRetract extends Command {
     double currentShooterVelocity = shooter.getAverageVelocity();
 
     // Set speed of flywheels.
-    leftPIDController.setReference(4000, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-4000, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(5000, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-5000, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 2000 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
+    if (currentShooterVelocity > 2200 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
+      noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };
   }
@@ -62,6 +63,6 @@ public class AutoSpeakerShootWithoutRetract extends Command {
   @Override
   public boolean isFinished() {
     // Add end condition eventually
-    return noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
+    return noteShooting ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false;
   }
 }

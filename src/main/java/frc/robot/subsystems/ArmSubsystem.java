@@ -26,18 +26,18 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
-    leftArmMotor = new TalonFX(Constants.MotorConstants.leftArmMotorID, "rhino");
-    rightArmMotor = new TalonFX(Constants.MotorConstants.rightArmMotorID, "rhino");
+    // leftArmMotor = new TalonFX(Constants.MotorConstants.leftArmMotorID, "rhino");
+    // rightArmMotor = new TalonFX(Constants.MotorConstants.rightArmMotorID, "rhino");
   } 
 
   public void setSpeed(double speed){
-    leftArmMotor.set(speed);
-    rightArmMotor.set(-speed);
+    // leftArmMotor.set(speed);
+    // rightArmMotor.set(-speed);
   }
 
   public void setVoltage(double voltage) {
-    leftArmMotor.setVoltage(voltage);
-    rightArmMotor.setVoltage(-voltage);
+    // leftArmMotor.setVoltage(voltage);
+    // rightArmMotor.setVoltage(-voltage);
   }
 
   public double getDistance(){

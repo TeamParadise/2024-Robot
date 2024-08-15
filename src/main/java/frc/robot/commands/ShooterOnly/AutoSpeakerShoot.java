@@ -11,7 +11,6 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.SpeedConstants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -24,7 +23,7 @@ public class AutoSpeakerShoot extends Command {
   private double timeElapsed = 0.0;
   private double previousTimestamp = 0.0;
 
-  private Debouncer noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+  private Debouncer noteDebouncer = new Debouncer(0.75, DebounceType.kBoth);
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
   private final SparkPIDController rightPIDController = shooter.rightShooter.getPIDController();
@@ -40,7 +39,7 @@ public class AutoSpeakerShoot extends Command {
   @Override
   public void initialize() {
     noteShooting = false;
-    noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    noteDebouncer = new Debouncer(0.75, DebounceType.kBoth);
     // Reset time elapsed values
     timeElapsed = 0.0;
     previousTimestamp = RobotController.getFPGATime();
@@ -52,10 +51,11 @@ public class AutoSpeakerShoot extends Command {
     double currentShooterVelocity = shooter.getAverageVelocity();
 
     // Set speed of flywheels.
-    leftPIDController.setReference(4000, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-4000, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(5000, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-5000, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 2000 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
+    if (currentShooterVelocity > 2200 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
+      noteShooting = true;
       primer.setSpeed(0.75);
     } else if (timeElapsed < 150000) {
       primer.setSpeed(-0.15);
@@ -78,6 +78,6 @@ public class AutoSpeakerShoot extends Command {
   @Override
   public boolean isFinished() {
     // Add end condition eventually
-    return noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
+    return noteShooting ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false;
   }
 }

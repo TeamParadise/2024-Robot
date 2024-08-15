@@ -19,12 +19,14 @@ public class Shoot extends Command {
   private final ShooterSubsystem shooter = RobotContainer.m_shooterSubsystem;
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
 
-  private Debouncer noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+  private Debouncer noteDebouncer = new Debouncer(0.2, DebounceType.kBoth);
+  private Debouncer detectionDebouncer = new Debouncer(0.75, DebounceType.kBoth);
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
   private final SparkPIDController rightPIDController = shooter.rightShooter.getPIDController();
 
   private boolean noteShooting = false;
+  private boolean noteDetected = false;
   /** Creates a new SpeakerShoot. */
   public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -35,7 +37,9 @@ public class Shoot extends Command {
   @Override
   public void initialize() {
     noteShooting = false;
+    noteDetected = false;
     noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    detectionDebouncer = new Debouncer(0.75, DebounceType.kBoth);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,12 +48,16 @@ public class Shoot extends Command {
     double currentShooterVelocity = shooter.getAverageVelocity();
 
     // Set speed of flywheels.
-    leftPIDController.setReference(4000, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-4000, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(5000, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-5000, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 2000) {
+    if (currentShooterVelocity > 2200) {
+      noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };
+
+    // This is a fall back in case the note is never detected, aka we probably don't have the note.
+    noteDetected = detectionDebouncer.calculate(noteShooting) || (noteShooting && !RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
   }
 
   // Called once the command ends or is interrupted.
@@ -62,6 +70,6 @@ public class Shoot extends Command {
   @Override
   public boolean isFinished() {
     // Add end condition eventually
-    return noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
+    return noteDetected;
   }
 }

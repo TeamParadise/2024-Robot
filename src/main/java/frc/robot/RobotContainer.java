@@ -36,6 +36,7 @@ import frc.robot.commands.Arm.scoreAmp;
 import frc.robot.commands.Arm.startAmp;
 import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Elevator.elevatorController;
+import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.NewAuto.AutoShoot;
 import frc.robot.commands.Primer.PrimeNote;
@@ -45,6 +46,7 @@ import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShootWithoutRetract;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShoot;
 import frc.robot.commands.ShooterOnly.Shoot;
+import frc.robot.commands.ShooterOnly.ShootAmp;
 import frc.robot.commands.ShooterOnly.ShooterAuto;
 import frc.robot.commands.ShooterOnly.StartAmp;
 import frc.robot.generated.TunerConstants;
@@ -114,21 +116,21 @@ public class RobotContainer {
       vision = new VisionSubsystem();
     }
     m_ElevatorSubsystem.setDefaultCommand(new elevatorController(0));
-    m_ArmSubsystem.setDefaultCommand(new armPID(10));
+    // m_ArmSubsystem.setDefaultCommand(new armPID(10));
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-1500));
-    m_intakeSubsystem.setDefaultCommand(new intakePIDF(0));
+    m_intakeSubsystem.setDefaultCommand(new intakeController(0));
 
 
     //Driver controlls
 
     joystick.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
     // joystick.rightTrigger(0.1).whileTrue(new armAutoShoot());
-    joystick.rightTrigger(0.1).whileTrue(new AutoSpeakerShootWithoutRetract());
+    joystick.rightTrigger(0.1).onTrue(new AutoSpeakerShoot());
     joystick.rightBumper().whileTrue(drivetrain.applyRequest(() -> headingDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)                                                                       
              .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
              .withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
     // joystick.a().whileTrue(new PrimeNote(SpeedConstants.kPrime));
-    joystick.a().whileTrue(new Shoot());
+    joystick.a().onTrue(new Shoot());
     joystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.1).alongWith(new intakePIDF(-2500)));
     joystick.leftBumper().whileTrue(new IntakeNote());
     joystick.x().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
@@ -230,11 +232,10 @@ public class RobotContainer {
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
-    coJoystick.b().whileTrue(new ArmHumanPlayer());
-    coJoystick.b().toggleOnFalse(new ArmHumanPlayerBack());
+    coJoystick.b().onTrue(new StartAmp());
 
     //X --- Spin intake out
-    coJoystick.x().onTrue(new scoreAmp());
+    coJoystick.x().onTrue(new ShootAmp());
     //Y --- Intake note with intake and primers
     coJoystick.y().whileTrue(new IntakeNote());
 
@@ -315,14 +316,14 @@ public class RobotContainer {
 
     // MAKE SURE TO TUNE THESE VALUES ON A REAL ROBOT (these are kind of annoying to tune on a simulation)
     speaker.moveTo(16.541748, 1.606837);
-    speaker.lineTo(15.441748, 1.970854);
-    speaker.lineTo(15.441748, 3.220854);
+    speaker.lineTo(15.241748, 1.970854);
+    speaker.lineTo(15.241748, 3.220854);
     speaker.lineTo(16.541748, 3.738242);
     speaker.closePath();
 
     speaker.moveTo(0, 1.606837);
-    speaker.lineTo(1.1, 1.970854);
-    speaker.lineTo(1.1, 3.220854);
+    speaker.lineTo(1.3, 1.970854);
+    speaker.lineTo(1.3, 3.220854);
     speaker.lineTo(0, 3.738242);
     speaker.closePath();
   }
