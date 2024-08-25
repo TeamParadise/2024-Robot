@@ -57,15 +57,15 @@ public final class Constants {
 
     public static final int intakeMotorID = 7; //9  NOT ON CANIVORE
 
-    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.25);
-    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.25);
+    public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
+    public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
   }
 
   public static class SpeedConstants {
     public static final double kIntake = 1.0;
     public static final double kPrime = 0.5;
     public static final double kRetract = -0.1;
-    public static final double kShooter = 4000;
+    public static final double kShooter = 3300;
     public static final double kOutake = -kIntake;
     public static final double kvF = 0;
 

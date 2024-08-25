@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.IntakeNoteCustom;
+import frc.robot.commands.Pass;
 import frc.robot.commands.ShootNote;
 import frc.robot.commands.ShootNoteCustom;
 import frc.robot.commands.Arm.ArmHumanPlayer;
@@ -98,7 +99,7 @@ public class RobotContainer {
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
 
-  public static final FOCSwitch focDrive = new FOCSwitch().withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1).withSwitchSpeed(3.5);
+  public static final FOCSwitch focDrive = new FOCSwitch().withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1).withSwitchSpeed(4.0);
 
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -138,8 +139,8 @@ public class RobotContainer {
            .withRotationalRate(-joystick.getRightX() * MaxAngularRate
           )));})));
     joystick.b().onTrue(new ShootNote());
-    joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> focDrive.withVelocityX(joystick.getLeftY() * MaxSpeed) // Drive forward with
-         .withVelocityY(joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> focDrive.withVelocityX(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? joystick.getLeftY() * MaxSpeed : -joystick.getLeftY() * MaxSpeed) // Drive forward with
+         .withVelocityY(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? joystick.getLeftX() * MaxSpeed : -joystick.getLeftX()) // Drive left with negative X (left)
          .withRotationalRate(-joystick.getRightX() * MaxAngularRate
        )));})));
     joystick.start().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
@@ -150,14 +151,14 @@ public class RobotContainer {
     
     
     //POV Up --- Move arm to feed note from intake into barrel
-    joystick.povUp().onTrue(new StartAmp());
+    //joystick.povUp().onTrue(new StartAmp());
     //POV Down --- Angle arm to 0
-    joystick.povDown().onTrue(new ShootAmp());
+   // joystick.povDown().onTrue(new ShootAmp());
 
     //POV Left - sets position of elavator to bottom
-    joystick.povLeft().onTrue(new elevatorController(0));
+   // joystick.povLeft().onTrue(new elevatorController(0));
     //POV Right --- Sets position of elevator to top
-    joystick.povRight().onTrue(new elevatorController(52.5));
+    //joystick.povRight().onTrue(new elevatorController(52.5));
 
 
     // //A --- Brake drivetrain
@@ -223,19 +224,19 @@ public class RobotContainer {
     coJoystick.povDown().onTrue(new armPID(0));
 
     //POV Left - sets position of elavator to bottom
-    coJoystick.povLeft().onTrue(new elevatorController(0));
+   // coJoystick.povLeft().onTrue(new elevatorController(0));
     //POV Right --- Sets position of elevator to top
-    coJoystick.povRight().onTrue(new elevatorController(52.5));
+    //coJoystick.povRight().onTrue(new elevatorController(52.5));
 
     //A --- Automatically angle arm and shoot note
     coJoystick.a().onTrue(new ShootNote());
     // coJoystick.a().onTrue(new ShootNote(true));
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
-    coJoystick.b().onTrue(new StartAmp());
+   // coJoystick.b().onTrue(new StartAmp());
 
     //X --- Spin intake out
-    coJoystick.x().onTrue(new ShootAmp());
+    //coJoystick.x().onTrue(new ShootAmp());
     //Y --- Intake note with intake and primers
     coJoystick.y().whileTrue(new IntakeNote());
 
@@ -243,10 +244,10 @@ public class RobotContainer {
     coJoystick.rightBumper().onTrue(new startAmp());
 
     //Left Bumper --- Reverse intake
-    coJoystick.leftBumper().whileTrue(new intakePIDF(-2500));
+    coJoystick.leftBumper().onTrue(new Pass());
 
     //Left Trigger --- Retract note with primers
-    coJoystick.leftTrigger(0.1).whileTrue(new RetractNote(SpeedConstants.kRetract, -0.1));
+    coJoystick.leftTrigger(0.1).whileTrue(new Shoot());
     //Right Trigger --- Push note into flywheel
     coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
 
@@ -293,7 +294,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shooter Speedup", new shooterPIDF(SpeedConstants.kShooter));
 
     // New Auto Commands V2
-    NamedCommands.registerCommand("Just Shoot", new Shoot());
+    NamedCommands.registerCommand("Just Shoot", new ShootNote());
     NamedCommands.registerCommand("Shoot At Speaker", new AutoSpeakerShoot());
     NamedCommands.registerCommand("Shoot At Speaker No Retract", new AutoSpeakerShootWithoutRetract());
 

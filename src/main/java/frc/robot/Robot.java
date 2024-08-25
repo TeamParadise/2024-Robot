@@ -40,8 +40,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     // Temporary
-    SmartDashboard.putNumber("Amp Flywheel Speed", 500);
-    SmartDashboard.putNumber("Amp Elevator Setpoint", 40);
+    SmartDashboard.putNumber("Amp Flywheel Speed", 750);
+    SmartDashboard.putNumber("Amp Elevator Setpoint", 30);
   }
 
   @Override
