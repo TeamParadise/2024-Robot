@@ -5,8 +5,8 @@
   "pathFolders": [],
   "autoFolders": [],
   "defaultMaxVel": 4.0,
-  "defaultMaxAccel": 6.0,
-  "defaultMaxAngVel": 300.0,
-  "defaultMaxAngAccel": 500.0,
+  "defaultMaxAccel": 5.1,
+  "defaultMaxAngVel": 400.0,
+  "defaultMaxAngAccel": 700.0,
   "maxModuleSpeed": 5.0
 }

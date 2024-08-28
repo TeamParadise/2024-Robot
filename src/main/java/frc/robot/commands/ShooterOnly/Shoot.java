@@ -27,6 +27,8 @@ public class Shoot extends Command {
 
   private boolean noteShooting = false;
   private boolean noteDetected = false;
+  private boolean commandDone = false;
+
   /** Creates a new SpeakerShoot. */
   public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -38,6 +40,7 @@ public class Shoot extends Command {
   public void initialize() {
     noteShooting = false;
     noteDetected = false;
+    commandDone = false;
     noteDebouncer = new Debouncer(0.2, DebounceType.kBoth);
     detectionDebouncer = new Debouncer(2.0, DebounceType.kBoth);
   }
@@ -48,16 +51,19 @@ public class Shoot extends Command {
     double currentShooterVelocity = shooter.getAverageVelocity();
 
     // Set speed of flywheels.
-    leftPIDController.setReference(5000, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-5000, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(5500, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-5500, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 2500) {
+    if (currentShooterVelocity > 3500 || noteShooting) {
       noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };
 
+    // Set this to true when we see the note at least once
+    noteDetected = noteDetected || RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
+
     // This is a fall back in case the note is never detected, aka we probably don't have the note.
-    noteDetected = detectionDebouncer.calculate(noteShooting) || (noteShooting ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false);
+    commandDone = detectionDebouncer.calculate(noteShooting) || (noteShooting && noteDetected ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false);
   }
 
   // Called once the command ends or is interrupted.
@@ -70,6 +76,6 @@ public class Shoot extends Command {
   @Override
   public boolean isFinished() {
     // Add end condition eventually
-    return noteDetected;
+    return commandDone;
   }
 }
