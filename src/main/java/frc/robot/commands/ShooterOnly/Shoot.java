@@ -41,7 +41,7 @@ public class Shoot extends Command {
     noteShooting = false;
     noteDetected = false;
     commandDone = false;
-    noteDebouncer = new Debouncer(0.2, DebounceType.kBoth);
+    noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
     detectionDebouncer = new Debouncer(2.0, DebounceType.kBoth);
   }
 

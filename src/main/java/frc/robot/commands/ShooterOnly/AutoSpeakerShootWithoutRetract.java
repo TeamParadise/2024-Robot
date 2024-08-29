@@ -19,12 +19,16 @@ public class AutoSpeakerShootWithoutRetract extends Command {
   private final ShooterSubsystem shooter = RobotContainer.m_shooterSubsystem;
   private final PrimerSubsystem primer = RobotContainer.m_primerSubsystem;
 
-  private Debouncer noteDebouncer = new Debouncer(0.75, DebounceType.kBoth);
+  private Debouncer noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+  private Debouncer detectionDebouncer = new Debouncer(1.0, DebounceType.kBoth);
 
   private final SparkPIDController leftPIDController = shooter.leftShooter.getPIDController();
   private final SparkPIDController rightPIDController = shooter.rightShooter.getPIDController();
 
   private boolean noteShooting = false;
+  private boolean noteDetected = false;
+  private boolean commandDone = false;
+
   /** Creates a new SpeakerShoot. */
   public AutoSpeakerShootWithoutRetract() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -35,7 +39,10 @@ public class AutoSpeakerShootWithoutRetract extends Command {
   @Override
   public void initialize() {
     noteShooting = false;
+    noteDetected = false;
+    commandDone = false;
     noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
+    detectionDebouncer = new Debouncer(2.0, DebounceType.kBoth);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,13 +51,19 @@ public class AutoSpeakerShootWithoutRetract extends Command {
     double currentShooterVelocity = shooter.getAverageVelocity();
 
     // Set speed of flywheels.
-    leftPIDController.setReference(5000, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-5000, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(5500, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-5500, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 2200 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) {
+    if ((currentShooterVelocity > 3500 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) || noteShooting) {
       noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };
+
+    // Set this to true when we see the note at least once
+    noteDetected = noteDetected || RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
+
+    // This is a fall back in case the note is never detected, aka we probably don't have the note.
+    commandDone = detectionDebouncer.calculate(noteShooting) || (noteShooting && noteDetected ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false);
   }
 
   // Called once the command ends or is interrupted.
@@ -63,6 +76,6 @@ public class AutoSpeakerShootWithoutRetract extends Command {
   @Override
   public boolean isFinished() {
     // Add end condition eventually
-    return noteShooting ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false;
+    return commandDone;
   }
 }

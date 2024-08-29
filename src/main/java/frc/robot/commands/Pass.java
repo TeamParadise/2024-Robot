@@ -21,7 +21,7 @@ public class Pass extends SequentialCommandGroup {
     addCommands(
         new armPID(54).alongWith(
           new PrimeNote(SpeedConstants.kRetract).withTimeout(0.15).andThen(
-          new shooterPIDF(5000).withTimeout(0.85)).andThen(
+          new shooterPIDF(6000).withTimeout(0.85)).andThen(
           new PrimeNote(SpeedConstants.kPrime).withTimeout(0.35))).withTimeout(2),
         new shooterPIDF(0).withTimeout(0.1)
       );

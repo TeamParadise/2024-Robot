@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    SmartDashboard.putBoolean("Ready to Shoot", RobotContainer.checkIntersection());
   }
 
   @Override
