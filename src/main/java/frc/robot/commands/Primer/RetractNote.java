@@ -15,6 +15,6 @@ public class RetractNote extends ParallelCommandGroup {
   public RetractNote(double primerSpeed, double shooterSpeed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new PrimeNote(primerSpeed).withTimeout(0.15), new shooterController(shooterSpeed).withTimeout(0.15));
+    addCommands(new PrimeNote(primerSpeed).withTimeout(0.2), new shooterController(shooterSpeed).withTimeout(0.2));
   }
 }

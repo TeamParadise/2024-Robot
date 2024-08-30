@@ -290,12 +290,12 @@ public class RobotContainer {
 
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
-    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4).withTimeout(2), new IntakeNote()));
+    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4.2).withTimeout(2), new IntakeNote()));
     NamedCommands.registerCommand("Speaker", new ShooterAuto(SpeedConstants.kShooter));
     NamedCommands.registerCommand("Shooter Speedup", new shooterPIDF(SpeedConstants.kShooter));
 
     // New Auto Commands V2
-    NamedCommands.registerCommand("Just Shoot", new ShootNote());
+    NamedCommands.registerCommand("Just Shoot", new Shoot());
     NamedCommands.registerCommand("Shoot At Speaker", new AutoSpeakerShootWithoutRetract());
     NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
 
