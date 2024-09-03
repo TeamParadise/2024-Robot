@@ -241,6 +241,8 @@ public class RobotContainer {
     //Y --- Intake note with intake and primers
     coJoystick.y().whileTrue(new IntakeNote());
 
+    coJoystick.x().onTrue(new InstantCommand(() -> drivetrain.resetPoseToStage()));
+
     //Right Bumper --- Auto angle arm to speaker
     coJoystick.rightBumper().onTrue(new startAmp());
 
@@ -250,7 +252,7 @@ public class RobotContainer {
     //Left Trigger --- Retract note with primers
     coJoystick.leftTrigger(0.1).whileTrue(new Shoot());
     //Right Trigger --- Push note into flywheel
-    coJoystick.rightTrigger(0.1).whileTrue(new PrimeNote(SpeedConstants.kPrime));
+    coJoystick.rightTrigger(0.1).whileTrue(new AutoSpeakerShootWithoutRetract());
 
     coJoystick.leftStick().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
     coJoystick.leftStick().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
@@ -291,6 +293,7 @@ public class RobotContainer {
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
     NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4.2).withTimeout(2), new IntakeNote()));
+    NamedCommands.registerCommand("Auto Intake Slow", new ParallelRaceGroup(new alignNoteDrive(-3.5).withTimeout(2), new IntakeNote()));
     NamedCommands.registerCommand("Speaker", new ShooterAuto(SpeedConstants.kShooter));
     NamedCommands.registerCommand("Shooter Speedup", new shooterPIDF(SpeedConstants.kShooter));
 
@@ -298,6 +301,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Just Shoot", new Shoot());
     NamedCommands.registerCommand("Shoot At Speaker", new AutoSpeakerShootWithoutRetract());
     NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
+    NamedCommands.registerCommand("Reset Pose to Stage", new InstantCommand(() -> drivetrain.resetPoseToStage()));
+    NamedCommands.registerCommand("Just Intake", new IntakeNote());
 
     // Create auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -349,6 +354,6 @@ public class RobotContainer {
   public static Boolean getRobotPointedToSpeaker() {
     double rotationToSpeaker = getSpeakerRotation().getDegrees();
     
-    return (drivetrain.getState().Pose.getRotation().getDegrees() - 20 < rotationToSpeaker) && (drivetrain.getState().Pose.getRotation().getDegrees() + 20 > rotationToSpeaker);
+    return (drivetrain.getState().Pose.getRotation().getDegrees() - 15 < rotationToSpeaker) && (drivetrain.getState().Pose.getRotation().getDegrees() + 15 > rotationToSpeaker);
   }
 }

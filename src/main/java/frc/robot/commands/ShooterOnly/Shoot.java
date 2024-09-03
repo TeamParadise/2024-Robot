@@ -54,7 +54,7 @@ public class Shoot extends Command {
     leftPIDController.setReference(5500, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-5500, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 3500 || noteShooting) {
+    if (currentShooterVelocity > 3900 || noteShooting) {
       noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };

@@ -54,7 +54,7 @@ public class AutoSpeakerShootWithoutRetract extends Command {
     leftPIDController.setReference(5500, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-5500, CANSparkBase.ControlType.kVelocity);
     
-    if ((currentShooterVelocity > 3500 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) || noteShooting) {
+    if ((currentShooterVelocity > 3900 && RobotContainer.checkIntersection() && RobotContainer.getRobotPointedToSpeaker()) || noteShooting) {
       noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };
@@ -63,7 +63,7 @@ public class AutoSpeakerShootWithoutRetract extends Command {
     noteDetected = noteDetected || RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
 
     // This is a fall back in case the note is never detected, aka we probably don't have the note.
-    commandDone = detectionDebouncer.calculate(noteShooting) || (noteShooting && noteDetected ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false);
+    commandDone = (noteShooting && noteDetected ? noteDebouncer.calculate(!RobotContainer.m_primerSubsystem.getPrimerBeamBreaker()) : false);
   }
 
   // Called once the command ends or is interrupted.
