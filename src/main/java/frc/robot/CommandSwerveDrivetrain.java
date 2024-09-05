@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
@@ -14,8 +15,10 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,8 +61,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             this::seedFieldRelative,  // Consumer for seeding pose against auto
             this::getCurrentRobotChassisSpeeds,
             (speeds)->this.setControl(AutoRequest.withSpeeds(speeds)), // Consumer of ChassisSpeeds to drive the robot
-            new HolonomicPathFollowerConfig(new PIDConstants(10, 0, 0),
-                                            new PIDConstants(10, 0, 0),
+            new HolonomicPathFollowerConfig(new PIDConstants(7.5, 0, 0),
+                                            new PIDConstants(8, 0, 0),
                                             TunerConstants.kSpeedAt12VoltsMps,
                                             driveBaseRadius,
                                             new ReplanningConfig(true, true)),
@@ -85,6 +88,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
         // Create a path following command using AutoBuilder. This will also trigger event markers.
         return AutoBuilder.followPath(path);
+    }
+
+    public void resetPoseToStage() {
+        // 16.541748
+        this.seedFieldRelative(new Pose2d(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? 13.891748 : 2.65, 4.10, Rotation2d.fromDegrees(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? 0 : 180)));
     }
 
     private void startSimThread() {

@@ -41,7 +41,7 @@ public class Shoot extends Command {
     noteShooting = false;
     noteDetected = false;
     commandDone = false;
-    noteDebouncer = new Debouncer(0.2, DebounceType.kBoth);
+    noteDebouncer = new Debouncer(0.1, DebounceType.kBoth);
     detectionDebouncer = new Debouncer(2.0, DebounceType.kBoth);
   }
 
@@ -54,7 +54,7 @@ public class Shoot extends Command {
     leftPIDController.setReference(5500, CANSparkBase.ControlType.kVelocity);
     rightPIDController.setReference(-5500, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 3500 || noteShooting) {
+    if (currentShooterVelocity > 3900 || noteShooting) {
       noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };

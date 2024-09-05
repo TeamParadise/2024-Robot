@@ -19,8 +19,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void configMotors(){
-    leftElevatorMotor = new TalonFX(Constants.MotorConstants.leftElevatorMotorID, "rhino");
-    rightElevatorMotor = new TalonFX(Constants.MotorConstants.rightElevatorMotorID, "rhino");
+    // leftElevatorMotor = new TalonFX(Constants.MotorConstants.leftElevatorMotorID, "rhino");
+    // rightElevatorMotor = new TalonFX(Constants.MotorConstants.rightElevatorMotorID, "rhino");
     resetEncoder();
   }
 
@@ -35,16 +35,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     //   leftElevatorMotor.set(0);
     //   rightElevatorMotor.set(0);
     // }
-    leftElevatorMotor.set(speed);
-    rightElevatorMotor.set(speed);
+   //  leftElevatorMotor.set(speed);
+   // rightElevatorMotor.set(speed);
   }
 
   public double getEncoder(){
-    return rightElevatorMotor.getPosition().getValueAsDouble();
+    //return rightElevatorMotor.getPosition().getValueAsDouble();
+    return 0; 
   }
 
   public void resetEncoder(){
-    leftElevatorMotor.setPosition(0);
+   // leftElevatorMotor.setPosition(0);
   }
 
   @Override
