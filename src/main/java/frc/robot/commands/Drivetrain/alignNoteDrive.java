@@ -27,7 +27,7 @@ private final Debouncer debouncer = new Debouncer(0.05, DebounceType.kRising);
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    turnController = new PIDController(0.12, 0.0, 0.03);
+    turnController = new PIDController(0.1, 0.0, 0.003);
     turnController.reset();
   }
 
@@ -67,6 +67,6 @@ private final Debouncer debouncer = new Debouncer(0.05, DebounceType.kRising);
     // } else {
     //   return false;
     // }
-    return debouncer.calculate(RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
+    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
   }
 }

@@ -47,6 +47,7 @@ import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShootWithoutRetract;
+import frc.robot.commands.ShooterOnly.AmpShoot;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShoot;
 import frc.robot.commands.ShooterOnly.Shoot;
 import frc.robot.commands.ShooterOnly.ShootAmp;
