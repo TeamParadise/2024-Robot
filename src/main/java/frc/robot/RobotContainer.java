@@ -294,7 +294,7 @@ public class RobotContainer {
 
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
-    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4.2).withTimeout(2), new IntakeNote()));
+    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-3).withTimeout(1.5), new IntakeNote()));
     NamedCommands.registerCommand("Auto Intake Slow", new ParallelRaceGroup(new alignNoteDrive(-3.5).withTimeout(2), new IntakeNote()));
     NamedCommands.registerCommand("Speaker", new ShooterAuto(SpeedConstants.kShooter));
     NamedCommands.registerCommand("Shooter Speedup", new shooterPIDF(SpeedConstants.kShooter));
