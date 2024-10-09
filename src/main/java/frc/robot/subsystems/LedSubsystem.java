@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.Timer;;
 public class LedSubsystem extends  SubsystemBase{
     //creating some objects we need in future 
     private static LedSubsystem instance;
-    public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
-    public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
 
   //Instances might be nessesary in a way it might be conlficting with other classes in case we have many leds or none.   
   public static LedSubsystem getInstance() {
@@ -28,9 +26,9 @@ public class LedSubsystem extends  SubsystemBase{
 
     // introduce boolean variables for status
     // is the node inside
-    public boolean nodeInside = primerBeamTrigger.getAsBoolean();
+    public Trigger nodeInside = RobotContainer.primerBeamTrigger;
     //is the robot in shooting stance 
-    public boolean aprilTagLocationGoodQuestionMark =  RobotContainer.getRobotPointedToSpeaker();
+    public boolean aprilTagLocationGoodQuestionMark = false;
     //if button pressed to go demo 
     public boolean demo = false; 
     //if low battery
@@ -71,6 +69,7 @@ public class LedSubsystem extends  SubsystemBase{
                 //shows we are initilized when seeing black and white
                 breath(Section.STATIC_LOW, Color.kWhite, Color.kBlack, 0.25, System.currentTimeMillis() / 1000.0);
                 led.setData(buffer);
+                led.start();
               }
             });
             notifier.startPeriodic(0.02);
@@ -96,7 +95,7 @@ public class LedSubsystem extends  SubsystemBase{
     notifier.stop();
 
     // Select LED mode
-    still(Section.FULL, Color.kBlack); // Default to off
+    // still(Section.FULL, Color.kBlack); // Default to off
     if (estopped) {
         still(Section.FULL, Color.kRed);
     } else if (DriverStation.isDisabled()) {
@@ -111,7 +110,7 @@ public class LedSubsystem extends  SubsystemBase{
         // Default pattern
          wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
         }
-      } else if (nodeInside) {
+      } else if (nodeInside.getAsBoolean()) {
         //node inside
       still(Section.FULL, Color.kGreen);
     } else if (aprilTagLocationGoodQuestionMark) {

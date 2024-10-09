@@ -57,6 +57,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.LedSubsystem;
 import frc.robot.util.FOCSwitch;
 
 import java.awt.geom.Path2D;
@@ -80,6 +81,8 @@ public class RobotContainer {
   public static SendableChooser<Command> autoChooser;
 
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
+
+  public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
 
   private static Path2D blueSpeaker = new Path2D.Float();
   private static Path2D redSpeaker = new Path2D.Float();
