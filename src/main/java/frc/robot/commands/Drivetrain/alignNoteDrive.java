@@ -67,6 +67,6 @@ private final Debouncer debouncer = new Debouncer(0.05, DebounceType.kRising);
     // } else {
     //   return false;
     // }
-    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
+    return false;
   }
 }

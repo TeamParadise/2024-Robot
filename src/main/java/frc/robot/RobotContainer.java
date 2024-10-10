@@ -16,11 +16,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
@@ -45,6 +47,7 @@ import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShootWithoutRetract;
+import frc.robot.commands.ShooterOnly.AmpShoot;
 import frc.robot.commands.ShooterOnly.AutoSpeakerShoot;
 import frc.robot.commands.ShooterOnly.Shoot;
 import frc.robot.commands.ShooterOnly.ShootAmp;
@@ -147,8 +150,6 @@ public class RobotContainer {
          .withVelocityY(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? joystick.getLeftX() * MaxSpeed : -joystick.getLeftX()) // Drive left with negative X (left)
          .withRotationalRate(-joystick.getRightX() * MaxAngularRate
        )));})));
-    joystick.start().whileTrue(new armPID(50).alongWith(new shooterPIDF(3500)));
-    joystick.start().toggleOnFalse(new armPID(50).alongWith(new shooterPIDF(3500).alongWith(new PrimeNote(SpeedConstants.kPrime))).withTimeout(1));
     joystick.rightStick().whileTrue(drivetrain.applyRequest(() -> brake));
     joystick.leftStick().whileTrue(new alignNoteDrive(-3).alongWith(new IntakeNote()));
     // joystick.leftStick().onTrue(new AutoShoot());
@@ -238,6 +239,7 @@ public class RobotContainer {
 
     //B --- Lift arm to human player feeder. On release, bring arm back down
    // coJoystick.b().onTrue(new StartAmp());
+    coJoystick.b().onTrue(new AmpShoot());
 
     //X --- Spin intake out
     //coJoystick.x().onTrue(new ShootAmp());
@@ -266,7 +268,7 @@ public class RobotContainer {
     coJoystick.rightStick().onTrue(new ShootNoteCustom());
 
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
-
+    primerBeamTrigger.onTrue(new InstantCommand(() -> joystick.getHID().setRumble(RumbleType.kBothRumble, 0.5)).andThen(new WaitCommand(0.5).andThen(new InstantCommand(() -> joystick.getHID().setRumble(RumbleType.kBothRumble, 0)))));
     //coJoystick.getLeftTriggerAxis().whileTrue
     // coJoystick.leftStick().whileTrue(/*new armPID(52*/new armManual(.3));
 
@@ -295,7 +297,7 @@ public class RobotContainer {
 
     // New auto commands
     NamedCommands.registerCommand("New Shoot", new AutoShoot());
-    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-4.2).withTimeout(2), new IntakeNote()));
+    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new alignNoteDrive(-3).withTimeout(1.5), new IntakeNote()));
     NamedCommands.registerCommand("Auto Intake Slow", new ParallelRaceGroup(new alignNoteDrive(-3.5).withTimeout(2), new IntakeNote()));
     NamedCommands.registerCommand("Speaker", new ShooterAuto(SpeedConstants.kShooter));
     NamedCommands.registerCommand("Shooter Speedup", new shooterPIDF(SpeedConstants.kShooter));

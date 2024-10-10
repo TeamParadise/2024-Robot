@@ -34,24 +34,17 @@ public class Robot extends TimedRobot {
     
     // Get alliance and configure auto
     currentAlliance = DriverStation.getAlliance();
-    RobotContainer.drivetrain.configurePathPlanner(DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
+    RobotContainer.drivetrain.configurePathPlanner(currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? true : false);
 
     // Configure robot container
     m_robotContainer = new RobotContainer();
-
-    // Temporary
-    SmartDashboard.putNumber("Amp Flywheel Speed", 750);
-    SmartDashboard.putNumber("Amp Elevator Setpoint", 30);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Distance", RobotContainer.m_ArmSubsystem.getDistance());
 
-    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
-    SmartDashboard.putBoolean("Ready to Shoot", RobotContainer.checkIntersection());
   }
 
   @Override
@@ -65,6 +58,12 @@ public class Robot extends TimedRobot {
 
       currentAlliance = DriverStation.getAlliance();
     }
+
+    SmartDashboard.putBoolean("Left Camera Alive", RobotContainer.vision.leftCamera.isConnected());
+    SmartDashboard.putBoolean("Right Camera Alive", RobotContainer.vision.rightCamera.isConnected());
+    SmartDashboard.putBoolean("Intake Camera Alive", RobotContainer.vision.intakeCamera.isConnected());
+    SmartDashboard.putBoolean("CTRE CAN Alive", RobotContainer.drivetrain.getModule(2).getDriveMotor().getVersion().getValueAsDouble() != 0);
+    SmartDashboard.putBoolean("Autonomous Alliance Color", currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? false : true);
   }
 
   @Override
