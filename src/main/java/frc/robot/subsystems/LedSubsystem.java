@@ -80,7 +80,7 @@ public class LedSubsystem extends  SubsystemBase{
 
     //creating the repeating loop of the leds, however I used synchronized as it involves notifier
     public synchronized void periodic() {
-    if(!stop){
+  
       // Update estop state
       if (DriverStation.isEStopped()) {
         estopped = true;
@@ -107,9 +107,16 @@ public class LedSubsystem extends  SubsystemBase{
         } else if (lowBatteryAlert) {
           // Low battery
           still(Section.FULL, Color.kOrangeRed);
-        } else {
+         } 
+         //test
+         else if(stop){
+        wave(Section.FULL, Color.kGreen, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
+        System.out.println(",");
+        }
+         else {
           // Default pattern
           wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
+          System.out.println(".");
           }
         } else if (nodeInside.getAsBoolean()) {
           //node inside
@@ -124,7 +131,6 @@ public class LedSubsystem extends  SubsystemBase{
         }
 
       }
-  }
     // Update LEDs
     led.setData(buffer);
   }
