@@ -33,6 +33,7 @@ public class LedSubsystem extends  SubsystemBase{
     public boolean demo = false; 
     //if low battery
     public boolean lowBatteryAlert = false; 
+    public boolean stop = false; 
     //all these others will be updated later but name serves its purpose
     private boolean lastEnabledAuto = false;
     private double lastEnabledTime = 0.0;
@@ -79,50 +80,51 @@ public class LedSubsystem extends  SubsystemBase{
 
     //creating the repeating loop of the leds, however I used synchronized as it involves notifier
     public synchronized void periodic() {
-
-    // Update estop state
-    if (DriverStation.isEStopped()) {
-      estopped = true;
-    }
-
-    // Exit during initial cycles
-    loopCycleCount += 1;
-    if (loopCycleCount < minLoopCycleCount) {
-      return;
-    }
-
-    // Stop loading notifier if running
-    notifier.stop();
-
-    // Select LED mode
-    // still(Section.FULL, Color.kBlack); // Default to off
-    if (estopped) {
-        still(Section.FULL, Color.kRed);
-    } else if (DriverStation.isDisabled()) {
-      if (lastEnabledAuto && Timer.getFPGATimestamp() - lastEnabledTime < autoFadeMaxTime) {
-        // Auto fade
-        still(1.0 - ((Timer.getFPGATimestamp() - lastEnabledTime) / autoFadeTime), Color.kGreen);
-
-      } else if (lowBatteryAlert) {
-        // Low battery
-        still(Section.FULL, Color.kOrangeRed);
-      } else {
-        // Default pattern
-         wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
-        }
-      } else if (nodeInside.getAsBoolean()) {
-        //node inside
-      still(Section.FULL, Color.kGreen);
-    } else if (aprilTagLocationGoodQuestionMark) {
-        //ready to shoot
-      still(Section.FULL, Color.kYellow);
-    }else {
-      // Demo mode background
-      if (demo) {
-        wave(Section.FULL, Color.kGold, Color.kDarkBlue, waveSlowCycleLength, waveSlowDuration);
+    if(!stop){
+      // Update estop state
+      if (DriverStation.isEStopped()) {
+        estopped = true;
       }
 
-    }
+      // Exit during initial cycles
+      loopCycleCount += 1;
+      if (loopCycleCount < minLoopCycleCount) {
+        return;
+      }
+
+      // Stop loading notifier if running
+      notifier.stop();
+
+      // Select LED mode
+      // still(Section.FULL, Color.kBlack); // Default to off
+      if (estopped) {
+          still(Section.FULL, Color.kRed);
+      } else if (DriverStation.isDisabled()) {
+        if (lastEnabledAuto && Timer.getFPGATimestamp() - lastEnabledTime < autoFadeMaxTime) {
+          // Auto fade
+          still(1.0 - ((Timer.getFPGATimestamp() - lastEnabledTime) / autoFadeTime), Color.kGreen);
+
+        } else if (lowBatteryAlert) {
+          // Low battery
+          still(Section.FULL, Color.kOrangeRed);
+        } else {
+          // Default pattern
+          wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
+          }
+        } else if (nodeInside.getAsBoolean()) {
+          //node inside
+        still(Section.FULL, Color.kGreen);
+      } else if (aprilTagLocationGoodQuestionMark) {
+          //ready to shoot
+        still(Section.FULL, Color.kYellow);
+      }else {
+        // Demo mode background
+        if (demo) {
+          wave(Section.FULL, Color.kGold, Color.kDarkBlue, waveSlowCycleLength, waveSlowDuration);
+        }
+
+      }
+  }
     // Update LEDs
     led.setData(buffer);
   }

@@ -6,8 +6,6 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.LedSubsystem;
 
 public class ledStop extends Command{
-    public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
-    /** Creates a new intakeController. */
   boolean sop;
   public ledStop(boolean sop) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,7 +21,8 @@ public class ledStop extends Command{
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_ledSubsystem.stop = sop;
+    //sets my variable in my led subsystems to true meaning my periodic loop wont run anything inside it. 
+    LedSubsystem.getInstance().stop = sop;
   }
 
   // Called once the command ends or is interrupted.

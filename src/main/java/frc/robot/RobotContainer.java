@@ -41,6 +41,7 @@ import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
+import frc.robot.commands.Led.ledStop;
 import frc.robot.commands.NewAuto.AutoShoot;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
@@ -60,7 +61,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.LedSubsystem;
 import frc.robot.util.FOCSwitch;
 
 import java.awt.geom.Path2D;
@@ -85,7 +85,7 @@ public class RobotContainer {
 
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
 
-  public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
+
 
   private static Path2D blueSpeaker = new Path2D.Float();
   private static Path2D redSpeaker = new Path2D.Float();
@@ -127,9 +127,13 @@ public class RobotContainer {
     // m_ArmSubsystem.setDefaultCommand(new armPID(10));
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-1500));
     m_intakeSubsystem.setDefaultCommand(new intakeController(0));
-
+  
 
     //Driver controlls
+    //dpad up makes leds no turn on anymore
+    joystick.povUp().onTrue(new ledStop(true));
+    if(joystick.povUp() != null) System.out.println("works");
+
 
     joystick.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
     // joystick.rightTrigger(0.1).whileTrue(new armAutoShoot());
