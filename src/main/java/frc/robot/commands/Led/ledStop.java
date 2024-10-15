@@ -6,14 +6,12 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.LedSubsystem;
 
 public class ledStop extends Command{
-    public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
+
     /** Creates a new ledsubsytem. */
-  boolean sop;
-  public ledStop(boolean sop) {
+  public ledStop() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_intakeSubsystem);
-    this.sop = sop;
-    SmartDashboard.putBoolean("Should Stop?", sop);
+    SmartDashboard.putBoolean("Should Stop?", true);
   }
 
   // Called when the command is initially scheduled.
@@ -24,7 +22,7 @@ public class ledStop extends Command{
   @Override
   public void execute() {
     //sets my variable in my led subsystems to true meaning my periodic loop wont run anything inside it. 
-    m_ledSubsystem.stop = sop;
+    LedSubsystem.getInstance().stop = true;
   }
 
   // Called once the command ends or is interrupted.

@@ -116,7 +116,6 @@ public class LedSubsystem extends  SubsystemBase{
          else {
           // Default pattern
           wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
-          System.out.println(".");
           }
         } else if (nodeInside.getAsBoolean()) {
           //node inside

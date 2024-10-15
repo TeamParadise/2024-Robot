@@ -131,7 +131,7 @@ public class RobotContainer {
 
     //Driver controlls
     //dpad up makes leds no turn on anymore
-    joystick.pov(0).onTrue(new ledStop(true));
+    joystick.pov(0).onTrue(new ledStop());
     if(joystick.pov(0) != null) System.out.println("works");
 
 
