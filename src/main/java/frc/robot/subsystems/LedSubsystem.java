@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.util.Color;
@@ -23,6 +24,7 @@ public class LedSubsystem extends  SubsystemBase{
       }
     return instance;
     }
+    public static final CommandXboxController joystick = new CommandXboxController(0); // My joystick
     // introduce boolean variables for status
     // is the note inside
     public Trigger nodeInside = RobotContainer.primerBeamTrigger;
@@ -31,9 +33,10 @@ public class LedSubsystem extends  SubsystemBase{
     //if button pressed to go demo 
     public boolean demo = false; 
     //if low battery
-    public boolean lowBatteryAlert = false; 
+    private boolean lowBatteryAlert = false; 
 
-    public boolean stop = false; 
+    private boolean stop = false; 
+
     //all these others will be updated later but name serves its purpose
     private boolean lastEnabledAuto = false;
     private double lastEnabledTime = 0.0;
@@ -80,56 +83,65 @@ public class LedSubsystem extends  SubsystemBase{
 
     //creating the repeating loop of the leds, however I used synchronized as it involves notifier
     public synchronized void periodic() {
-  
-      // Update estop state
-      if (DriverStation.isEStopped()) {
-        estopped = true;
-      }
+      //could call it as this maybe
+      // if(joystick.povUp().getAsBoolean()) stop = true; 
+
 
       // Exit during initial cycles
       loopCycleCount += 1;
-      if (loopCycleCount < minLoopCycleCount) {
-        return;
-      }
-
-      // Stop loading notifier if running
-      notifier.stop();
-
-      // Select LED mode
-      // still(Section.FULL, Color.kBlack); // Default to off
-      if (estopped) {
-          still(Section.FULL, Color.kRed);
-      } else if (DriverStation.isDisabled()) {
-        if (lastEnabledAuto && Timer.getFPGATimestamp() - lastEnabledTime < autoFadeMaxTime) {
-          // Auto fade
-          still(1.0 - ((Timer.getFPGATimestamp() - lastEnabledTime) / autoFadeTime), Color.kGreen);
-
-        } else if (lowBatteryAlert) {
-          // Low battery
-          still(Section.FULL, Color.kOrangeRed);
-         } 
-         //test
-         else if(stop){
-        wave(Section.FULL, Color.kGreen, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
-        System.out.println(",");
+        if (loopCycleCount < minLoopCycleCount) {
+          return;
         }
-         else {
-          // Default pattern
-          wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
+
+      if(stop){
+        still(Section.FULL, Color.kWhite);
+        System.out.println("....");
+      } else {
+        // Update estop state
+        if (DriverStation.isEStopped()) {
+          estopped = true;
+        }
+
+        // Stop loading notifier if running
+        notifier.stop();
+
+        // Select LED mode
+        // still(Section.FULL, Color.kBlack); // Default to off
+        if (estopped) {
+            still(Section.FULL, Color.kRed);
+        } else if (DriverStation.isDisabled()) {
+          if(joystick.povUp().getAsBoolean()) stop = true; 
+          if (lastEnabledAuto && Timer.getFPGATimestamp() - lastEnabledTime < autoFadeMaxTime) {
+            // Auto fade
+            still(1.0 - ((Timer.getFPGATimestamp() - lastEnabledTime) / autoFadeTime), Color.kGreen);
+
+          } else if (lowBatteryAlert) {
+            // Low battery
+            still(Section.FULL, Color.kOrangeRed);
+          } 
+          // //test
+          // else if(stop){
+          // wave(Section.FULL, Color.kGreen, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
+          // System.out.println(",");
+          // }
+          else {
+            // Default pattern
+            wave(Section.FULL, Color.kWhite, Color.kRed, waveSlowCycleLength, waveSlowDuration);  
+            }
+          } else if (nodeInside.getAsBoolean()) {
+            //node inside
+          still(Section.FULL, Color.kGreen);
+        } else if (aprilTagLocationGoodQuestionMark) {
+            //ready to shoot
+          still(Section.FULL, Color.kYellow);
+        }else {
+          // Demo mode background
+          if (demo) {
+            wave(Section.FULL, Color.kGold, Color.kDarkBlue, waveSlowCycleLength, waveSlowDuration);
           }
-        } else if (nodeInside.getAsBoolean()) {
-          //node inside
-        still(Section.FULL, Color.kGreen);
-      } else if (aprilTagLocationGoodQuestionMark) {
-          //ready to shoot
-        still(Section.FULL, Color.kYellow);
-      }else {
-        // Demo mode background
-        if (demo) {
-          wave(Section.FULL, Color.kGold, Color.kDarkBlue, waveSlowCycleLength, waveSlowDuration);
-        }
 
-      }
+        }
+      } 
     // Update LEDs
     led.setData(buffer);
   }
@@ -249,6 +261,14 @@ public class LedSubsystem extends  SubsystemBase{
 
     public void setStop(boolean stop) {
       this.stop = stop;
+    }
+
+    public boolean isLowBatteryAlert() {
+      return lowBatteryAlert;
+    }
+
+    public boolean isStop() {
+      return stop;
     }
 }
 

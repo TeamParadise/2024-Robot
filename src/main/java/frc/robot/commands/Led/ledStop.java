@@ -22,7 +22,7 @@ public class ledStop extends Command{
   @Override
   public void execute() {
     //sets my variable in my led subsystems to true meaning my periodic loop wont run anything inside it. 
-    m_ledSubsystem.stop = true;
+    m_ledSubsystem.setStop(true);
   }
 
   // Called once the command ends or is interrupted.
@@ -33,7 +33,7 @@ public class ledStop extends Command{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    m_ledSubsystem.stop = true;
+    m_ledSubsystem.setStop(true);
     return false;
   }
 }
