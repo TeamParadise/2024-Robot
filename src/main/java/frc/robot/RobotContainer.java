@@ -41,7 +41,6 @@ import frc.robot.commands.Drivetrain.alignNoteDrive;
 import frc.robot.commands.Elevator.elevatorController;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
-import frc.robot.commands.Led.ledStop;
 import frc.robot.commands.NewAuto.AutoShoot;
 import frc.robot.commands.Primer.PrimeNote;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
@@ -58,6 +57,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LedSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -71,6 +71,7 @@ public class RobotContainer {
   public static double MaxAngularRate = 4 * Math.PI; // 3/4 of a rotation per second max angular velocity
   public double customAngle = 51;
 
+
   /* Setting up bindings for necessary control of the swerve drive platform */
   public static final CommandXboxController joystick = new CommandXboxController(0); // My joystick
   public static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
@@ -81,9 +82,12 @@ public class RobotContainer {
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance(); 
   public static SendableChooser<Command> autoChooser;
 
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
+  // public static Trigger stopTrigger = new Trigger()
+  
 
 
 
@@ -119,7 +123,6 @@ public class RobotContainer {
     //         .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
     //         .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
     //     ));
-
     if (Constants.VisionConstants.kVisionEnabled) {
       vision = new VisionSubsystem();
     }
@@ -129,10 +132,10 @@ public class RobotContainer {
     m_intakeSubsystem.setDefaultCommand(new intakeController(0));
   
 
-    //Driver controlls
-    //dpad up makes leds no turn on anymore
-    joystick.pov(0).onTrue(new ledStop());
-    if(joystick.pov(0) != null) System.out.println("works");
+    //Driver controls
+
+    //checks if we need to shut off leds
+    if(joystick.povUp().getAsBoolean()) m_ledSubsystem.setStop(true);
 
 
     joystick.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));

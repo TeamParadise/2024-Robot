@@ -15,10 +15,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Vision.PoseLogger;
 import frc.robot.commands.Vision.SingleTagVisionPoseEstimator;
 import frc.robot.subsystems.ArmLUT;
+import frc.robot.subsystems.LedSubsystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class Robot extends TimedRobot {
+  public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
+
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -45,6 +48,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+
+    ledUpdater(RobotController.getBatteryVoltage(), m_ledSubsystem);
   }
 
   @Override
@@ -64,6 +69,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Intake Camera Alive", RobotContainer.vision.intakeCamera.isConnected());
     SmartDashboard.putBoolean("CTRE CAN Alive", RobotContainer.drivetrain.getModule(2).getDriveMotor().getVersion().getValueAsDouble() != 0);
     SmartDashboard.putBoolean("Autonomous Alliance Color", currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? false : true);
+
+    //calls update method
+    ledUpdater(RobotController.getBatteryVoltage(), m_ledSubsystem);
   }
 
   @Override
@@ -129,6 +137,12 @@ public class Robot extends TimedRobot {
   public void simulationPeriodic() {
     if (Constants.VisionConstants.kVisionEnabled) {
       RobotContainer.vision.getVisionSimulator().ifPresent(visionSimulator -> visionSimulator.update(RobotContainer.drivetrain.getState().Pose));
+    }
+  }
+  //makes method to update battery status to the led subsystem. 
+  public void ledUpdater(double d, LedSubsystem s){
+    if (d <= 11.8) {
+      s.setLowBatteryAlert(true);
     }
   }
 

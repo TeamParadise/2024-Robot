@@ -33,6 +33,7 @@ public class ledStop extends Command{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    m_ledSubsystem.stop = true;
     return false;
   }
 }

@@ -16,16 +16,15 @@ public class LedSubsystem extends  SubsystemBase{
     //creating some objects we need in future 
     private static LedSubsystem instance;
 
-  //Instances might be nessesary in a way it might be conlficting with other classes in case we have many leds or none.   
-  public static LedSubsystem getInstance() {
+    //Instances might be nessesary in a way it might be conlficting with other classes in case we have many leds or none.   
+    public static LedSubsystem getInstance() {
     if (instance == null) {
       instance = new LedSubsystem();
-    }
+      }
     return instance;
-  }
-
+    }
     // introduce boolean variables for status
-    // is the node inside
+    // is the note inside
     public Trigger nodeInside = RobotContainer.primerBeamTrigger;
     //is the robot in shooting stance 
     public boolean aprilTagLocationGoodQuestionMark = false;
@@ -33,6 +32,7 @@ public class LedSubsystem extends  SubsystemBase{
     public boolean demo = false; 
     //if low battery
     public boolean lowBatteryAlert = false; 
+
     public boolean stop = false; 
     //all these others will be updated later but name serves its purpose
     private boolean lastEnabledAuto = false;
@@ -241,6 +241,15 @@ public class LedSubsystem extends  SubsystemBase{
           }
         }
       }
+      public void setLowBatteryAlert(boolean lowBatteryAlert) {
+      this.lowBatteryAlert = lowBatteryAlert;
+    }
+
+
+
+    public void setStop(boolean stop) {
+      this.stop = stop;
+    }
 }
 
 // WHAT I USED AS REFERENCE/inspiration- https://github.com/Mechanical-Advantage/RobotCode2023/blob/main/src/main/java/org/littletonrobotics/frc2023/subsystems/leds/Leds.java#L254
