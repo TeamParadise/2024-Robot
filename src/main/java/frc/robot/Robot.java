@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class Robot extends TimedRobot {
-  public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
+  // public final static LedSubsystem m_ledSubsystem = LedSubsystem.getInstance();
 
   private Command m_autonomousCommand;
 
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
-    ledUpdater(RobotController.getBatteryVoltage(), m_ledSubsystem);
+    // ledUpdater(RobotController.getBatteryVoltage(), m_ledSubsystem);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Autonomous Alliance Color", currentAlliance.equals(Optional.of(DriverStation.Alliance.Red)) ? false : true);
 
     //calls update method
-    ledUpdater(RobotController.getBatteryVoltage(), m_ledSubsystem);
+    // ledUpdater(RobotController.getBatteryVoltage(), m_ledSubsystem);
   }
 
   @Override
@@ -140,11 +140,11 @@ public class Robot extends TimedRobot {
     }
   }
   //makes method to update battery status to the led subsystem. 
-  public void ledUpdater(double d, LedSubsystem s){
-    if (d <= 11.8) {
-      s.setLowBatteryAlert(true);
-    }
-  }
+  // public void ledUpdater(double d, LedSubsystem s){
+  //   if (d <= 11.8) {
+  //     s.setLowBatteryAlert(true);
+  //   }
+  // }
 
   private void initLUT() {
     m_ArmLUTAngle = new ArmLUT<>();
