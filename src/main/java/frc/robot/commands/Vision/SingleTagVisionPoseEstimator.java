@@ -30,6 +30,9 @@ public class SingleTagVisionPoseEstimator extends Command {
 
     if (RobotContainer.vision.getLatestLeftResult().getMultiTagResult().estimatedPose.isPresent) {
       estimatedLeftPose.ifPresent(leftPose -> RobotContainer.drivetrain.addVisionMeasurement(leftPose.estimatedPose.toPose2d(), leftPose.timestampSeconds));
+      if (RobotContainer.vision.getLatestRightResult().getMultiTagResult().estimatedPose.isPresent) {
+        estimatedRightPose.ifPresent(rightPose -> RobotContainer.drivetrain.addVisionMeasurement(rightPose.estimatedPose.toPose2d(), rightPose.timestampSeconds));
+      }
     } else if (RobotContainer.vision.getLatestRightResult().getMultiTagResult().estimatedPose.isPresent) {
       estimatedRightPose.ifPresent(rightPose -> RobotContainer.drivetrain.addVisionMeasurement(rightPose.estimatedPose.toPose2d(), rightPose.timestampSeconds));
     } else {

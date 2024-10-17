@@ -7,20 +7,16 @@ package frc.robot.commands.Drivetrain;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
-public class alignNoteDrive extends Command {
+public class DriveToNote extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
   double tx, lastTimeDetected, timeSinceNote, velocity, originalDetection;
-
-private final Debouncer debouncer = new Debouncer(0.05, DebounceType.kRising);
   
   /** Creates a new allignNote. */
-  public  alignNoteDrive(double speed) {
+  public  DriveToNote(double speed) {
     this.velocity = speed;
   }
 
@@ -67,6 +63,6 @@ private final Debouncer debouncer = new Debouncer(0.05, DebounceType.kRising);
     // } else {
     //   return false;
     // }
-    return false;
+    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
   }
 }
