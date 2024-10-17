@@ -26,9 +26,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.Pass;
+import frc.robot.commands.Amp.ampController;
+import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Drivetrain.DriveToNote;
 import frc.robot.commands.Drivetrain.DriveToNoteDistance;
-import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
@@ -37,6 +38,7 @@ import frc.robot.commands.Scoring.BackupShoot;
 import frc.robot.commands.Scoring.Shoot;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AmpSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PrimerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -58,6 +60,7 @@ public class RobotContainer {
   public final static PrimerSubsystem m_primerSubsystem = new PrimerSubsystem();
   public final static ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   public final static IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  public static final AmpSubsystem m_ampSubsystem = new AmpSubsystem();
   public static SendableChooser<Command> autoChooser;
 
   public static Trigger primerBeamTrigger = new Trigger(() -> m_primerSubsystem.getPrimerBeamBreaker());
@@ -104,6 +107,8 @@ public class RobotContainer {
 
     // Test commands (DELETE AFTER TESTED)
     coJoystick.povUp().whileTrue(new DriveToNoteDistance(-3).alongWith(new IntakeNote()));
+    coJoystick.povLeft().whileTrue(new ampController(0.1));
+    coJoystick.povLeft().whileTrue(new ampController(-0.1));
 
     // Log when we have a note
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());

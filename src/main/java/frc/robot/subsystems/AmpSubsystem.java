@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +26,8 @@ public class AmpSubsystem extends SubsystemBase {
   private void configMotors() {
     ampMotor = new CANSparkMax(Constants.MotorConstants.ampMotorID, MotorType.kBrushless);
     ampMotor.setSmartCurrentLimit(25);
+    ampMotor.setInverted(true);
+    ampMotor.setIdleMode(IdleMode.kBrake);
 
     ampPIDController = ampMotor.getPIDController();
     ampPIDController.setOutputRange(AmpConstants.kMin, AmpConstants.kMax);
