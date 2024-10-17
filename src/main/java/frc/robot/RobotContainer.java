@@ -27,6 +27,7 @@ import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.Pass;
 import frc.robot.commands.Drivetrain.DriveToNote;
+import frc.robot.commands.Drivetrain.DriveToNoteDistance;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
@@ -76,7 +77,7 @@ public class RobotContainer {
                                                                // driving in open loop                         
                                                                
   public static final SwerveRequest.RobotCentric robotDrive = new SwerveRequest.RobotCentric()
-      .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
+      .withDeadband(MaxSpeed * 0.04).withRotationalDeadband(MaxAngularRate * 0.04) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
 
@@ -100,6 +101,9 @@ public class RobotContainer {
 
     // Configure named autonomous commands
     configureAutoCommands();
+
+    // Test commands (DELETE AFTER TESTED)
+    coJoystick.povUp().whileTrue(new DriveToNoteDistance(-3).alongWith(new IntakeNote()));
 
     // Log when we have a note
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
