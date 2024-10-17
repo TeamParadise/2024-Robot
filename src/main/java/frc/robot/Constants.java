@@ -57,6 +57,8 @@ public final class Constants {
 
     public static final int intakeMotorID = 7; //9  NOT ON CANIVORE
 
+    public static final int ampMotorID = 8;
+
     public static final OpenLoopRampsConfigs driveRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.75);
     public static final OpenLoopRampsConfigs steerRamp = new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(0.50);
   }
@@ -94,6 +96,16 @@ public final class Constants {
     public static final double kLeftFF = 0.00018;
     public static final double kLeftMax = 1;
     public static final double kLeftMin = -1;
+  }
+
+  public static class AmpConstants {
+    public static final double kP = 0.0000455;
+    public static final double kI = 0;
+    public static final double kD = 0.11;
+    public static final double kIz = 0;
+    public static final double kFF = 0.00018;
+    public static final double kMax = 0.1;
+    public static final double kMin = -0.1;
   }
   
   public static class ShooterConstants  {
