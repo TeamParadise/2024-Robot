@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.Pass;
+import frc.robot.commands.Amp.AmpShoot;
 import frc.robot.commands.Amp.ampController;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Drivetrain.DriveToNote;
@@ -108,7 +109,8 @@ public class RobotContainer {
     // Test commands (DELETE AFTER TESTED)
     coJoystick.povUp().whileTrue(new DriveToNoteDistance(-3).alongWith(new IntakeNote()));
     coJoystick.povLeft().whileTrue(new ampController(0.1));
-    coJoystick.povLeft().whileTrue(new ampController(-0.1));
+    coJoystick.povRight().whileTrue(new ampController(-0.1));
+    coJoystick.povDown().onTrue(new AmpShoot());
 
     // Log when we have a note
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
