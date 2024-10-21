@@ -23,20 +23,23 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AmpConstants;
 import frc.robot.Constants.SpeedConstants;
 import frc.robot.commands.IntakeNote;
 import frc.robot.commands.Pass;
 import frc.robot.commands.Amp.AmpShoot;
+import frc.robot.commands.Amp.AmpShootTest;
 import frc.robot.commands.Amp.ampController;
+import frc.robot.commands.Amp.ampPIDF;
 import frc.robot.commands.Intake.intakeController;
 import frc.robot.commands.Drivetrain.DriveToNote;
-import frc.robot.commands.Drivetrain.DriveToNoteDistance;
 import frc.robot.commands.Intake.intakePIDF;
 import frc.robot.commands.Primer.PrimerBeamBreakerBroken;
 import frc.robot.commands.Primer.RetractNote;
 import frc.robot.commands.Scoring.AutoSpeakerShoot;
 import frc.robot.commands.Scoring.BackupShoot;
 import frc.robot.commands.Scoring.Shoot;
+import frc.robot.commands.Scoring.ShootNoBeam;
 import frc.robot.commands.Shooter.shooterPIDF;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.AmpSubsystem;
@@ -96,6 +99,7 @@ public class RobotContainer {
     }
     m_shooterSubsystem.setDefaultCommand(new shooterPIDF(-1500));
     m_intakeSubsystem.setDefaultCommand(new intakeController(0));
+    m_ampSubsystem.setDefaultCommand(new ampPIDF(AmpConstants.kPosAlignedWithBarrel));
     
     // Configure driver controller
     configureDriverController();
@@ -105,12 +109,6 @@ public class RobotContainer {
 
     // Configure named autonomous commands
     configureAutoCommands();
-
-    // Test commands (DELETE AFTER TESTED)
-    coJoystick.povUp().whileTrue(new DriveToNoteDistance(-3).alongWith(new IntakeNote()));
-    coJoystick.povLeft().whileTrue(new ampController(0.1));
-    coJoystick.povRight().whileTrue(new ampController(-0.1));
-    coJoystick.povDown().onTrue(new AmpShoot());
 
     // Log when we have a note
     primerBeamTrigger.whileTrue(new PrimerBeamBreakerBroken());
@@ -141,14 +139,14 @@ public class RobotContainer {
   }
 
   private void configureAutoCommands() {
-    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new DriveToNote(-3).withTimeout(1.5), new IntakeNote()));
-    NamedCommands.registerCommand("Auto Intake Slow", new ParallelRaceGroup(new DriveToNote(-3.5).withTimeout(2), new IntakeNote()));
+    NamedCommands.registerCommand("Auto Intake", new ParallelRaceGroup(new DriveToNote(-2.5).withTimeout(1.5), new IntakeNote()));
+    NamedCommands.registerCommand("Auto Intake Slow", new ParallelRaceGroup(new DriveToNote(-2.5).withTimeout(1.5), new IntakeNote()));
     NamedCommands.registerCommand("Just Shoot", new Shoot());
     NamedCommands.registerCommand("Shoot At Speaker", new AutoSpeakerShoot());
     NamedCommands.registerCommand("Point At Speaker", drivetrain.applyRequest(() -> headingDrive.withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
     NamedCommands.registerCommand("Reset Pose to Stage", new InstantCommand(() -> drivetrain.resetPoseToStage()));
     NamedCommands.registerCommand("Just Intake", new IntakeNote());
-
+    NamedCommands.registerCommand("Amp Down", new ampPIDF(-1.7));
   }
 
   private void configureDriverController() {
@@ -166,7 +164,7 @@ public class RobotContainer {
              .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
              .withTargetDirection(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (16.541748) - drivetrain.getState().Pose.getX())) : new Rotation2d(Math.atan2(5.475 - drivetrain.getState().Pose.getY(),  (0) - drivetrain.getState().Pose.getX())))));
       // New Shoot Command
-      joystick.a().onTrue(new Shoot());
+      joystick.a().onTrue(new RetractNote(SpeedConstants.kRetract, -0.1).withTimeout(0.1).andThen(new ShootNoBeam()));
       // Old Shoot Command (backup)
       joystick.b().onTrue(new BackupShoot());
       // Backup drive command
@@ -178,6 +176,10 @@ public class RobotContainer {
       joystick.y().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> focDrive.withVelocityX(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? joystick.getLeftY() * MaxSpeed : -joystick.getLeftY() * MaxSpeed) // Drive forward with
          .withVelocityY(DriverStation.getAlliance().equals(Optional.of(Alliance.Red)) ? joystick.getLeftX() * MaxSpeed : -joystick.getLeftX()) // Drive left with negative X (left)
          .withRotationalRate(-joystick.getRightX() * MaxAngularRate
+       )));})));
+       joystick.start().onTrue(drivetrain.runOnce(() -> {drivetrain.removeDefaultCommand();}).andThen(new InstantCommand(() -> {drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> robotDrive.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+        .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+        .withRotationalRate(-joystick.getRightX() * MaxAngularRate
        )));})));
       // X formation with swerve module
       joystick.rightStick().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -196,6 +198,14 @@ public class RobotContainer {
     coJoystick.a().onTrue(new BackupShoot());
     //Y --- Intake note with intake and primers
     coJoystick.y().whileTrue(new IntakeNote());
+
+    // Manual Amp Controls
+    coJoystick.povUp().whileTrue(new ampController(0.1));
+    coJoystick.povDown().whileTrue(new ampController(-0.1));
+    coJoystick.povLeft().onTrue(new AmpShoot());
+
+    // Auto Amp
+    coJoystick.povRight().whileTrue(new AmpShootTest());
   }
 
   public RobotContainer() {
@@ -216,7 +226,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return new ampPIDF(-1.7).alongWith(new ShootNoBeam());
   }
 
   public static Boolean checkIntersection() {

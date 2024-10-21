@@ -7,6 +7,8 @@ package frc.robot.commands.Drivetrain;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 
@@ -14,6 +16,8 @@ public class DriveToNote extends Command {
   PhotonPipelineResult visionResult;
   PIDController turnController;
   double tx, lastTimeDetected, timeSinceNote, velocity, originalDetection;
+
+  private Debouncer debouncer = new Debouncer(0.275, DebounceType.kRising);
   
   /** Creates a new allignNote. */
   public  DriveToNote(double speed) {
@@ -25,6 +29,7 @@ public class DriveToNote extends Command {
   public void initialize() {
     turnController = new PIDController(0.1, 0.0, 0.003);
     turnController.reset();
+    debouncer = new Debouncer(0.275, DebounceType.kRising);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +38,8 @@ public class DriveToNote extends Command {
     visionResult = RobotContainer.vision.intakeCamera.getLatestResult();
     if (visionResult.hasTargets()) {
       RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(turnController.calculate(visionResult.getBestTarget().getYaw(), 0)).withVelocityX(velocity));
+    } else {
+      RobotContainer.drivetrain.setControl(RobotContainer.robotDrive.withRotationalRate(0).withVelocityX(0).withVelocityY(0));
     }
   }
 
@@ -63,6 +70,6 @@ public class DriveToNote extends Command {
     // } else {
     //   return false;
     // }
-    return RobotContainer.m_primerSubsystem.getPrimerBeamBreaker();
+    return debouncer.calculate(RobotContainer.m_primerSubsystem.getPrimerBeamBreaker());
   }
 }

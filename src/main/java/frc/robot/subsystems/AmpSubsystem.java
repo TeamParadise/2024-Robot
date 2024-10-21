@@ -26,7 +26,7 @@ public class AmpSubsystem extends SubsystemBase {
   private void configMotors() {
     ampMotor = new CANSparkMax(Constants.MotorConstants.ampMotorID, MotorType.kBrushless);
     ampMotor.setSmartCurrentLimit(25);
-    ampMotor.setInverted(true);
+    ampMotor.setInverted(false);
     ampMotor.setIdleMode(IdleMode.kBrake);
 
     ampPIDController = ampMotor.getPIDController();

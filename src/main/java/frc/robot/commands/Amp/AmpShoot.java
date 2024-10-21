@@ -51,10 +51,10 @@ public class AmpShoot extends Command {
     double currentShooterVelocity = shooter.getAverageVelocity();
 
     // Set speed of flywheels.
-    leftPIDController.setReference(600, CANSparkBase.ControlType.kVelocity);
-    rightPIDController.setReference(-600, CANSparkBase.ControlType.kVelocity);
+    leftPIDController.setReference(200, CANSparkBase.ControlType.kVelocity);
+    rightPIDController.setReference(-200, CANSparkBase.ControlType.kVelocity);
     
-    if (currentShooterVelocity > 500 || noteShooting) {
+    if (currentShooterVelocity > 100 || noteShooting) {
       noteShooting = true;
       primer.setSpeed(SpeedConstants.kPrime);
     };

@@ -99,13 +99,17 @@ public final class Constants {
   }
 
   public static class AmpConstants {
-    public static final double kP = 0.0000455;
+    public static final double kP = 0.15;
     public static final double kI = 0;
-    public static final double kD = 0.11;
+    public static final double kD = 0.0;
     public static final double kIz = 0;
-    public static final double kFF = 0.00018;
+    public static final double kFF = 0.0;
     public static final double kMax = 0.1;
     public static final double kMin = -0.1;
+
+    public static final double kPosAlignedWithBarrel = -1.667;
+    public static final double kPosStraight = -2.524;
+    public static final double kPosDown = -4.286;
   }
   
   public static class ShooterConstants  {
